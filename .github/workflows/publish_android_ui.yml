@@ -1,0 +1,29 @@
+# Pipeline to publish ui sdk
+name: Publish Android UI SDK
+
+on:
+  push:
+    tags:
+      - 'android-ui-*'
+env:
+  #Github packages credentials
+  NYRIS_BOT_USER: ${{ secrets.NYRIS_BOT_USER }}
+  NYRIS_BOT_TAP: ${{ secrets.NYRIS_BOT_TAP }}
+  LIB_VERSION_NAME: ${{ github.ref_name }}
+
+jobs:
+  gradle:
+    name: Android UI SDK Publisher
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure JDK
+        uses: actions/setup-java@v1
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Publish to github packages
+        run: ./gradlew :sdk.ui:ui:publishAllPublicationsToGithubRepository

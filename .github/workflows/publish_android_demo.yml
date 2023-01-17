@@ -1,0 +1,48 @@
+# Pipeline to publish demo app
+name: Publish Android Demo app
+
+on:
+  push:
+    tags:
+      - 'android-*'
+      - 'core-*'
+env:
+  #Github packages credentials
+  NYRIS_BOT_USER: ${{ secrets.NYRIS_BOT_USER }}
+  NYRIS_BOT_TAP: ${{ secrets.NYRIS_BOT_TAP }}
+
+  LIB_VERSION_NAME: ${{ github.ref_name }}
+
+jobs:
+  gradle:
+    name: Android Demo SDK Publisher
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure JDK
+        uses: actions/setup-java@v1
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Restore release key
+        run: |
+          echo -e "${{ secrets.SIGNING_PROPERTIES }}" > signing.properties.asc
+          gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch signing.properties.asc > configs/signing/signing.properties
+          echo -e "${{ secrets.DEMO_RELEASE_KEY }}" > release.keystore.asc
+          gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch release.keystore.asc > configs/signing/release.keystore
+
+      - name: Restore firebase key
+        run: |
+          echo -e "${{ secrets.FIREBASE_KEY }}" > firebase-appdist.json.asc
+          gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch firebase-appdist.json.asc > configs/firebase-appdist.json
+
+      - name: Restore google services files
+        run: |
+          echo -e "${{ secrets.GOOGLE_SERVICES }}" > google-services.json.asc
+          gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch google-services.json.asc > sdk.demos/android/google-services.json
+
+      - name: Build & Publish to Firebase App Distribution
+        run: ./gradlew :sdk.demos:android:assembleRelease :sdk.demos:android:appDistributionUploadRelease

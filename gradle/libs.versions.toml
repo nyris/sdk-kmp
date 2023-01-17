@@ -1,0 +1,73 @@
+[versions]
+# Gradle Plugins
+androidPlugin = "7.4.0"
+kotlinPlugin = "1.8.0"
+detektPlugin = "1.22.0"
+testLoggerPlugin = "3.2.0"
+firebaseAppDistPlugin = "3.2.0"
+firebaseCrashlyticsPlugin = "2.9.2"
+googleServicesPlugin = "4.3.15"
+
+# Gradle libraries
+mockk = "1.13.3"
+junit = "5.8.1"
+assertj = "3.24.1"
+ktxCoroutines = "1.6.4"
+ktxJson = "1.4.1"
+ktor = "2.2.2"
+androidxAppcomapt = "1.6.0"
+androidxMaterial = "1.7.0"
+androidxConstraintlayout = "2.1.4"
+firebaseCrashlytics = "18.3.3"
+firebaseAnalytics = "21.2.0"
+
+[libraries]
+# classpath plugin
+kotlin_plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinPlugin" }
+detekt_plugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detektPlugin" }
+android_plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidPlugin" }
+testlogger_plugin = { group = "com.adarshr", name = "gradle-test-logger-plugin", version.ref = "testLoggerPlugin" }
+firebase_appdist_plugin = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppDistPlugin" }
+firebase_crashlytics_plugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+google_services_plugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServicesPlugin" }
+
+kotlin_serialization_plugin = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlinPlugin" }
+detekt_formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detektPlugin" }
+detekt_libraries = { group = "io.gitlab.arturbosch.detekt", name = "detekt-rules-libraries", version.ref = "detektPlugin" }
+detekt_cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detektPlugin" }
+
+ktx_coroutines_core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "ktxCoroutines" }
+ktx_coroutines_android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "ktxCoroutines" }
+ktx_json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "ktxJson" }
+
+ktor_core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor_json = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor" }
+ktor_loggin = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor_serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor_okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor_android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor_jvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
+
+androidx_appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcomapt" }
+androidx_material = { group = "com.google.android.material", name = "material", version.ref = "androidxMaterial" }
+androidx_constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
+
+firebase_crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+firebase_analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+
+test_junit = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+test_mockk_common = { group = "io.mockk", name = "mockk-common", version.ref = "mockk" }
+test_mockk_core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+test_assertj_core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
+
+[plugins]
+android_application = { id = "com.android.application", version.ref = "androidPlugin" }
+android_library = { id = "com.android.library", version.ref = "androidPlugin" }
+kotlin_android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinPlugin" }
+kotlin_kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinPlugin" }
+kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinPlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
+testlogger = { id = "com.adarshr.test-logger", version.ref = "testLoggerPlugin" }
+firebase_appdist = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppDistPlugin" }
+firebase_crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+google_services = { id = "com.google.gms.google-services", version.ref = "googleServicesPlugin" }
