@@ -41,9 +41,10 @@ ktx_coroutines_android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coro
 ktx_json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "ktxJson" }
 
 ktor_core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor_contentnegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor_json = { group = "io.ktor", name = "ktor-client-json", version.ref = "ktor" }
 ktor_loggin = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
-ktor_serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor_serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor_okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor_android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor_jvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
@@ -59,6 +60,7 @@ test_junit = { group = "org.junit.jupiter", name = "junit-jupiter-engine", versi
 test_mockk_common = { group = "io.mockk", name = "mockk-common", version.ref = "mockk" }
 test_mockk_core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 test_assertj_core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
+test_coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "ktxCoroutines" }
 
 [plugins]
 android_application = { id = "com.android.application", version.ref = "androidPlugin" }

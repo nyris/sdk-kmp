@@ -33,5 +33,5 @@ jobs:
           echo -e "${{ secrets.GOOGLE_SERVICES }}" > google-services.json.asc
           gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch google-services.json.asc > sdk.demos/android/google-services.json
 
-      - name: Lints and Tests
+      - name: Detekt, Lint and, Test
         run: ./gradlew detekt lint test --continue
