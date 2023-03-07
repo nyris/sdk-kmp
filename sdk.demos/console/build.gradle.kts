@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import io.nyris.gradle.utils.Configuration
 import io.nyris.gradle.utils.Modules
 
 plugins {
     kotlin("jvm")
 }
 
+kotlin {
+    jvmToolchain(Configuration.javaVersion)
+}
+
 dependencies {
     implementation(project(Modules.sdk_core))
+    implementation(libs.ktor.core)
 }

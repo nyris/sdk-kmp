@@ -25,14 +25,22 @@ android {
         applicationId = "io.nyris.sdk.demo"
         versionName = rootProject.extra["LIB_VERSION_NAME"].toString()
     }
+
+    buildTypes.forEach {
+        it.buildConfigField("String", "API_KEY", "\"${System.getenv("PUBLIC_API_KEY")}\"")
+    }
 }
 
 dependencies {
+    implementation(project(Modules.sdk_core))
     implementation(project(Modules.sdk_ui_android))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
+
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.android)
 
     releaseImplementation(libs.firebase.crashlytics)
 }

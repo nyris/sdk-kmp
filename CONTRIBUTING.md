@@ -21,7 +21,7 @@ Our git branching is inspired by git-flow which has one source branch `main`.
 
 Our commit message format drive
 from [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-supported `<type>` are: fix, feat, ci, docs, style, test and project.
+supported `<type>` are: fix, feat, ci, docs, style, test, project and demo.
 
 Your commit should follow this format:
 
