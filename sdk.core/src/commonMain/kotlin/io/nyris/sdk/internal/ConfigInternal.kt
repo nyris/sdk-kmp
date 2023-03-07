@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk
+package io.nyris.sdk.internal
 
-object HelloSdkCoreProvider {
-    const val get = "Hello from SDK Core!"
-}
+import io.nyris.sdk.HttpEngine
+
+internal class ConfigInternal(
+    val apiKey: String,
+    val isDebug: Boolean,
+    val httpEngine: HttpEngine?,
+)
