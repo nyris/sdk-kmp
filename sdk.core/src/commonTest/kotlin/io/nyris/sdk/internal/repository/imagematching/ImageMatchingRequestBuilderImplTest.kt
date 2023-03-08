@@ -24,6 +24,7 @@ import io.mockk.verify
 import io.nyris.sdk.util.Logger
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -52,7 +53,7 @@ class ImageMatchingRequestBuilderImplTest {
     fun `reset should reset builder properties`() {
         classToTest.limit(1)
             .language("language")
-            .threshold(1.1F)
+            .threshold(0.5F)
             .geolocation(1F, 1F, 1000)
             .filters(mapOf("filter1" to listOf("value1", "value2")))
             .session("session")
@@ -63,10 +64,24 @@ class ImageMatchingRequestBuilderImplTest {
     }
 
     @Test
+    fun `limit should throw exception when value is not between 1 and 100`() {
+        assertFailsWith<IllegalArgumentException>(message = "Limit[1000] should be in range of 1 to 100") {
+            classToTest.limit(1000)
+        }
+    }
+
+    @Test
+    fun `threshold should throw exception when value is not between 0-01 and 1-0`() {
+        assertFailsWith<IllegalArgumentException>(message = "Threshold[2] should be in range of 0.01 to 1.0") {
+            classToTest.threshold(2.0F)
+        }
+    }
+
+    @Test
     fun `builder parameters should well created`() {
         classToTest.limit(1)
             .language("language")
-            .threshold(1.1F)
+            .threshold(0.5F)
             .geolocation(1F, 1F, 1000)
             .filters(mapOf("filter1" to listOf("value1", "value2")))
             .session("session")
@@ -84,7 +99,7 @@ class ImageMatchingRequestBuilderImplTest {
 
         val result = classToTest.limit(1)
             .language("language")
-            .threshold(1.1F)
+            .threshold(0.5F)
             .geolocation(1F, 1F, 1000)
             .filters(mapOf("filter1" to listOf("value1", "value2")))
             .session("session")
@@ -108,7 +123,7 @@ private const val EXPECTED_DEFAULT_PARAMS = "ImageMatchingParams(" +
 private const val EXPECTED_BUILDER_PARAMS = "ImageMatchingParams(" +
     "limit=1, " +
     "language=language, " +
-    "threshold=1.1, " +
+    "threshold=0.5, " +
     "geolocation=GeolocationParam(lat=1.0, lon=1.0, dist=1000), " +
     "filters={filter1=[value1, value2]}, " +
     "session=session" +
@@ -117,7 +132,7 @@ private const val EXPECTED_BUILDER_PARAMS = "ImageMatchingParams(" +
 private val EXPECTED_PARAMS = ImageMatchingParams(
     limit = 1,
     language = "language",
-    threshold = 1.1F,
+    threshold = 0.5F,
     geolocation = GeolocationParam(1F, 1F, 1000),
     filters = mapOf("filter1" to listOf("value1", "value2")),
     session = "session"

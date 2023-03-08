@@ -32,6 +32,7 @@ internal class ImageMatchingRequestBuilderImpl(
 
     override fun limit(limit: Int) = apply {
         logger.log("[ImageMatchingRequestBuilderImpl] limit=$limit")
+        require(limit in LIMIT_MIN..LIMIT_MAX) { "Limit[$limit] should be in range of 1 to 100" }
         this.limit = limit
     }
 
@@ -42,6 +43,7 @@ internal class ImageMatchingRequestBuilderImpl(
 
     override fun threshold(threshold: Float) = apply {
         logger.log("[ImageMatchingRequestBuilderImpl] threshold=$threshold")
+        require(threshold in THRESHOLD_MIN..THRESHOLD_MAX) { "Threshold[$threshold] should be in range of 0.01 to 1.0" }
         this.threshold = threshold
     }
 
@@ -114,3 +116,8 @@ internal data class GeolocationParam(
     val lon: Float,
     val dist: Int,
 )
+
+private const val LIMIT_MIN = 1
+private const val LIMIT_MAX = 100
+private const val THRESHOLD_MIN = 0.01F
+private const val THRESHOLD_MAX = 1.0F
