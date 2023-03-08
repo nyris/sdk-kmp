@@ -24,7 +24,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.Headers
 import io.ktor.utils.io.core.buildPacket
 import io.ktor.utils.io.core.writeFully
-import io.nyris.sdk.internal.network.CommonHeaders
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.NyrisHttpHeaders
@@ -43,7 +42,6 @@ internal interface FindService {
 
 internal class FindServiceImpl(
     private val logger: Logger,
-    private val commonHeaders: CommonHeaders,
     private val xOptionsBuilder: XOptionsBuilder,
     private val endpoints: Endpoints,
     private val httpClient: NyrisHttpClient,
@@ -54,7 +52,6 @@ internal class FindServiceImpl(
         params: FindServiceParams,
     ): Result<FindResponse> = withContext(coroutineContext) {
         logger.log("[FindServiceImpl] find")
-        logger.log("[FindServiceImpl] apiHeaders[${commonHeaders.default}]")
         logger.log("[FindServiceImpl] params[$params]")
 
         return@withContext try {
@@ -64,7 +61,6 @@ internal class FindServiceImpl(
                     httpClient.post(
                         endpoints.find(geolocation)
                     ) {
-                        commonHeaders.default.forEach { entry -> header(entry.key, entry.value) }
                         header(NyrisHttpHeaders.AcceptLanguage, language)
                         header(NyrisHttpHeaders.XSession, session)
                         header(NyrisHttpHeaders.XOptions, xOptionsBuilder.limit(limit).threshold(threshold).build())

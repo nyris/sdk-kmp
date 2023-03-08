@@ -112,6 +112,7 @@ internal object NetworkModule {
         ServiceLocator.put(NyrisHttpClient::class) {
             NyrisHttpClient(
                 ServiceLocator.get<Logger>().value,
+                ServiceLocator.get<CommonHeaders>().value,
                 HttpClientWrapper(httpClient)
             )
         }

@@ -24,10 +24,6 @@ data class ResponseException(
     val traceId: String?,
 ) : NyrisException(detail)
 
-data class SerializationException(
-    override val message: String?,
-) : NyrisException(message)
-
 data class ClientException(
     override val message: String?,
 ) : NyrisException(message)

@@ -16,7 +16,10 @@
 package io.nyris.sdk.internal
 
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 
 internal interface RequestBuilders {
     fun imageMatching(): ImageMatchingRequestBuilder
+
+    fun objectDetecting(): ObjectDetectingRequestBuilder
 }

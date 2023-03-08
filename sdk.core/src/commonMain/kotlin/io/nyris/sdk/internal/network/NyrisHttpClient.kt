@@ -20,6 +20,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
@@ -29,6 +30,7 @@ import io.nyris.sdk.util.Logger
 
 internal class NyrisHttpClient(
     private val logger: Logger,
+    private val commonHeaders: CommonHeaders,
     private val httpClient: HttpClientWrapper,
 ) {
     suspend fun post(
@@ -36,7 +38,11 @@ internal class NyrisHttpClient(
         block: HttpRequestBuilder.() -> Unit = {},
     ): HttpResponse = try {
         logger.log("[NyrisHttpClient] post $endpoint")
-        val response = httpClient.post(endpoint, block)
+        logger.log("[NyrisHttpClient] apiHeaders[${commonHeaders.default}]")
+        val response = httpClient.post(endpoint) {
+            this.apply(block)
+            commonHeaders.default.forEach { entry -> header(entry.key, entry.value) }
+        }
         if (response.status == HttpStatusCode.OK) {
             logger.log("[NyrisHttpClient] post status ok")
             response

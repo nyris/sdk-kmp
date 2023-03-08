@@ -35,7 +35,6 @@ internal class ImageMatchingRepositoryImpl(
         image: ByteArray,
         params: ImageMatchingParams,
     ): Result<MatchResponse> {
-        logger.log("[ImageMatchingRepositoryImpl] match with params[$params]")
         return findService.find(
             image,
             params.toParams()
@@ -46,7 +45,21 @@ internal class ImageMatchingRepositoryImpl(
     }
 }
 
-// Visible only for testing
+internal data class ImageMatchingParams(
+    val limit: Int?,
+    val language: String?,
+    val threshold: Float?,
+    val geolocation: GeolocationParam?,
+    val filters: Map<String, List<String>>,
+    val session: String?,
+)
+
+internal data class GeolocationParam(
+    val lat: Float,
+    val lon: Float,
+    val dist: Int,
+)
+
 internal fun ImageMatchingParams.toParams(): FindServiceParams = FindServiceParams(
     language = language,
     limit = limit,

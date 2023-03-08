@@ -15,26 +15,38 @@
  */
 package io.nyris.sdk.internal.di
 
-import io.nyris.sdk.internal.network.CommonHeaders
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.XOptionsBuilder
 import io.nyris.sdk.internal.network.find.FindService
 import io.nyris.sdk.internal.network.find.FindServiceImpl
+import io.nyris.sdk.internal.network.regions.RegionsService
+import io.nyris.sdk.internal.network.regions.RegionsServiceImpl
 import io.nyris.sdk.util.Logger
 import kotlinx.coroutines.Dispatchers
 
 internal object ServiceModule {
     fun init() {
         putFindService()
+        putRegionsService()
     }
 
     private fun putFindService() {
         ServiceLocator.put(FindService::class) {
             FindServiceImpl(
                 logger = ServiceLocator.get<Logger>().value,
-                commonHeaders = ServiceLocator.get<CommonHeaders>().value,
                 xOptionsBuilder = ServiceLocator.get<XOptionsBuilder>().value,
+                httpClient = ServiceLocator.get<NyrisHttpClient>().value,
+                endpoints = ServiceLocator.get<Endpoints>().value,
+                coroutineContext = Dispatchers.IO
+            )
+        }
+    }
+
+    private fun putRegionsService() {
+        ServiceLocator.put(RegionsService::class) {
+            RegionsServiceImpl(
+                logger = ServiceLocator.get<Logger>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,
                 coroutineContext = Dispatchers.IO

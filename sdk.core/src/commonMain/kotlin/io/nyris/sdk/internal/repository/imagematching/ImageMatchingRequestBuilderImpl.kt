@@ -102,21 +102,6 @@ internal class ImageMatchingRequestBuilderImpl(
     }
 }
 
-internal data class ImageMatchingParams(
-    val limit: Int?,
-    val language: String?,
-    val threshold: Float?,
-    val geolocation: GeolocationParam?,
-    val filters: Map<String, List<String>>,
-    val session: String?,
-)
-
-internal data class GeolocationParam(
-    val lat: Float,
-    val lon: Float,
-    val dist: Int,
-)
-
 private const val LIMIT_MIN = 1
 private const val LIMIT_MAX = 100
 private const val THRESHOLD_MIN = 0.01F

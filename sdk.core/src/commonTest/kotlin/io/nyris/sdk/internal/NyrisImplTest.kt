@@ -48,6 +48,14 @@ class NyrisImplTest {
         verify { requestBuilders.imageMatching() }
         confirmVerified(requestBuilders, config)
     }
+
+    @Test
+    fun `objectDetecting should call the objectDetecting`() {
+        classToTest.objectDetecting()
+
+        verify { requestBuilders.objectDetecting() }
+        confirmVerified(requestBuilders, config)
+    }
 }
 
 private const val API_KEY = "API_KEY"

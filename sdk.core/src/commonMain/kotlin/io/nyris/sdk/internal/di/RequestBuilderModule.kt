@@ -16,15 +16,19 @@
 package io.nyris.sdk.internal.di
 
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.internal.RequestBuilders
 import io.nyris.sdk.internal.RequestBuildersImpl
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepository
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRequestBuilderImpl
+import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepository
+import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRequestBuilderImpl
 import io.nyris.sdk.util.Logger
 
 internal object RequestBuilderModule {
     fun init() {
         putImageMatchingRequestBuilder()
+        putObjectDetectingRequestBuilder()
 
         putRequestBuilders()
     }
@@ -38,10 +42,20 @@ internal object RequestBuilderModule {
         }
     }
 
+    private fun putObjectDetectingRequestBuilder() {
+        ServiceLocator.put(ObjectDetectingRequestBuilder::class) {
+            ObjectDetectingRequestBuilderImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                objectDetectingRepository = ServiceLocator.get<ObjectDetectingRepository>().value
+            )
+        }
+    }
+
     private fun putRequestBuilders() {
         ServiceLocator.put(RequestBuilders::class) {
             RequestBuildersImpl(
-                imageMatching = ServiceLocator.get<ImageMatchingRequestBuilder>().value
+                imageMatching = ServiceLocator.get<ImageMatchingRequestBuilder>().value,
+                objectDetecting = ServiceLocator.get<ObjectDetectingRequestBuilder>().value,
             )
         }
     }

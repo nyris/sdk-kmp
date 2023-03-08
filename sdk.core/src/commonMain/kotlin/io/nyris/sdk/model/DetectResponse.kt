@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.internal
+package io.nyris.sdk.model
 
-import io.nyris.sdk.builder.ImageMatchingRequestBuilder
-import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+data class DetectResponse(
+    val regions: List<Region> = emptyList(),
+)
 
-internal class RequestBuildersImpl(
-    private val imageMatching: ImageMatchingRequestBuilder,
-    private val objectDetecting: ObjectDetectingRequestBuilder,
-) : RequestBuilders {
-    override fun imageMatching(): ImageMatchingRequestBuilder = imageMatching
+data class Region(
+    val confidence: Float = 0.0F,
+    val position: Position? = null,
+)
 
-    override fun objectDetecting(): ObjectDetectingRequestBuilder = objectDetecting
-}
+data class Position(
+    val left: Float = 0F,
+    val top: Float = 0F,
+    val right: Float = 0F,
+    val bottom: Float = 0F,
+)

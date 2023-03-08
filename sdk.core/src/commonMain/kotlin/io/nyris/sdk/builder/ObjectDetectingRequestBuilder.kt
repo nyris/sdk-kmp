@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.internal
+package io.nyris.sdk.builder
 
-import io.nyris.sdk.builder.ImageMatchingRequestBuilder
-import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.model.DetectResponse
 
-internal class RequestBuildersImpl(
-    private val imageMatching: ImageMatchingRequestBuilder,
-    private val objectDetecting: ObjectDetectingRequestBuilder,
-) : RequestBuilders {
-    override fun imageMatching(): ImageMatchingRequestBuilder = imageMatching
+interface ObjectDetectingRequestBuilder {
+    fun session(session: String): ObjectDetectingRequestBuilder
 
-    override fun objectDetecting(): ObjectDetectingRequestBuilder = objectDetecting
+    suspend fun detect(image: ByteArray): Result<DetectResponse>
 }

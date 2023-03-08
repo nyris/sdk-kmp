@@ -16,10 +16,13 @@
 package io.nyris.sdk
 
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.internal.NyrisImpl
 
 actual interface Nyris {
     actual fun imageMatching(): ImageMatchingRequestBuilder
+
+    actual fun objectDetecting(): ObjectDetectingRequestBuilder
 
     actual companion object {
         actual fun createInstance(

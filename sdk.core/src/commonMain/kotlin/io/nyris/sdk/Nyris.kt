@@ -18,9 +18,12 @@ package io.nyris.sdk
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.HttpClientEngineFactory
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 
 expect interface Nyris {
     fun imageMatching(): ImageMatchingRequestBuilder
+
+    fun objectDetecting(): ObjectDetectingRequestBuilder
 
     companion object {
         fun createInstance(

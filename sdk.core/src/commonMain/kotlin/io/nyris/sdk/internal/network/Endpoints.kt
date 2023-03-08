@@ -20,6 +20,8 @@ import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
 internal class Endpoints(baseUrl: String) {
     private val find: String = "${baseUrl}find/v1.1"
 
+    val regions: String = "${baseUrl}find/v2/regions"
+
     fun find(geolocation: GeolocationParam? = null): String {
         return geolocation?.let {
             with(it) { "$find?lat=$lat?lon=$lon?dist=$dist" }

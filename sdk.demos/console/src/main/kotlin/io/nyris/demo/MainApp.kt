@@ -30,9 +30,22 @@ object MainApp {
 
         runBlocking {
             nyris.imageMatching()
-                .match(loadImage())
+                .match(loadImage("test_image.jpg"))
                 .onSuccess {
-                    println("woop woop!")
+                    println("Successful image matching!")
+                }
+                .onFailure {
+                    if (it is ResponseException) {
+                        println(it.toString())
+                    } else {
+                        println(it.message)
+                    }
+                }
+
+            nyris.objectDetecting()
+                .detect(loadImage("test_image2.jpg"))
+                .onSuccess {
+                    println("Successful object detecting!")
                 }
                 .onFailure {
                     if (it is ResponseException) {
@@ -44,7 +57,7 @@ object MainApp {
         }
     }
 
-    private fun loadImage(): ByteArray =
-        this::class.java.classLoader?.getResourceAsStream("test_image.jpg")?.readAllBytes()
+    private fun loadImage(path: String): ByteArray =
+        this::class.java.classLoader?.getResourceAsStream(path)?.readAllBytes()
             ?: throw IllegalArgumentException("Image not available")
 }
