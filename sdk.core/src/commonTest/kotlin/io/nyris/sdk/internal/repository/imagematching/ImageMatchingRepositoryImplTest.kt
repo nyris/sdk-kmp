@@ -39,6 +39,10 @@ class ImageMatchingRepositoryImplTest {
     private val logger = mockk<Logger>(relaxed = true)
     private val findService = mockk<FindService>()
 
+    private val classToTest: ImageMatchingRepositoryImpl by lazy {
+        ImageMatchingRepositoryImpl(logger, findService)
+    }
+
     @BeforeTest
     fun setup() {
         mockkStatic("io.nyris.sdk.internal.repository.imagematching.MatchResponseMapperKt")
@@ -47,10 +51,6 @@ class ImageMatchingRepositoryImplTest {
     @AfterTest
     fun tearDown() {
         unmockkAll()
-    }
-
-    private val classToTest: ImageMatchingRepositoryImpl by lazy {
-        ImageMatchingRepositoryImpl(logger, findService)
     }
 
     @Test
@@ -77,7 +77,12 @@ class ImageMatchingRepositoryImplTest {
     fun `toParams should map ImageMatchingParams to FindServiceParams`() {
         with(
             ImageMatchingParams(
-                10, "*", 0.1F, null, emptyMap(), "session"
+                limit = 10,
+                language = "*",
+                threshold = 0.1F,
+                geolocation = null,
+                filters = emptyMap(),
+                session = "session"
             ).toParams()
         ) {
             assertEquals(10, limit)

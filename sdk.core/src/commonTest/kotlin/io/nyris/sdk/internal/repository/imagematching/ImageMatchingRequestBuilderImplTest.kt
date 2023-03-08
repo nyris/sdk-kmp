@@ -19,7 +19,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
-import io.mockk.spyk
 import io.mockk.verify
 import io.nyris.sdk.util.Logger
 import kotlin.test.Test
@@ -35,10 +34,7 @@ class ImageMatchingRequestBuilderImplTest {
     private val imageMatchingRepository = mockk<ImageMatchingRepository>(relaxed = true)
 
     private val classToTest: ImageMatchingRequestBuilderImpl by lazy {
-        spyk(
-            ImageMatchingRequestBuilderImpl(logger, imageMatchingRepository),
-            recordPrivateCalls = true
-        )
+        ImageMatchingRequestBuilderImpl(logger, imageMatchingRepository)
     }
 
     @Test
@@ -78,7 +74,7 @@ class ImageMatchingRequestBuilderImplTest {
     }
 
     @Test
-    fun `builder parameters should well created`() {
+    fun `builder parameters should be well created`() {
         classToTest.limit(1)
             .language("language")
             .threshold(0.5F)

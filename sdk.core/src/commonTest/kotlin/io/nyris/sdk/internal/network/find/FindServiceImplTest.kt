@@ -33,11 +33,9 @@ import io.mockk.unmockkAll
 import io.mockk.verify
 import io.mockk.verifyAll
 import io.mockk.verifyOrder
-import io.nyris.sdk.internal.network.CommonHeaders
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.NyrisHttpHeaders
-import io.nyris.sdk.internal.network.UserAgent
 import io.nyris.sdk.internal.network.XOptionsBuilder
 import io.nyris.sdk.util.Logger
 import kotlin.test.AfterTest
@@ -63,14 +61,9 @@ class FindServiceImplTest {
     private val httpClient = mockk<NyrisHttpClient>(relaxed = true)
     private val coroutineContext = UnconfinedTestDispatcher()
 
-    private val commonHeaders: CommonHeaders by lazy {
-        val userAgent = mockk<UserAgent>().apply { every { this@apply.toString() } returns USER_AGENT }
-        CommonHeaders(API_KEY, userAgent)
-    }
     private val classToTest: FindServiceImpl by lazy {
         FindServiceImpl(
             logger,
-            commonHeaders,
             xOptionsBuilder,
             endpoints,
             httpClient,
@@ -178,8 +171,6 @@ class FindServiceImplTest {
 
 private fun CapturingSlot<HttpRequestBuilder.() -> Unit>.assertHeaders() {
     val headers = HttpRequestBuilder().apply(captured).headers.build()
-    assertEquals(API_KEY, headers[NyrisHttpHeaders.XApiKey])
-    assertEquals(USER_AGENT, headers[NyrisHttpHeaders.UserAgent])
     assertEquals(LANGUAGE, headers[NyrisHttpHeaders.AcceptLanguage])
     assertEquals(SESSION, headers[NyrisHttpHeaders.XSession])
     assertEquals(X_OPTIONS, headers[NyrisHttpHeaders.XOptions])
@@ -192,8 +183,6 @@ private fun Headers.assertMultiFormHeaders() {
 }
 
 private const val ANY_ENDPOINT = "ANY_ENDPOINT"
-private const val API_KEY = "API_KEY"
-private const val USER_AGENT = "USER_AGENT"
 private const val LANGUAGE = "LANGUAGE"
 private const val SESSION = "SESSION"
 private const val X_OPTIONS = "X_OPTIONS"

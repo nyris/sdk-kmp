@@ -18,14 +18,17 @@ package io.nyris.sdk.internal.network
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
+import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.slot
 import io.mockk.unmockkAll
 import io.nyris.sdk.ClientException
 import io.nyris.sdk.ResponseException
@@ -43,10 +46,14 @@ import kotlinx.coroutines.test.runTest
 @OptIn(ExperimentalCoroutinesApi::class)
 class NyrisHttpClientTest {
     private val logger = mockk<Logger>(relaxed = true)
+    private val commonHeaders: CommonHeaders by lazy {
+        val userAgent = mockk<UserAgent>().apply { every { this@apply.toString() } returns USER_AGENT }
+        CommonHeaders(API_KEY, userAgent)
+    }
     private val httpClient = mockk<HttpClientWrapper>(relaxed = true)
 
     private val classToTest: NyrisHttpClient by lazy {
-        NyrisHttpClient(logger, httpClient)
+        NyrisHttpClient(logger, commonHeaders, httpClient)
     }
 
     @BeforeTest
@@ -66,12 +73,14 @@ class NyrisHttpClientTest {
             every { status } returns HttpStatusCode.OK
             coEvery { body<Any>() } returns expectedBody
         }
-        coEvery { httpClient.post(ANY_ENDPOINT, any()) } returns response
+        val builderSlot = slot<HttpRequestBuilder.() -> Unit>()
+        coEvery { httpClient.post(ANY_ENDPOINT, capture(builderSlot)) } returns response
 
         val body = classToTest.post(ANY_ENDPOINT).body<Any>()
 
+        builderSlot.assertHeaders()
         assertEquals(body, expectedBody)
-        coVerify { httpClient.post(ANY_ENDPOINT, any()) }
+        coVerify { httpClient.post(ANY_ENDPOINT, builderSlot.captured) }
         confirmVerified(httpClient)
     }
 
@@ -135,4 +144,12 @@ class NyrisHttpClientTest {
     }
 }
 
+private fun CapturingSlot<HttpRequestBuilder.() -> Unit>.assertHeaders() {
+    val headers = HttpRequestBuilder().apply(captured).headers.build()
+    assertEquals(API_KEY, headers[NyrisHttpHeaders.XApiKey])
+    assertEquals(USER_AGENT, headers[NyrisHttpHeaders.UserAgent])
+}
+
 private const val ANY_ENDPOINT = "ANY_ENDPOINT"
+private const val API_KEY = "API_KEY"
+private const val USER_AGENT = "USER_AGENT"
