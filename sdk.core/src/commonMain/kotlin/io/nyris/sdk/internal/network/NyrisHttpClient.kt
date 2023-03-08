@@ -20,19 +20,11 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.forms.FormBuilder
-import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.utils.io.core.buildPacket
-import io.ktor.utils.io.core.writeFully
 import io.nyris.sdk.internal.network.find.FindResponseError
-import io.nyris.sdk.internal.network.find.FindServiceParams
 import io.nyris.sdk.util.Logger
 
 internal class NyrisHttpClient(
@@ -71,44 +63,14 @@ internal class HttpClientWrapper(private val httpClient: HttpClient) {
     ): HttpResponse = httpClient.post(urlString, block)
 }
 
-internal fun HttpRequestBuilder.appendHeaders(
-    apiHeaders: ApiHeaders,
-    params: FindServiceParams,
-) {
-    apiHeaders.default.forEach { entry -> header(entry.key, entry.value) }
-    header(HttpHeaders.AcceptLanguage, params.language)
-    header("x-session", params.session)
-}
+object NyrisHttpHeaders {
+    val UserAgent: String = HttpHeaders.UserAgent
+    val AcceptLanguage: String = HttpHeaders.AcceptLanguage
+    val ContentLength: String = HttpHeaders.ContentLength
+    val ContentDisposition: String = HttpHeaders.ContentDisposition
+    val ContentType: String = HttpHeaders.ContentType
 
-internal fun buildMultiParamForm(
-    image: ByteArray,
-    params: FindServiceParams,
-): MultiPartFormDataContent = MultiPartFormDataContent(
-    formData {
-        appendImage(image)
-        appendFilters(params.filters)
-    }
-)
-
-fun FormBuilder.appendImage(image: ByteArray) {
-    appendInput(
-        key = "image",
-        headers = Headers.build {
-            this.append(HttpHeaders.ContentDisposition, "filename=image.jpg")
-            this.append(HttpHeaders.ContentType, "image/jpg")
-            this.append(HttpHeaders.ContentLength, image.size.toString())
-        },
-        size = image.size.toLong()
-    ) {
-        buildPacket { writeFully(image) }
-    }
-}
-
-internal fun FormBuilder.appendFilters(map: Map<String, List<String>>) {
-    map.keys.forEachIndexed { i, filterType ->
-        append("filters[$i].filterType", filterType)
-        map[filterType]?.forEachIndexed { j, filterTypeValue ->
-            append("filters[$i].filterValues[$j]", filterTypeValue)
-        }
-    }
+    const val XApiKey: String = "X-Api-Key"
+    const val XSession: String = "X-Session"
+    const val XOptions: String = "X-Options"
 }

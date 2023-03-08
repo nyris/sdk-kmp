@@ -15,9 +15,10 @@
  */
 package io.nyris.sdk.internal.di
 
-import io.nyris.sdk.internal.network.ApiHeaders
+import io.nyris.sdk.internal.network.CommonHeaders
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
+import io.nyris.sdk.internal.network.XOptionsBuilder
 import io.nyris.sdk.internal.network.find.FindService
 import io.nyris.sdk.internal.network.find.FindServiceImpl
 import io.nyris.sdk.util.Logger
@@ -32,7 +33,8 @@ internal object ServiceModule {
         ServiceLocator.put(FindService::class) {
             FindServiceImpl(
                 logger = ServiceLocator.get<Logger>().value,
-                apiHeaders = ServiceLocator.get<ApiHeaders>().value,
+                commonHeaders = ServiceLocator.get<CommonHeaders>().value,
+                xOptionsBuilder = ServiceLocator.get<XOptionsBuilder>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,
                 coroutineContext = Dispatchers.IO

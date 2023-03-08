@@ -15,14 +15,12 @@
  */
 package io.nyris.sdk.internal.network
 
-import io.ktor.http.HttpHeaders
-
-internal class ApiHeaders(
+internal class CommonHeaders(
     apiKey: String,
     userAgent: UserAgent,
 ) {
     val default: Map<String, String> = mapOf(
-        "x-api-key" to apiKey,
-        HttpHeaders.UserAgent to userAgent.toString(),
+        NyrisHttpHeaders.XApiKey to apiKey,
+        NyrisHttpHeaders.UserAgent to userAgent.toString(),
     )
 }

@@ -15,7 +15,6 @@
  */
 package io.nyris.sdk.internal.network
 
-import io.ktor.http.HttpHeaders
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -23,21 +22,21 @@ import io.mockk.verify
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ApiHeadersTest {
+class CommonHeadersTest {
     private val userAgent = mockk<UserAgent>().apply {
         every { this@apply.toString() } returns USER_AGENT
     }
 
-    private val classToTest: ApiHeaders by lazy {
-        ApiHeaders(API_KEY, userAgent)
+    private val classToTest: CommonHeaders by lazy {
+        CommonHeaders(API_KEY, userAgent)
     }
 
     @Test
     fun `default should contains the correct headers`() {
         with(classToTest) {
             assertEquals(EXPECTED_HEADERS_SIZE, default.size)
-            assertEquals(API_KEY, default["x-api-key"])
-            assertEquals(USER_AGENT, default[HttpHeaders.UserAgent])
+            assertEquals(API_KEY, default[NyrisHttpHeaders.XApiKey])
+            assertEquals(USER_AGENT, default[NyrisHttpHeaders.UserAgent])
         }
 
         verify { userAgent.toString() }

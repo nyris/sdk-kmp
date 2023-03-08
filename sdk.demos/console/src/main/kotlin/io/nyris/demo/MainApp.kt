@@ -45,6 +45,6 @@ object MainApp {
     }
 
     private fun loadImage(): ByteArray =
-        this::class.java.classLoader.getResourceAsStream("test_image.jpg")?.readAllBytes()
+        this::class.java.classLoader?.getResourceAsStream("test_image.jpg")?.readAllBytes()
             ?: throw IllegalArgumentException("Image not available")
 }

@@ -18,29 +18,19 @@ package io.nyris.sdk.internal.network
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.forms.FormBuilder
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.Headers
-import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.slot
 import io.mockk.unmockkAll
-import io.mockk.verify
-import io.mockk.verifyAll
-import io.mockk.verifyOrder
 import io.nyris.sdk.ClientException
 import io.nyris.sdk.ResponseException
 import io.nyris.sdk.ServerException
 import io.nyris.sdk.internal.network.find.FindResponseError
-import io.nyris.sdk.internal.network.find.FindServiceParams
 import io.nyris.sdk.util.Logger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -143,82 +133,6 @@ class NyrisHttpClientTest {
         coVerify { httpClient.post(ANY_ENDPOINT, any()) }
         confirmVerified(httpClient)
     }
-
-    @Test
-    fun `appendHeaders should append the correct headers`() {
-        val userAgent = mockk<UserAgent>().apply {
-            every { this@apply.toString() } returns USER_AGENT
-        }
-        val apiHeaders = ApiHeaders(API_KEY, userAgent)
-        val params = mockk<FindServiceParams>().apply {
-            every { this@apply.language } returns LANGUAGE
-            every { this@apply.session } returns SESSION
-        }
-        val httpRequestBuilder = mockk<HttpRequestBuilder>(relaxed = true)
-
-        httpRequestBuilder.appendHeaders(apiHeaders, params)
-
-        verifyAll {
-            httpRequestBuilder.headers.append("x-api-key", API_KEY)
-            httpRequestBuilder.headers.append(HttpHeaders.UserAgent, USER_AGENT)
-            httpRequestBuilder.headers.append(HttpHeaders.AcceptLanguage, LANGUAGE)
-            httpRequestBuilder.headers.append("x-session", SESSION)
-        }
-        confirmVerified(httpRequestBuilder.headers)
-    }
-
-    @Test
-    fun `appendImage should append image to for part`() {
-        val image = ByteArray(1)
-        val headersSlot = slot<Headers>()
-        val formBuilder = mockk<FormBuilder>(relaxed = true)
-        justRun {
-            formBuilder.appendInput(
-                key = "image",
-                headers = capture(headersSlot),
-                size = image.size.toLong(),
-                any()
-            )
-        }
-
-        formBuilder.appendImage(image)
-
-        assertEquals(HEADERS, headersSlot.captured.toString())
-        verify {
-            formBuilder.appendInput(
-                key = "image",
-                headers = headersSlot.captured,
-                size = image.size.toLong(),
-                any()
-            )
-        }
-        confirmVerified(formBuilder)
-    }
-
-    @Test
-    fun `appendFilters should append filters to form part headers`() {
-        val filters = mapOf("filterType0" to listOf("value0", "value1"))
-        val formBuilder = mockk<FormBuilder>(relaxed = true)
-
-        formBuilder.appendFilters(filters)
-
-        verifyOrder {
-            formBuilder.append("filters[0].filterType", "filterType0")
-            formBuilder.append("filters[0].filterValues[0]", "value0")
-            formBuilder.append("filters[0].filterValues[1]", "value1")
-        }
-
-        confirmVerified(formBuilder)
-    }
 }
 
 private const val ANY_ENDPOINT = "ANY_ENDPOINT"
-private const val API_KEY = "API_KEY"
-private const val USER_AGENT = "USER_AGENT"
-private const val LANGUAGE = "LANGUAGE"
-private const val SESSION = "SESSION"
-private const val HEADERS = "Headers [" +
-    "Content-Disposition=[filename=image.jpg], " +
-    "Content-Type=[image/jpg], " +
-    "Content-Length=[1]" +
-    "]"

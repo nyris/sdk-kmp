@@ -24,11 +24,12 @@ import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.serialization.kotlinx.json.json
 import io.nyris.sdk.NyrisPlatform
 import io.nyris.sdk.internal.ConfigInternal
-import io.nyris.sdk.internal.network.ApiHeaders
+import io.nyris.sdk.internal.network.CommonHeaders
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.HttpClientWrapper
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.UserAgent
+import io.nyris.sdk.internal.network.XOptionsBuilder
 import io.nyris.sdk.util.Logger
 import kotlinx.serialization.json.Json
 import io.ktor.client.plugins.logging.Logger as KLogger
@@ -39,7 +40,8 @@ internal object NetworkModule {
         baseUrl: String,
     ) {
         putUserAgent(platform)
-        putApiHeaders()
+        putCommonHeaders()
+        putXOptionsBuilder()
         putEndpoints(baseUrl)
         puJson()
         putHttpClient()
@@ -55,12 +57,18 @@ internal object NetworkModule {
         }
     }
 
-    private fun putApiHeaders() {
-        ServiceLocator.put(ApiHeaders::class) {
-            ApiHeaders(
+    private fun putCommonHeaders() {
+        ServiceLocator.put(CommonHeaders::class) {
+            CommonHeaders(
                 ServiceLocator.get<ConfigInternal>().value.apiKey,
                 ServiceLocator.get<UserAgent>().value
             )
+        }
+    }
+
+    private fun putXOptionsBuilder() {
+        ServiceLocator.put(XOptionsBuilder::class) {
+            XOptionsBuilder()
         }
     }
 
