@@ -152,16 +152,19 @@ class NyrisHttpClientTest {
         val apiHeaders = ApiHeaders(API_KEY, userAgent)
         val params = mockk<FindServiceParams>().apply {
             every { this@apply.language } returns LANGUAGE
+            every { this@apply.session } returns SESSION
         }
         val httpRequestBuilder = mockk<HttpRequestBuilder>(relaxed = true)
 
         httpRequestBuilder.appendHeaders(apiHeaders, params)
 
         verifyAll {
-            httpRequestBuilder.headers.append("X-Api-Key", API_KEY)
+            httpRequestBuilder.headers.append("x-api-key", API_KEY)
             httpRequestBuilder.headers.append(HttpHeaders.UserAgent, USER_AGENT)
             httpRequestBuilder.headers.append(HttpHeaders.AcceptLanguage, LANGUAGE)
+            httpRequestBuilder.headers.append("x-session", SESSION)
         }
+        confirmVerified(httpRequestBuilder.headers)
     }
 
     @Test
@@ -213,6 +216,7 @@ private const val ANY_ENDPOINT = "ANY_ENDPOINT"
 private const val API_KEY = "API_KEY"
 private const val USER_AGENT = "USER_AGENT"
 private const val LANGUAGE = "LANGUAGE"
+private const val SESSION = "SESSION"
 private const val HEADERS = "Headers [" +
     "Content-Disposition=[filename=image.jpg], " +
     "Content-Type=[image/jpg], " +

@@ -75,4 +75,5 @@ internal data class FindServiceParams(
     val threshold: Float?,
     val geolocation: GeolocationParam?,
     val filters: Map<String, List<String>>,
+    val session: String?,
 )

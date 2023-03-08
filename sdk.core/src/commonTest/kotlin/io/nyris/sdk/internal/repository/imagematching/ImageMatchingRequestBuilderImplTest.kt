@@ -55,6 +55,7 @@ class ImageMatchingRequestBuilderImplTest {
             .threshold(1.1F)
             .geolocation(1F, 1F, 1000)
             .filters(mapOf("filter1" to listOf("value1", "value2")))
+            .session("session")
 
         classToTest.reset()
 
@@ -68,6 +69,7 @@ class ImageMatchingRequestBuilderImplTest {
             .threshold(1.1F)
             .geolocation(1F, 1F, 1000)
             .filters(mapOf("filter1" to listOf("value1", "value2")))
+            .session("session")
 
         assertEquals(EXPECTED_BUILDER_PARAMS, classToTest.createParams().toString())
     }
@@ -85,6 +87,7 @@ class ImageMatchingRequestBuilderImplTest {
             .threshold(1.1F)
             .geolocation(1F, 1F, 1000)
             .filters(mapOf("filter1" to listOf("value1", "value2")))
+            .session("session")
             .match(image)
 
         assertEquals(EXPECTED_PARAMS, paramsSlot.captured)
@@ -98,7 +101,8 @@ private const val EXPECTED_DEFAULT_PARAMS = "ImageMatchingParams(" +
     "language=null, " +
     "threshold=null, " +
     "geolocation=null, " +
-    "filters={}" +
+    "filters={}, " +
+    "session=null" +
     ")"
 
 private const val EXPECTED_BUILDER_PARAMS = "ImageMatchingParams(" +
@@ -106,7 +110,8 @@ private const val EXPECTED_BUILDER_PARAMS = "ImageMatchingParams(" +
     "language=language, " +
     "threshold=1.1, " +
     "geolocation=GeolocationParam(lat=1.0, lon=1.0, dist=1000), " +
-    "filters={filter1=[value1, value2]}" +
+    "filters={filter1=[value1, value2]}, " +
+    "session=session" +
     ")"
 
 private val EXPECTED_PARAMS = ImageMatchingParams(
@@ -114,5 +119,6 @@ private val EXPECTED_PARAMS = ImageMatchingParams(
     language = "language",
     threshold = 1.1F,
     geolocation = GeolocationParam(1F, 1F, 1000),
-    filters = mapOf("filter1" to listOf("value1", "value2"))
+    filters = mapOf("filter1" to listOf("value1", "value2")),
+    session = "session"
 )

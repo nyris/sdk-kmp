@@ -19,8 +19,11 @@ import io.nyris.sdk.model.MatchResponse
 
 interface ImageMatchingRequestBuilder {
     fun limit(limit: Int): ImageMatchingRequestBuilder
+
     fun language(language: String): ImageMatchingRequestBuilder
+
     fun threshold(threshold: Float): ImageMatchingRequestBuilder
+
     fun geolocation(
         lat: Float,
         lon: Float,
@@ -29,5 +32,8 @@ interface ImageMatchingRequestBuilder {
 
     fun filters(filters: Map<String, List<String>>): ImageMatchingRequestBuilder
 
+    fun session(session: String): ImageMatchingRequestBuilder
+
+    // Put the params before this call
     suspend fun match(image: ByteArray): Result<MatchResponse>
 }

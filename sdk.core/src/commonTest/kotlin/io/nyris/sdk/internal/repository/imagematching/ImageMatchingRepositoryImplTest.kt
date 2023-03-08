@@ -57,7 +57,7 @@ class ImageMatchingRepositoryImplTest {
     fun `match should call find service and map the response`(): Unit = runTest {
         val image = ByteArray(1)
         val params = ImageMatchingParams(
-            null, null, null, null, emptyMap()
+            null, null, null, null, emptyMap(), null
         )
         val findResponse = mockk<FindResponse>()
         val result = Result.success(findResponse)
@@ -77,7 +77,7 @@ class ImageMatchingRepositoryImplTest {
     fun `toParams should map ImageMatchingParams to FindServiceParams`() {
         with(
             ImageMatchingParams(
-                10, "*", 0.1F, null, emptyMap()
+                10, "*", 0.1F, null, emptyMap(), "session"
             ).toParams()
         ) {
             assertEquals(10, limit)
@@ -85,6 +85,7 @@ class ImageMatchingRepositoryImplTest {
             assertEquals(0.1F, threshold)
             assertEquals(null, geolocation)
             assertEquals(emptyMap(), filters)
+            assertEquals("session", session)
         }
     }
 }

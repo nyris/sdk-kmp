@@ -36,7 +36,7 @@ class ApiHeadersTest {
     fun `default should contains the correct headers`() {
         with(classToTest) {
             assertEquals(EXPECTED_HEADERS_SIZE, default.size)
-            assertEquals(API_KEY, default["X-Api-Key"])
+            assertEquals(API_KEY, default["x-api-key"])
             assertEquals(USER_AGENT, default[HttpHeaders.UserAgent])
         }
 

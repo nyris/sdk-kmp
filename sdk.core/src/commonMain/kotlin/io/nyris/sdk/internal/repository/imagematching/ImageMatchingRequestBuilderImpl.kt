@@ -28,6 +28,8 @@ internal class ImageMatchingRequestBuilderImpl(
     private var threshold: Float? = null
     private var geolocation: GeolocationParam? = null
     private var filters: Map<String, List<String>> = emptyMap()
+    private var session: String? = null
+
     override fun limit(limit: Int) = apply {
         logger.log("[ImageMatchingRequestBuilderImpl] limit=$limit")
         this.limit = limit
@@ -61,6 +63,11 @@ internal class ImageMatchingRequestBuilderImpl(
         this.filters = filters
     }
 
+    override fun session(session: String): ImageMatchingRequestBuilder = apply {
+        logger.log("[ImageMatchingRequestBuilderImpl] session=$session")
+        this.session = session
+    }
+
     override suspend fun match(image: ByteArray): Result<MatchResponse> {
         logger.log("[ImageMatchingRequestBuilderImpl] match")
 
@@ -75,7 +82,8 @@ internal class ImageMatchingRequestBuilderImpl(
         language = language,
         threshold = threshold,
         geolocation = geolocation,
-        filters = filters
+        filters = filters,
+        session = session
     ).also {
         logger.log("[ImageMatchingRequestBuilderImpl] createParams[params=$it]")
         reset()
@@ -88,6 +96,7 @@ internal class ImageMatchingRequestBuilderImpl(
         threshold = null
         geolocation = null
         filters = emptyMap()
+        session = null
     }
 }
 
@@ -97,6 +106,7 @@ internal data class ImageMatchingParams(
     val threshold: Float?,
     val geolocation: GeolocationParam?,
     val filters: Map<String, List<String>>,
+    val session: String?,
 )
 
 internal data class GeolocationParam(

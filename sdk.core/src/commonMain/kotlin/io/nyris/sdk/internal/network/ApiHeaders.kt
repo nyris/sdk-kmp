@@ -22,7 +22,7 @@ internal class ApiHeaders(
     userAgent: UserAgent,
 ) {
     val default: Map<String, String> = mapOf(
-        "X-Api-Key" to apiKey,
+        "x-api-key" to apiKey,
         HttpHeaders.UserAgent to userAgent.toString(),
     )
 }

@@ -52,5 +52,6 @@ internal fun ImageMatchingParams.toParams(): FindServiceParams = FindServicePara
     limit = limit,
     threshold = threshold,
     geolocation = geolocation,
-    filters = filters
+    filters = filters,
+    session = session
 )

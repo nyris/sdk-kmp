@@ -77,6 +77,7 @@ internal fun HttpRequestBuilder.appendHeaders(
 ) {
     apiHeaders.default.forEach { entry -> header(entry.key, entry.value) }
     header(HttpHeaders.AcceptLanguage, params.language)
+    header("x-session", params.session)
 }
 
 internal fun buildMultiParamForm(
