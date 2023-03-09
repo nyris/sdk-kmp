@@ -18,6 +18,7 @@ package io.nyris.demo
 import io.nyris.sdk.Nyris
 import io.nyris.sdk.NyrisConfig
 import io.nyris.sdk.ResponseException
+import io.nyris.sdk.model.Feedback
 import kotlinx.coroutines.runBlocking
 
 object MainApp {
@@ -46,6 +47,28 @@ object MainApp {
                 .detect(loadImage("test_image2.jpg"))
                 .onSuccess {
                     println("Successful object detecting!")
+                }
+                .onFailure {
+                    if (it is ResponseException) {
+                        println(it.toString())
+                    } else {
+                        println(it.message)
+                    }
+                }
+
+            nyris.feedback()
+                .send(
+                    Feedback.Region(
+                        requestId = "9a2e5c0d56ff5f52ae270de10ba97f45",
+                        sessionId = "9a2e5c0d56ff5f52ae270de10ba97f45",
+                        left = 0.1F,
+                        top = 0.1F,
+                        height = 0.1F,
+                        width = 0.1F,
+                    )
+                )
+                .onSuccess {
+                    println("Successful feedback sending!")
                 }
                 .onFailure {
                     if (it is ResponseException) {
