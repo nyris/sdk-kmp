@@ -17,8 +17,8 @@ package io.nyris.sdk.internal.repository.objectdetecting
 
 import io.nyris.sdk.internal.network.regions.RegionsService
 import io.nyris.sdk.internal.network.regions.RegionsServiceParams
+import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.DetectResponse
-import io.nyris.sdk.util.Logger
 
 internal interface ObjectDetectingRepository {
     suspend fun detect(
@@ -35,7 +35,7 @@ internal class ObjectDetectingRepositoryImpl(
         image: ByteArray,
         params: ObjectDetectingParams,
     ): Result<DetectResponse> {
-        logger.log("[ObjectDetectingRepositoryImpl] detect ")
+        logger.log("[ObjectDetectingRepositoryImpl] detect")
         return regionsService.detect(image, params.toParams()).map { regionsResponse ->
             logger.log("[ObjectDetectingRepositoryImpl] mapping regions response to detect response")
             regionsResponse.toDetectResponse()

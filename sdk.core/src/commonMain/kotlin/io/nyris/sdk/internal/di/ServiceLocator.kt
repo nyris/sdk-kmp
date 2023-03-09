@@ -19,8 +19,8 @@ package io.nyris.sdk.internal.di
 
 import io.nyris.sdk.NyrisConfig
 import io.nyris.sdk.internal.ConfigInternal
-import io.nyris.sdk.util.DEFAULT
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.DEFAULT
+import io.nyris.sdk.internal.util.Logger
 import kotlin.reflect.KClass
 
 internal object ServiceLocator {

@@ -30,7 +30,7 @@ import io.nyris.sdk.internal.network.HttpClientWrapper
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.UserAgent
 import io.nyris.sdk.internal.network.XOptionsBuilder
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 import kotlinx.serialization.json.Json
 import io.ktor.client.plugins.logging.Logger as KLogger
 

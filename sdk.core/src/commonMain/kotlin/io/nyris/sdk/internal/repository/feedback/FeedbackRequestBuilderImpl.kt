@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.util
+package io.nyris.sdk.internal.repository.feedback
 
-interface Logger {
-    fun log(message: String?)
+import io.nyris.sdk.builder.FeedbackRequestBuilder
+import io.nyris.sdk.internal.util.Logger
+import io.nyris.sdk.model.Feedback
 
-    companion object {
-        val EMPTY: Logger = object : Logger {
-            override fun log(message: String?) {
-                /* NO-OP */
-            }
-        }
+internal class FeedbackRequestBuilderImpl(
+    private val logger: Logger,
+    private val feedbackRepository: FeedbackRepository,
+) : FeedbackRequestBuilder {
+    override suspend fun send(feedback: Feedback): Result<Unit> {
+        logger.log("[FeedbackRequestBuilderImpl] send")
+        return feedbackRepository.send(feedback)
     }
 }
-
-/**
- * Will print logs based on platform
- */
-expect val Logger.Companion.DEFAULT: Logger

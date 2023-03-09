@@ -17,8 +17,8 @@ package io.nyris.sdk.internal.repository.imagematching
 
 import io.nyris.sdk.internal.network.find.FindService
 import io.nyris.sdk.internal.network.find.FindServiceParams
+import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.MatchResponse
-import io.nyris.sdk.util.Logger
 
 internal interface ImageMatchingRepository {
     suspend fun match(
@@ -35,6 +35,7 @@ internal class ImageMatchingRepositoryImpl(
         image: ByteArray,
         params: ImageMatchingParams,
     ): Result<MatchResponse> {
+        logger.log("[ImageMatchingRepositoryImpl] match")
         return findService.find(
             image,
             params.toParams()

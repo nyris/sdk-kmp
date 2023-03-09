@@ -15,14 +15,18 @@
  */
 package io.nyris.sdk.internal
 
+import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 
 internal class RequestBuildersImpl(
     private val imageMatching: ImageMatchingRequestBuilder,
     private val objectDetecting: ObjectDetectingRequestBuilder,
+    private val feedback: FeedbackRequestBuilder,
 ) : RequestBuilders {
     override fun imageMatching(): ImageMatchingRequestBuilder = imageMatching
 
     override fun objectDetecting(): ObjectDetectingRequestBuilder = objectDetecting
+
+    override fun feedback(): FeedbackRequestBuilder = feedback
 }

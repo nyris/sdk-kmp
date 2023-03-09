@@ -16,8 +16,8 @@
 package io.nyris.sdk.internal.repository.imagematching
 
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.MatchResponse
-import io.nyris.sdk.util.Logger
 
 internal class ImageMatchingRequestBuilderImpl(
     private val logger: Logger,

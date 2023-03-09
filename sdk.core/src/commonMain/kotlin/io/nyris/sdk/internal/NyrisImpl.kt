@@ -17,6 +17,7 @@ package io.nyris.sdk.internal
 
 import io.nyris.sdk.Nyris
 import io.nyris.sdk.NyrisConfig
+import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.internal.di.ServiceLocator
@@ -35,6 +36,8 @@ internal class NyrisImpl private constructor(
     override fun imageMatching(): ImageMatchingRequestBuilder = requestBuilders.imageMatching()
 
     override fun objectDetecting(): ObjectDetectingRequestBuilder = requestBuilders.objectDetecting()
+
+    override fun feedback(): FeedbackRequestBuilder = requestBuilders.feedback()
 
     companion object {
         fun createInstance(

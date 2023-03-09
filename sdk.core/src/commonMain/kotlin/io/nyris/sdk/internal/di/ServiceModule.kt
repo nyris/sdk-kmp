@@ -18,17 +18,20 @@ package io.nyris.sdk.internal.di
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.XOptionsBuilder
+import io.nyris.sdk.internal.network.feedback.FeedbackService
+import io.nyris.sdk.internal.network.feedback.FeedbackServiceImpl
 import io.nyris.sdk.internal.network.find.FindService
 import io.nyris.sdk.internal.network.find.FindServiceImpl
 import io.nyris.sdk.internal.network.regions.RegionsService
 import io.nyris.sdk.internal.network.regions.RegionsServiceImpl
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 import kotlinx.coroutines.Dispatchers
 
 internal object ServiceModule {
     fun init() {
         putFindService()
         putRegionsService()
+        putFeedback()
     }
 
     private fun putFindService() {
@@ -46,6 +49,17 @@ internal object ServiceModule {
     private fun putRegionsService() {
         ServiceLocator.put(RegionsService::class) {
             RegionsServiceImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                httpClient = ServiceLocator.get<NyrisHttpClient>().value,
+                endpoints = ServiceLocator.get<Endpoints>().value,
+                coroutineContext = Dispatchers.IO
+            )
+        }
+    }
+
+    private fun putFeedback() {
+        ServiceLocator.put(FeedbackService::class) {
+            FeedbackServiceImpl(
                 logger = ServiceLocator.get<Logger>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,

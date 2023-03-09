@@ -15,20 +15,24 @@
  */
 package io.nyris.sdk.internal.di
 
+import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.internal.RequestBuilders
 import io.nyris.sdk.internal.RequestBuildersImpl
+import io.nyris.sdk.internal.repository.feedback.FeedbackRepository
+import io.nyris.sdk.internal.repository.feedback.FeedbackRequestBuilderImpl
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepository
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRequestBuilderImpl
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepository
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRequestBuilderImpl
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 
 internal object RequestBuilderModule {
     fun init() {
         putImageMatchingRequestBuilder()
         putObjectDetectingRequestBuilder()
+        putFeedbackRequestBuilder()
 
         putRequestBuilders()
     }
@@ -51,11 +55,21 @@ internal object RequestBuilderModule {
         }
     }
 
+    private fun putFeedbackRequestBuilder() {
+        ServiceLocator.put(FeedbackRequestBuilder::class) {
+            FeedbackRequestBuilderImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                feedbackRepository = ServiceLocator.get<FeedbackRepository>().value
+            )
+        }
+    }
+
     private fun putRequestBuilders() {
         ServiceLocator.put(RequestBuilders::class) {
             RequestBuildersImpl(
                 imageMatching = ServiceLocator.get<ImageMatchingRequestBuilder>().value,
                 objectDetecting = ServiceLocator.get<ObjectDetectingRequestBuilder>().value,
+                feedback = ServiceLocator.get<FeedbackRequestBuilder>().value
             )
         }
     }

@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.util
+package io.nyris.sdk.internal.util
 
-import android.util.Log
+internal interface Logger {
+    fun log(message: String?)
+
+    companion object {
+        val EMPTY: Logger = object : Logger {
+            override fun log(message: String?) {
+                /* NO-OP */
+            }
+        }
+    }
+}
 
 /**
  * Will print logs based on platform
  */
-actual val Logger.Companion.DEFAULT: Logger
-    get() = object : Logger {
-        override fun log(message: String?) {
-            if (message == null) return
-            Log.d("sdk.core", message)
-        }
-    }
+internal expect val Logger.Companion.DEFAULT: Logger

@@ -41,6 +41,7 @@ kotlin {
 
                 implementation(libs.ktx.json)
 
+                implementation(libs.ktx.date)
             }
         }
         val commonTest by getting {

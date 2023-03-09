@@ -21,6 +21,7 @@ import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.header
 import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.utils.io.core.buildPacket
 import io.ktor.utils.io.core.writeFully
@@ -29,7 +30,7 @@ import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.NyrisHttpHeaders
 import io.nyris.sdk.internal.network.XOptionsBuilder
 import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.withContext
 
@@ -103,7 +104,7 @@ internal fun FormBuilder.appendImage(image: ByteArray) {
         key = "image",
         headers = Headers.build {
             this.append(NyrisHttpHeaders.ContentDisposition, "filename=image.jpg")
-            this.append(NyrisHttpHeaders.ContentType, "image/jpg")
+            this.append(NyrisHttpHeaders.ContentType, ContentType.Image.JPEG.toString())
             this.append(NyrisHttpHeaders.ContentLength, image.size.toString())
         },
         size = image.size.toLong()

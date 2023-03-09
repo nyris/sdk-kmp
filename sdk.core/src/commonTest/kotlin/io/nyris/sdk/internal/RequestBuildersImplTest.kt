@@ -16,6 +16,7 @@
 package io.nyris.sdk.internal
 
 import io.mockk.mockk
+import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import kotlin.test.Test
@@ -24,8 +25,15 @@ import kotlin.test.assertEquals
 class RequestBuildersImplTest {
     private val imageMatching = mockk<ImageMatchingRequestBuilder>(relaxed = true)
     private val objectDetecting = mockk<ObjectDetectingRequestBuilder>(relaxed = true)
+    private val feedback = mockk<FeedbackRequestBuilder>(relaxed = true)
 
-    private val classToTest: RequestBuildersImpl by lazy { RequestBuildersImpl(imageMatching, objectDetecting) }
+    private val classToTest: RequestBuildersImpl by lazy {
+        RequestBuildersImpl(
+            imageMatching,
+            objectDetecting,
+            feedback
+        )
+    }
 
     @Test
     fun `imageMatching should provide the mock imageMatching`() {

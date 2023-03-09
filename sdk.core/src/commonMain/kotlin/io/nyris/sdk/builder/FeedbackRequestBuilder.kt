@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.util
+package io.nyris.sdk.builder
 
-/**
- * Will print logs based on platform
- */
-actual val Logger.Companion.DEFAULT: Logger
-    get() = object : Logger {
-        override fun log(message: String?) {
-            if (message == null) return
-            println(message)
-        }
-    }
+import io.nyris.sdk.model.Feedback
+
+interface FeedbackRequestBuilder {
+    suspend fun send(feedback: Feedback): Result<Unit>
+}

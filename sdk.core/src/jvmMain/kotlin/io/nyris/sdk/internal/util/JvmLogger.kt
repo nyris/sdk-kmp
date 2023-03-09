@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.internal
+package io.nyris.sdk.internal.util
 
-import io.nyris.sdk.builder.FeedbackRequestBuilder
-import io.nyris.sdk.builder.ImageMatchingRequestBuilder
-import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
-
-internal interface RequestBuilders {
-    fun imageMatching(): ImageMatchingRequestBuilder
-
-    fun objectDetecting(): ObjectDetectingRequestBuilder
-
-    fun feedback(): FeedbackRequestBuilder
-}
+/**
+ * Will print logs based on platform
+ */
+internal actual val Logger.Companion.DEFAULT: Logger
+    get() = object : Logger {
+        override fun log(message: String?) {
+            if (message == null) return
+            println(message)
+        }
+    }

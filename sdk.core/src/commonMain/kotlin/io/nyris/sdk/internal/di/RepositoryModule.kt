@@ -15,18 +15,22 @@
  */
 package io.nyris.sdk.internal.di
 
+import io.nyris.sdk.internal.network.feedback.FeedbackService
 import io.nyris.sdk.internal.network.find.FindService
 import io.nyris.sdk.internal.network.regions.RegionsService
+import io.nyris.sdk.internal.repository.feedback.FeedbackRepository
+import io.nyris.sdk.internal.repository.feedback.FeedbackRepositoryImpl
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepository
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepositoryImpl
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepository
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepositoryImpl
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 
 internal object RepositoryModule {
     fun init() {
         putImageMatchingRepository()
         putObjectDetectingRepository()
+        putFeedbackRepository()
     }
 
     private fun putImageMatchingRepository() {
@@ -43,6 +47,15 @@ internal object RepositoryModule {
             ObjectDetectingRepositoryImpl(
                 logger = ServiceLocator.get<Logger>().value,
                 regionsService = ServiceLocator.get<RegionsService>().value,
+            )
+        }
+    }
+
+    private fun putFeedbackRepository() {
+        ServiceLocator.put(FeedbackRepository::class) {
+            FeedbackRepositoryImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                feedbackService = ServiceLocator.get<FeedbackService>().value,
             )
         }
     }

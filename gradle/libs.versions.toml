@@ -15,6 +15,7 @@ assertj = "3.24.1"
 ktxCoroutines = "1.6.4"
 ktxJson = "1.4.1"
 ktor = "2.2.2"
+ktxDate = "0.4.0"
 androidxAppcomapt = "1.6.0"
 androidxMaterial = "1.7.0"
 androidxConstraintlayout = "2.1.4"
@@ -39,6 +40,7 @@ detekt_cli = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting"
 ktx_coroutines_core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "ktxCoroutines" }
 ktx_coroutines_android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "ktxCoroutines" }
 ktx_json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "ktxJson" }
+ktx_date = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "ktxDate" }
 
 ktor_core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor_contentnegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }

@@ -16,8 +16,8 @@
 package io.nyris.sdk.internal.repository.objectdetecting
 
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.DetectResponse
-import io.nyris.sdk.util.Logger
 
 internal class ObjectDetectingRequestBuilderImpl(
     private val logger: Logger,

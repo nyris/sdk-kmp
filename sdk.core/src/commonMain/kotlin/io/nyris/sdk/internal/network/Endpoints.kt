@@ -22,9 +22,9 @@ internal class Endpoints(baseUrl: String) {
 
     val regions: String = "${baseUrl}find/v2/regions"
 
-    fun find(geolocation: GeolocationParam? = null): String {
-        return geolocation?.let {
-            with(it) { "$find?lat=$lat?lon=$lon?dist=$dist" }
-        } ?: find
-    }
+    val feedback: String = "${baseUrl}feedback/v1"
+
+    fun find(geolocation: GeolocationParam? = null): String = geolocation?.let {
+        with(it) { "$find?lat=$lat?lon=$lon?dist=$dist" }
+    } ?: find
 }

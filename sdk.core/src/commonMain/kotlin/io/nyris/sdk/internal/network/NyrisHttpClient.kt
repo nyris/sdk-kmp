@@ -24,9 +24,8 @@ import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
 import io.nyris.sdk.internal.network.find.FindResponseError
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 
 internal class NyrisHttpClient(
     private val logger: Logger,
@@ -43,7 +42,7 @@ internal class NyrisHttpClient(
             this.apply(block)
             commonHeaders.default.forEach { entry -> header(entry.key, entry.value) }
         }
-        if (response.status == HttpStatusCode.OK) {
+        if (response.status.value in OK_STATUS) {
             logger.log("[NyrisHttpClient] post status ok")
             response
         } else {
@@ -80,3 +79,7 @@ object NyrisHttpHeaders {
     const val XSession: String = "X-Session"
     const val XOptions: String = "X-Options"
 }
+
+private const val OK_MIN = 200
+private const val OK_MAX = 200
+private val OK_STATUS = OK_MIN..OK_MAX
