@@ -19,6 +19,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.forms.FormBuilder
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
@@ -37,7 +38,7 @@ import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.network.NyrisHttpHeaders
 import io.nyris.sdk.internal.network.XOptionsBuilder
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -178,7 +179,7 @@ private fun CapturingSlot<HttpRequestBuilder.() -> Unit>.assertHeaders() {
 
 private fun Headers.assertMultiFormHeaders() {
     assertEquals("filename=image.jpg", this[NyrisHttpHeaders.ContentDisposition])
-    assertEquals("image/jpg", this[NyrisHttpHeaders.ContentType])
+    assertEquals(ContentType.Image.JPEG.toString(), this[NyrisHttpHeaders.ContentType])
     assertEquals("1", this[NyrisHttpHeaders.ContentLength])
 }
 

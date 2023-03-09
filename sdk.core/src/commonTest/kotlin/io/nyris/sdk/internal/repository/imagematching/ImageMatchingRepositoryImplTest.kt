@@ -25,8 +25,8 @@ import io.mockk.unmockkAll
 import io.mockk.verify
 import io.nyris.sdk.internal.network.find.FindResponse
 import io.nyris.sdk.internal.network.find.FindService
+import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.MatchResponse
-import io.nyris.sdk.util.Logger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

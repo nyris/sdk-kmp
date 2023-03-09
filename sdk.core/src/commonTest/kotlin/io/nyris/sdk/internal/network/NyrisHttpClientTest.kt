@@ -34,7 +34,7 @@ import io.nyris.sdk.ClientException
 import io.nyris.sdk.ResponseException
 import io.nyris.sdk.ServerException
 import io.nyris.sdk.internal.network.find.FindResponseError
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

@@ -20,7 +20,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
-import io.nyris.sdk.util.Logger
+import io.nyris.sdk.internal.util.Logger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
