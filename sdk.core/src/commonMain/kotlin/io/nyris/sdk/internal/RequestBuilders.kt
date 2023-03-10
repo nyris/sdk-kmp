@@ -18,6 +18,7 @@ package io.nyris.sdk.internal
 import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 
 internal interface RequestBuilders {
     fun imageMatching(): ImageMatchingRequestBuilder
@@ -25,4 +26,6 @@ internal interface RequestBuilders {
     fun objectDetecting(): ObjectDetectingRequestBuilder
 
     fun feedback(): FeedbackRequestBuilder
+
+    fun skuMatching(): SkuMatchingRequestBuilder
 }

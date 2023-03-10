@@ -21,4 +21,5 @@ internal class ConfigInternal(
     val apiKey: String,
     val isDebug: Boolean,
     val httpEngine: HttpEngine?,
+    val timeout: Long,
 )

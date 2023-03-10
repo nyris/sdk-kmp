@@ -17,6 +17,7 @@ package io.nyris.sdk.internal.di
 
 import io.nyris.sdk.internal.network.feedback.FeedbackService
 import io.nyris.sdk.internal.network.find.FindService
+import io.nyris.sdk.internal.network.recommend.RecommendService
 import io.nyris.sdk.internal.network.regions.RegionsService
 import io.nyris.sdk.internal.repository.feedback.FeedbackRepository
 import io.nyris.sdk.internal.repository.feedback.FeedbackRepositoryImpl
@@ -24,6 +25,8 @@ import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepository
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepositoryImpl
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepository
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepositoryImpl
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRepository
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRepositoryImpl
 import io.nyris.sdk.internal.util.Logger
 
 internal object RepositoryModule {
@@ -31,6 +34,7 @@ internal object RepositoryModule {
         putImageMatchingRepository()
         putObjectDetectingRepository()
         putFeedbackRepository()
+        putSkuMatchingRepository()
     }
 
     private fun putImageMatchingRepository() {
@@ -56,6 +60,15 @@ internal object RepositoryModule {
             FeedbackRepositoryImpl(
                 logger = ServiceLocator.get<Logger>().value,
                 feedbackService = ServiceLocator.get<FeedbackService>().value,
+            )
+        }
+    }
+
+    private fun putSkuMatchingRepository() {
+        ServiceLocator.put(SkuMatchingRepository::class) {
+            SkuMatchingRepositoryImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                recommendService = ServiceLocator.get<RecommendService>().value,
             )
         }
     }

@@ -17,6 +17,7 @@ package io.nyris.sdk.internal.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
@@ -94,6 +95,9 @@ internal object NetworkModule {
         val httpConfig: HttpClientConfig<*>.() -> Unit = {
             install(ContentNegotiation) {
                 json(ServiceLocator.get<Json>().value)
+            }
+            install(HttpTimeout) {
+                requestTimeoutMillis = config.timeout
             }
             if (config.isDebug) {
                 install(Logging) {

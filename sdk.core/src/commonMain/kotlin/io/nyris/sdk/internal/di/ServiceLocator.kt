@@ -56,7 +56,8 @@ internal object ServiceLocator {
             ConfigInternal(
                 apiKey = apiKey,
                 isDebug = config.isDebug,
-                httpEngine = config.httpEngine
+                httpEngine = config.httpEngine,
+                timeout = config.timeout
             )
         )
 

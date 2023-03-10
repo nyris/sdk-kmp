@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk
+package io.nyris.sdk.internal.network
 
-sealed class NyrisException(message: String?) : Throwable(message)
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class ResponseException(
-    val title: String?,
-    val status: Int?,
-    val detail: String?,
-    val traceId: String?,
-    val itemKey: String?,
-) : NyrisException(detail)
+@Serializable
+class ApiError(
+    @SerialName("title")
+    val title: String? = null,
 
-data class ClientException(
-    override val message: String?,
-) : NyrisException(message)
+    @SerialName("status")
+    val status: Int? = null,
 
-data class ServerException(
-    override val message: String?,
-) : NyrisException(message)
+    @SerialName("detail")
+    val detail: String? = null,
+
+    @SerialName("traceId")
+    val traceId: String? = null,
+
+    @SerialName("itemKey")
+    val itemKey: String? = null,
+)

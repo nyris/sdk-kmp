@@ -13,22 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk
+package io.nyris.sdk.internal.repository.skumatching
 
-sealed class NyrisException(message: String?) : Throwable(message)
+import io.nyris.sdk.builder.SkuMatchingRequestBuilder
+import io.nyris.sdk.internal.util.Logger
+import io.nyris.sdk.model.SkuResponse
 
-data class ResponseException(
-    val title: String?,
-    val status: Int?,
-    val detail: String?,
-    val traceId: String?,
-    val itemKey: String?,
-) : NyrisException(detail)
-
-data class ClientException(
-    override val message: String?,
-) : NyrisException(message)
-
-data class ServerException(
-    override val message: String?,
-) : NyrisException(message)
+internal class SkuMatchingRequestBuilderImpl(
+    private val logger: Logger,
+    private val skuMatchingRepository: SkuMatchingRepository,
+) : SkuMatchingRequestBuilder {
+    override suspend fun match(sku: String): Result<SkuResponse> {
+        logger.log("[SkuMatchingRequestBuilderImpl] match")
+        return skuMatchingRepository.match(sku)
+    }
+}

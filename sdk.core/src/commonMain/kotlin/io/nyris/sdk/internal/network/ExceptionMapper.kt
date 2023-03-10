@@ -20,13 +20,13 @@ import io.ktor.client.plugins.ServerResponseException
 import io.nyris.sdk.ClientException
 import io.nyris.sdk.ResponseException
 import io.nyris.sdk.ServerException
-import io.nyris.sdk.internal.network.find.FindResponseError
 
-internal fun FindResponseError.toNyrisException(): ResponseException = ResponseException(
+internal fun ApiError.toNyrisException(): ResponseException = ResponseException(
     title = title,
     status = status,
     detail = detail,
-    traceId = traceId
+    traceId = traceId,
+    itemKey = itemKey
 )
 
 internal fun ClientRequestException.toNyrisException(): ClientException = ClientException(message)

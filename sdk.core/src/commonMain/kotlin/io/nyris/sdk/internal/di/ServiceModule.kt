@@ -22,6 +22,8 @@ import io.nyris.sdk.internal.network.feedback.FeedbackService
 import io.nyris.sdk.internal.network.feedback.FeedbackServiceImpl
 import io.nyris.sdk.internal.network.find.FindService
 import io.nyris.sdk.internal.network.find.FindServiceImpl
+import io.nyris.sdk.internal.network.recommend.RecommendService
+import io.nyris.sdk.internal.network.recommend.RecommendServiceImpl
 import io.nyris.sdk.internal.network.regions.RegionsService
 import io.nyris.sdk.internal.network.regions.RegionsServiceImpl
 import io.nyris.sdk.internal.util.Logger
@@ -31,7 +33,8 @@ internal object ServiceModule {
     fun init() {
         putFindService()
         putRegionsService()
-        putFeedback()
+        putFeedbackService()
+        putRecommendService()
     }
 
     private fun putFindService() {
@@ -57,9 +60,20 @@ internal object ServiceModule {
         }
     }
 
-    private fun putFeedback() {
+    private fun putFeedbackService() {
         ServiceLocator.put(FeedbackService::class) {
             FeedbackServiceImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                httpClient = ServiceLocator.get<NyrisHttpClient>().value,
+                endpoints = ServiceLocator.get<Endpoints>().value,
+                coroutineContext = Dispatchers.IO
+            )
+        }
+    }
+
+    private fun putRecommendService() {
+        ServiceLocator.put(RecommendService::class) {
+            RecommendServiceImpl(
                 logger = ServiceLocator.get<Logger>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,

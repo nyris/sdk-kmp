@@ -19,9 +19,11 @@ data class NyrisConfig(
     val isDebug: Boolean = false,
     val baseUrl: String = BASE_URL,
     val httpEngine: HttpEngine? = null,
+    val timeout: Long = TIMEOUT,
     internal val platform: NyrisPlatform = NyrisPlatform.Generic,
 ) {
     companion object {
         const val BASE_URL = "https://api.nyris.io/"
+        const val TIMEOUT = 3000L
     }
 }

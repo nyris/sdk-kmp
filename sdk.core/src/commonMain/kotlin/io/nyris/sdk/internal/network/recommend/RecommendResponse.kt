@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk
+package io.nyris.sdk.internal.network.recommend
 
-sealed class NyrisException(message: String?) : Throwable(message)
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-data class ResponseException(
-    val title: String?,
-    val status: Int?,
-    val detail: String?,
-    val traceId: String?,
-    val itemKey: String?,
-) : NyrisException(detail)
+@Serializable
+class RecommendResponse(
+    @SerialName("id")
+    val requestId: String? = null,
+    @SerialName("session")
+    val sessionId: String? = null,
+    @SerialName("results")
+    val result: List<SkuOfferDto> = emptyList(),
+)
 
-data class ClientException(
-    override val message: String?,
-) : NyrisException(message)
-
-data class ServerException(
-    override val message: String?,
-) : NyrisException(message)
+@Serializable
+class SkuOfferDto(
+    @SerialName("sku")
+    val sku: String? = null,
+    @SerialName("score")
+    val score: Float? = null,
+)

@@ -20,6 +20,8 @@ import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
 internal class Endpoints(baseUrl: String) {
     private val find: String = "${baseUrl}find/v1.1"
 
+    private val recommend: String = "${baseUrl}recommend/v1"
+
     val regions: String = "${baseUrl}find/v2/regions"
 
     val feedback: String = "${baseUrl}feedback/v1"
@@ -27,4 +29,6 @@ internal class Endpoints(baseUrl: String) {
     fun find(geolocation: GeolocationParam? = null): String = geolocation?.let {
         with(it) { "$find?lat=$lat?lon=$lon?dist=$dist" }
     } ?: find
+
+    fun recommend(sku: String) = "$recommend/$sku"
 }

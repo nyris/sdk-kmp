@@ -18,6 +18,7 @@ package io.nyris.sdk.internal.di
 import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 import io.nyris.sdk.internal.RequestBuilders
 import io.nyris.sdk.internal.RequestBuildersImpl
 import io.nyris.sdk.internal.repository.feedback.FeedbackRepository
@@ -26,6 +27,8 @@ import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepository
 import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRequestBuilderImpl
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepository
 import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRequestBuilderImpl
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRepository
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRequestBuilderImpl
 import io.nyris.sdk.internal.util.Logger
 
 internal object RequestBuilderModule {
@@ -33,6 +36,7 @@ internal object RequestBuilderModule {
         putImageMatchingRequestBuilder()
         putObjectDetectingRequestBuilder()
         putFeedbackRequestBuilder()
+        putSkuMatchingBuilder()
 
         putRequestBuilders()
     }
@@ -64,12 +68,22 @@ internal object RequestBuilderModule {
         }
     }
 
+    private fun putSkuMatchingBuilder() {
+        ServiceLocator.put(SkuMatchingRequestBuilder::class) {
+            SkuMatchingRequestBuilderImpl(
+                logger = ServiceLocator.get<Logger>().value,
+                skuMatchingRepository = ServiceLocator.get<SkuMatchingRepository>().value
+            )
+        }
+    }
+
     private fun putRequestBuilders() {
         ServiceLocator.put(RequestBuilders::class) {
             RequestBuildersImpl(
                 imageMatching = ServiceLocator.get<ImageMatchingRequestBuilder>().value,
                 objectDetecting = ServiceLocator.get<ObjectDetectingRequestBuilder>().value,
-                feedback = ServiceLocator.get<FeedbackRequestBuilder>().value
+                feedback = ServiceLocator.get<FeedbackRequestBuilder>().value,
+                skuMatching = ServiceLocator.get<SkuMatchingRequestBuilder>().value,
             )
         }
     }

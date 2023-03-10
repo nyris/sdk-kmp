@@ -20,11 +20,11 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
-import io.nyris.sdk.internal.network.find.FindResponseError
 import io.nyris.sdk.internal.util.Logger
 
 internal class NyrisHttpClient(
@@ -35,7 +35,7 @@ internal class NyrisHttpClient(
     suspend fun post(
         endpoint: String,
         block: HttpRequestBuilder.() -> Unit = {},
-    ): HttpResponse = try {
+    ): HttpResponse = sendHttpRequestAndHandleError {
         logger.log("[NyrisHttpClient] post $endpoint")
         logger.log("[NyrisHttpClient] apiHeaders[${commonHeaders.default}]")
         val response = httpClient.post(endpoint) {
@@ -47,8 +47,31 @@ internal class NyrisHttpClient(
             response
         } else {
             logger.log("[NyrisHttpClient] post status ${response.status}")
-            throw response.body<FindResponseError>().toNyrisException()
+            throw response.body<ApiError>().toNyrisException()
         }
+    }
+
+    suspend fun get(
+        endpoint: String,
+        block: HttpRequestBuilder.() -> Unit = {},
+    ): HttpResponse = sendHttpRequestAndHandleError {
+        logger.log("[NyrisHttpClient] get $endpoint")
+        logger.log("[NyrisHttpClient] apiHeaders[${commonHeaders.default}]")
+        val response = httpClient.get(endpoint) {
+            this.apply(block)
+            commonHeaders.default.forEach { entry -> header(entry.key, entry.value) }
+        }
+        if (response.status.value in OK_STATUS) {
+            logger.log("[NyrisHttpClient] get status ok")
+            response
+        } else {
+            logger.log("[NyrisHttpClient] post status ${response.status}")
+            throw response.body<ApiError>().toNyrisException()
+        }
+    }
+
+    private suspend fun sendHttpRequestAndHandleError(block: suspend Unit.() -> HttpResponse): HttpResponse = try {
+        block(Unit)
     } catch (ignore: ClientRequestException) {
         logger.log("[NyrisHttpClient] ClientRequestException is thrown")
         throw ignore.toNyrisException()
@@ -66,6 +89,11 @@ internal class HttpClientWrapper(private val httpClient: HttpClient) {
         urlString: String,
         block: HttpRequestBuilder.() -> Unit = {},
     ): HttpResponse = httpClient.post(urlString, block)
+
+    suspend fun get(
+        urlString: String,
+        block: HttpRequestBuilder.() -> Unit = {},
+    ): HttpResponse = httpClient.get(urlString, block)
 }
 
 object NyrisHttpHeaders {

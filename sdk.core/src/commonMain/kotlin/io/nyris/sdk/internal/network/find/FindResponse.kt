@@ -19,21 +19,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class FindResponseError(
-    @SerialName("title")
-    val title: String? = null,
-
-    @SerialName("status")
-    val status: Int?,
-
-    @SerialName("detail")
-    val detail: String?,
-
-    @SerialName("traceId")
-    val traceId: String?,
-)
-
-@Serializable
 internal class FindResponse(
     @SerialName("id")
     val requestId: String? = null,

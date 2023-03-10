@@ -20,6 +20,7 @@ import io.ktor.client.engine.HttpClientEngineFactory
 import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 
 expect interface Nyris {
     fun imageMatching(): ImageMatchingRequestBuilder
@@ -27,6 +28,8 @@ expect interface Nyris {
     fun objectDetecting(): ObjectDetectingRequestBuilder
 
     fun feedback(): FeedbackRequestBuilder
+
+    fun skuMatching(): SkuMatchingRequestBuilder
 
     companion object {
         fun createInstance(

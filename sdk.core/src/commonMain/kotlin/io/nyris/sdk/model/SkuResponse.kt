@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk
+package io.nyris.sdk.model
 
-sealed class NyrisException(message: String?) : Throwable(message)
+data class SkuResponse(
+    val requestId: String?,
+    val sessionId: String?,
+    val offers: List<SkuOffer> = emptyList(),
+)
 
-data class ResponseException(
-    val title: String?,
-    val status: Int?,
-    val detail: String?,
-    val traceId: String?,
-    val itemKey: String?,
-) : NyrisException(detail)
-
-data class ClientException(
-    override val message: String?,
-) : NyrisException(message)
-
-data class ServerException(
-    override val message: String?,
-) : NyrisException(message)
+data class SkuOffer(
+    val sku: String?,
+    val score: Float?,
+)
