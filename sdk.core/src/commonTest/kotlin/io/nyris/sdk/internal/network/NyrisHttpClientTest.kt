@@ -33,7 +33,6 @@ import io.mockk.unmockkAll
 import io.nyris.sdk.ClientException
 import io.nyris.sdk.ResponseException
 import io.nyris.sdk.ServerException
-import io.nyris.sdk.internal.network.find.FindResponseError
 import io.nyris.sdk.internal.util.Logger
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -88,9 +87,9 @@ class NyrisHttpClientTest {
     fun `post should return result failure when http status code is not OK`() = runTest {
         val exception = mockk<ResponseException>(relaxed = true)
         val response = mockk<HttpResponse>(relaxed = true).apply {
-            val body = mockk<FindResponseError>(relaxed = true)
+            val body = mockk<ApiError>(relaxed = true)
             every { status } returns HttpStatusCode.Unauthorized
-            coEvery { body<FindResponseError>() } returns body
+            coEvery { body<ApiError>() } returns body
             every { body.toNyrisException() } returns exception
         }
         coEvery { httpClient.post(ANY_ENDPOINT, any()) } returns response

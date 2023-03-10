@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.internal.network.feedback
+package io.nyris.sdk.internal.network.recommend
 
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.http.HttpHeaders
-import io.mockk.CapturingSlot
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
 import io.mockk.coEvery
-import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.slot
 import io.mockk.verify
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
@@ -37,16 +34,16 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FeedbackServiceTest {
+class RecommendServiceTest {
     private val logger = mockk<Logger>(relaxed = true)
-    private val endpoints = mockk<Endpoints> endpoint@{
-        every { this@endpoint.feedback } returns ANY_ENDPOINT
+    private val endpoints = mockk<Endpoints>(relaxed = true) endpoint@{
+        every { this@endpoint.recommend(any()) } returns ANY_ENDPOINT
     }
     private val httpClient = mockk<NyrisHttpClient>(relaxed = true)
     private val coroutineContext = UnconfinedTestDispatcher()
 
-    private val classToTest: FeedbackServiceImpl by lazy {
-        FeedbackServiceImpl(
+    private val classToTest: RecommendService by lazy {
+        RecommendServiceImpl(
             logger,
             endpoints,
             httpClient,
@@ -55,38 +52,33 @@ class FeedbackServiceTest {
     }
 
     @Test
-    fun `send should post feedback request successfully`() = runTest {
-        val feedbackRequest = mockk<FeedbackRequest>()
-        val builderSlot = slot<HttpRequestBuilder.() -> Unit>()
-        coJustRun { httpClient.post(ANY_ENDPOINT, capture(builderSlot)) }
+    fun `match should get recommendation successfully`() = runTest {
+        val response = mockk<RecommendResponse>()
+        val httpResponse = mockk<HttpResponse>().apply { coEvery { body<RecommendResponse>() } returns response }
+        coEvery { httpClient.get(ANY_ENDPOINT, any()) } returns httpResponse
 
-        val result = classToTest.send(feedbackRequest)
+        val result = classToTest.match(SKU)
 
-        builderSlot.assertHeaders()
         assertTrue(result.isSuccess)
-        verify { endpoints.feedback }
-        coVerify { httpClient.post(ANY_ENDPOINT, builderSlot.captured) }
+        verify { endpoints.recommend(SKU) }
+        coVerify { httpClient.get(ANY_ENDPOINT, any()) }
+        assertEquals(response, result.getOrNull())
         confirmVerified(endpoints, httpClient)
     }
 
     @Test
-    fun `send should fail to post when http throw exception`() = runTest {
-        val feedbackRequest = mockk<FeedbackRequest>()
+    fun `match should fail to get recommendation when http throw exception`() = runTest {
         val expectedException = Throwable("The exception!")
-        coEvery { httpClient.post(ANY_ENDPOINT, any()) } throws expectedException
+        coEvery { httpClient.get(ANY_ENDPOINT, any()) } throws expectedException
 
-        val result = classToTest.send(feedbackRequest)
+        val result = classToTest.match(SKU)
 
-        verify { endpoints.feedback }
-        coVerify { httpClient.post(ANY_ENDPOINT, any()) }
+        verify { endpoints.recommend(SKU) }
+        coVerify { httpClient.get(ANY_ENDPOINT, any()) }
         assertTrue(result.isFailure)
         assertEquals(expectedException, result.exceptionOrNull())
     }
 }
 
-private fun CapturingSlot<HttpRequestBuilder.() -> Unit>.assertHeaders() {
-    val headers = HttpRequestBuilder().apply(captured).headers.build()
-    assertEquals("application/json", headers[HttpHeaders.ContentType])
-}
-
 private const val ANY_ENDPOINT = "ANY_ENDPOINT"
+private const val SKU = "SKU"

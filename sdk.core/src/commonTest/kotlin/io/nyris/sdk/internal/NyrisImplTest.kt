@@ -56,6 +56,14 @@ class NyrisImplTest {
         verify { requestBuilders.objectDetecting() }
         confirmVerified(requestBuilders, config)
     }
+
+    @Test
+    fun `skuMatching should call the skuMatching`() {
+        classToTest.skuMatching()
+
+        verify { requestBuilders.skuMatching() }
+        confirmVerified(requestBuilders, config)
+    }
 }
 
 private const val API_KEY = "API_KEY"

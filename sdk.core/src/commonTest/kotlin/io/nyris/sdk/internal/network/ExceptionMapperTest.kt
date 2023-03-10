@@ -19,21 +19,21 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.mockk.every
 import io.mockk.mockk
-import io.nyris.sdk.internal.network.find.FindResponseError
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ExceptionMapperTest {
-    private val findResponseError = FindResponseError(
+    private val apiError = ApiError(
         title = "title",
         status = 100,
         detail = "detail",
-        traceId = "traceId"
+        traceId = "traceId",
+        itemKey = "itemKey"
     )
 
     @Test
-    fun `toNyrisException should map FindResponseError to ResponseException`() {
-        val responseException = findResponseError.toNyrisException()
+    fun `toNyrisException should map apiError to ResponseException`() {
+        val responseException = apiError.toNyrisException()
 
         assertEquals(EXPECTED_EXCEPTION, responseException.toString())
     }
@@ -65,5 +65,6 @@ private const val EXPECTED_EXCEPTION = "ResponseException(" +
     "title=title, " +
     "status=100, " +
     "detail=detail, " +
-    "traceId=traceId" +
+    "traceId=traceId, " +
+    "itemKey=itemKey" +
     ")"

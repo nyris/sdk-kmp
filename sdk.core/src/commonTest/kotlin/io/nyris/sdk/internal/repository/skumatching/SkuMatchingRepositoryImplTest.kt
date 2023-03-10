@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.internal.repository.feedback
+package io.nyris.sdk.internal.repository.skumatching
 
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -23,29 +23,29 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.verify
-import io.nyris.sdk.internal.network.feedback.FeedbackRequest
-import io.nyris.sdk.internal.network.feedback.FeedbackService
+import io.nyris.sdk.internal.network.recommend.RecommendResponse
+import io.nyris.sdk.internal.network.recommend.RecommendService
 import io.nyris.sdk.internal.util.Logger
-import io.nyris.sdk.model.Feedback
+import io.nyris.sdk.model.SkuResponse
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FeedbackRepositoryImplTest {
+class SkuMatchingRepositoryImplTest {
     private val logger = mockk<Logger>(relaxed = true)
-    private val feedbackService = mockk<FeedbackService>()
+    private val recommendService = mockk<RecommendService>()
 
-    private val classToTest: FeedbackRepositoryImpl by lazy {
-        FeedbackRepositoryImpl(logger, feedbackService)
+    private val classToTest: SkuMatchingRepositoryImpl by lazy {
+        SkuMatchingRepositoryImpl(logger, recommendService)
     }
 
     @BeforeTest
     fun setup() {
-        mockkStatic("io.nyris.sdk.internal.repository.feedback.FeedbackRequestMapperKt")
+        mockkStatic("io.nyris.sdk.internal.repository.skumatching.SkuResponseMapperKt")
     }
 
     @AfterTest
@@ -54,18 +54,20 @@ class FeedbackRepositoryImplTest {
     }
 
     @Test
-    fun `send should send feedback service`() = runTest {
-        val feedback = mockk<Feedback>()
-        val result = Result.success(Unit)
-        val feedbackRequest = mockk<FeedbackRequest>()
-        every { feedback.toFeedbackRequest() } returns feedbackRequest
-        coEvery { feedbackService.send(feedbackRequest) } returns result
+    fun `match should cal match recommend service and map result`() = runTest {
+        val recommendResponse = mockk<RecommendResponse>()
+        val skuResponse = mockk<SkuResponse>()
+        val result = Result.success(recommendResponse)
+        coEvery { recommendService.match(SKU) } returns result
+        every { recommendResponse.toSkuResponse() } returns skuResponse
 
-        val response = classToTest.send(feedback)
+        val response = classToTest.match(SKU)
 
-        assertTrue(response.isSuccess)
-        coVerify { feedbackService.send(feedbackRequest) }
-        verify { feedback.toFeedbackRequest() }
-        confirmVerified(feedbackService, feedbackRequest)
+        assertEquals(skuResponse, response.getOrNull())
+        coVerify { recommendService.match(SKU) }
+        verify { recommendResponse.toSkuResponse() }
+        confirmVerified(recommendService)
     }
 }
+
+private const val SKU = "SKU"

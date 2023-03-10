@@ -19,6 +19,7 @@ import io.mockk.mockk
 import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -26,22 +27,34 @@ class RequestBuildersImplTest {
     private val imageMatching = mockk<ImageMatchingRequestBuilder>(relaxed = true)
     private val objectDetecting = mockk<ObjectDetectingRequestBuilder>(relaxed = true)
     private val feedback = mockk<FeedbackRequestBuilder>(relaxed = true)
+    private val skuMatching = mockk<SkuMatchingRequestBuilder>(relaxed = true)
 
     private val classToTest: RequestBuildersImpl by lazy {
         RequestBuildersImpl(
             imageMatching,
             objectDetecting,
-            feedback
+            feedback,
+            skuMatching,
         )
     }
 
     @Test
     fun `imageMatching should provide the mock imageMatching`() {
-        assertEquals(classToTest.imageMatching(), imageMatching)
+        assertEquals(imageMatching, classToTest.imageMatching())
     }
 
     @Test
     fun `objectDetecting should provide the mock objectDetecting`() {
-        assertEquals(classToTest.objectDetecting(), objectDetecting)
+        assertEquals(objectDetecting, classToTest.objectDetecting())
+    }
+
+    @Test
+    fun `feedback should provide the mock feedback`() {
+        assertEquals(feedback, classToTest.feedback())
+    }
+
+    @Test
+    fun `skuMatching should provide the mock skuMatching`() {
+        assertEquals(skuMatching, classToTest.skuMatching())
     }
 }

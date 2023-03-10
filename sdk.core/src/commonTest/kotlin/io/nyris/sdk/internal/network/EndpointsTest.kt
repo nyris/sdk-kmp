@@ -42,17 +42,23 @@ class EndpointsTest {
 
     @Test
     fun `regions should return the correct endpoint`() {
-        assertEquals(EXPECTED_REGIONS, endpoints.regions)
+        assertEquals(EXPECTED_REGIONS_ENDPOINT, endpoints.regions)
     }
 
     @Test
     fun `feedback should return the correct endpoint`() {
-        assertEquals(EXPECTED_FEEDBACK, endpoints.feedback)
+        assertEquals(EXPECTED_FEEDBACK_ENDPOINT, endpoints.feedback)
+    }
+
+    @Test
+    fun `recommend should return the correct endpoint`() {
+        assertEquals(EXPECTED_RECOMMEND_ENDPOINT, endpoints.recommend("sku"))
     }
 }
 
 private const val ANY_BASE_URL = "ANY_BASE_URL/"
 private const val EXPECTED_FIND_ENDPOINT = "${ANY_BASE_URL}find/v1.1"
 private const val EXPECTED_FIND_ENDPOINT_WITH_GEOLOCATION = "${ANY_BASE_URL}find/v1.1?lat=1.1?lon=1.2?dist=1000"
-private const val EXPECTED_REGIONS = "${ANY_BASE_URL}find/v2/regions"
-private const val EXPECTED_FEEDBACK = "${ANY_BASE_URL}feedback/v1"
+private const val EXPECTED_REGIONS_ENDPOINT = "${ANY_BASE_URL}find/v2/regions"
+private const val EXPECTED_FEEDBACK_ENDPOINT = "${ANY_BASE_URL}feedback/v1"
+private const val EXPECTED_RECOMMEND_ENDPOINT = "${ANY_BASE_URL}recommend/v1/sku"

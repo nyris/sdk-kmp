@@ -67,7 +67,7 @@ class ImageMatchingRepositoryImplTest {
 
         val response = classToTest.match(image, params)
 
-        assertEquals(response.getOrNull(), matchResponse)
+        assertEquals(matchResponse, response.getOrNull())
         coVerify { findService.find(image, any()) }
         verify { findResponse.toMatchResponse() }
         confirmVerified(findService)
