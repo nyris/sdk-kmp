@@ -27,11 +27,9 @@ internal class NyrisImpl private constructor(
     apiKey: String,
     config: NyrisConfig,
 ) : Nyris {
-    private val requestBuilders: RequestBuilders
-
-    init {
-        ServiceLocator.init(apiKey, config)
-        requestBuilders = ServiceLocator.get<RequestBuilders>().value
+    private val requestBuilders: RequestBuilders by with(ServiceLocator) {
+        init(apiKey, config)
+        get()
     }
 
     override fun imageMatching(): ImageMatchingRequestBuilder = requestBuilders.imageMatching()

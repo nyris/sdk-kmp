@@ -20,17 +20,22 @@ import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 
+/**
+ * Since the Request builders class represents the components for each implemented api, we lazy load the builders to
+ * avoid heavy waist of time on sdk instance creation.
+ * Please make sure to respect that
+ */
 internal class RequestBuildersImpl(
-    private val imageMatching: ImageMatchingRequestBuilder,
-    private val objectDetecting: ObjectDetectingRequestBuilder,
-    private val feedback: FeedbackRequestBuilder,
-    private val skuMatching: SkuMatchingRequestBuilder,
+    private val imageMatching: Lazy<ImageMatchingRequestBuilder>,
+    private val objectDetecting: Lazy<ObjectDetectingRequestBuilder>,
+    private val feedback: Lazy<FeedbackRequestBuilder>,
+    private val skuMatching: Lazy<SkuMatchingRequestBuilder>,
 ) : RequestBuilders {
-    override fun imageMatching(): ImageMatchingRequestBuilder = imageMatching
+    override fun imageMatching(): ImageMatchingRequestBuilder = imageMatching.value
 
-    override fun objectDetecting(): ObjectDetectingRequestBuilder = objectDetecting
+    override fun objectDetecting(): ObjectDetectingRequestBuilder = objectDetecting.value
 
-    override fun feedback(): FeedbackRequestBuilder = feedback
+    override fun feedback(): FeedbackRequestBuilder = feedback.value
 
-    override fun skuMatching(): SkuMatchingRequestBuilder = skuMatching
+    override fun skuMatching(): SkuMatchingRequestBuilder = skuMatching.value
 }

@@ -80,10 +80,10 @@ internal object RequestBuilderModule {
     private fun putRequestBuilders() {
         ServiceLocator.put(RequestBuilders::class) {
             RequestBuildersImpl(
-                imageMatching = ServiceLocator.get<ImageMatchingRequestBuilder>().value,
-                objectDetecting = ServiceLocator.get<ObjectDetectingRequestBuilder>().value,
-                feedback = ServiceLocator.get<FeedbackRequestBuilder>().value,
-                skuMatching = ServiceLocator.get<SkuMatchingRequestBuilder>().value,
+                imageMatching = ServiceLocator.get(),
+                objectDetecting = ServiceLocator.get(),
+                feedback = ServiceLocator.get(),
+                skuMatching = ServiceLocator.get(),
             )
         }
     }

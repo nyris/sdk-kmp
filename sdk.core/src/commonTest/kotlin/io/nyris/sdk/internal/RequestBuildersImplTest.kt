@@ -24,10 +24,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class RequestBuildersImplTest {
-    private val imageMatching = mockk<ImageMatchingRequestBuilder>(relaxed = true)
-    private val objectDetecting = mockk<ObjectDetectingRequestBuilder>(relaxed = true)
-    private val feedback = mockk<FeedbackRequestBuilder>(relaxed = true)
-    private val skuMatching = mockk<SkuMatchingRequestBuilder>(relaxed = true)
+    private val imageMatching = lazy { mockk<ImageMatchingRequestBuilder>(relaxed = true) }
+    private val objectDetecting = lazy { mockk<ObjectDetectingRequestBuilder>(relaxed = true) }
+    private val feedback = lazy { mockk<FeedbackRequestBuilder>(relaxed = true) }
+    private val skuMatching = lazy { mockk<SkuMatchingRequestBuilder>(relaxed = true) }
 
     private val classToTest: RequestBuildersImpl by lazy {
         RequestBuildersImpl(
@@ -40,21 +40,21 @@ class RequestBuildersImplTest {
 
     @Test
     fun `imageMatching should provide the mock imageMatching`() {
-        assertEquals(imageMatching, classToTest.imageMatching())
+        assertEquals(imageMatching.value, classToTest.imageMatching())
     }
 
     @Test
     fun `objectDetecting should provide the mock objectDetecting`() {
-        assertEquals(objectDetecting, classToTest.objectDetecting())
+        assertEquals(objectDetecting.value, classToTest.objectDetecting())
     }
 
     @Test
     fun `feedback should provide the mock feedback`() {
-        assertEquals(feedback, classToTest.feedback())
+        assertEquals(feedback.value, classToTest.feedback())
     }
 
     @Test
     fun `skuMatching should provide the mock skuMatching`() {
-        assertEquals(skuMatching, classToTest.skuMatching())
+        assertEquals(skuMatching.value, classToTest.skuMatching())
     }
 }
