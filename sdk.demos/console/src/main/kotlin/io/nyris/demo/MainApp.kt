@@ -30,54 +30,82 @@ object MainApp {
         )
 
         runBlocking {
-            nyris.imageMatching()
-                .match(loadImage("test_image.jpg"))
-                .onSuccess {
-                    println("Successful image matching!")
-                }
-                .onFailure {
-                    if (it is ResponseException) {
-                        println(it.toString())
-                    } else {
-                        println(it.message)
-                    }
-                }
-
-            nyris.objectDetecting()
-                .detect(loadImage("test_image2.jpg"))
-                .onSuccess {
-                    println("Successful object detecting!")
-                }
-                .onFailure {
-                    if (it is ResponseException) {
-                        println(it.toString())
-                    } else {
-                        println(it.message)
-                    }
-                }
-
-            nyris.feedback()
-                .send(
-                    Feedback.Region(
-                        requestId = "9a2e5c0d56ff5f52ae270de10ba97f45",
-                        sessionId = "9a2e5c0d56ff5f52ae270de10ba97f45",
-                        left = 0.1F,
-                        top = 0.1F,
-                        height = 0.1F,
-                        width = 0.1F,
-                    )
-                )
-                .onSuccess {
-                    println("Successful feedback sending!")
-                }
-                .onFailure {
-                    if (it is ResponseException) {
-                        println(it.toString())
-                    } else {
-                        println(it.message)
-                    }
-                }
+            with(nyris) {
+                imageMatchingDemo()
+                objectDetectingDemo()
+                feedbackDemo()
+                skuMatchingDemo()
+            }
         }
+    }
+
+    private suspend fun Nyris.imageMatchingDemo() {
+        imageMatching()
+            .match(loadImage("test_image.jpg"))
+            .onSuccess {
+                println("Successful image matching!")
+            }
+            .onFailure {
+                if (it is ResponseException) {
+                    println(it.toString())
+                } else {
+                    println(it.message)
+                }
+            }
+    }
+
+    private suspend fun Nyris.objectDetectingDemo() {
+        objectDetecting()
+            .detect(loadImage("test_image2.jpg"))
+            .onSuccess {
+                println("Successful object detecting!")
+            }
+            .onFailure {
+                if (it is ResponseException) {
+                    println(it.toString())
+                } else {
+                    println(it.message)
+                }
+            }
+    }
+
+    private suspend fun Nyris.feedbackDemo() {
+        feedback()
+            .send(
+                Feedback.Region(
+                    requestId = "9a2e5c0d56ff5f52ae270de10ba97f45",
+                    sessionId = "9a2e5c0d56ff5f52ae270de10ba97f45",
+                    left = 0.1F,
+                    top = 0.1F,
+                    height = 0.1F,
+                    width = 0.1F,
+                )
+            )
+            .onSuccess {
+                println("Successful feedback sending!")
+            }
+            .onFailure {
+                if (it is ResponseException) {
+                    println(it.toString())
+                } else {
+                    println(it.message)
+                }
+            }
+    }
+
+    private suspend fun Nyris.skuMatchingDemo() {
+        skuMatching()
+            .match("10371203")
+            .onSuccess {
+                println("Successful sku matching!")
+            }
+            .onFailure {
+                if (it is ResponseException) {
+                    println(it.toString())
+                } else {
+                    println(it.message)
+                }
+            }
     }
 
     private fun loadImage(path: String): ByteArray =
