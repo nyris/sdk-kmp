@@ -58,7 +58,7 @@ Please make sure to import the `config/code/style.xml` to your Android Studio or
 Before creating any PR, please make sure to run on your local machine:
 
 ```shell
-./gradlew --init-script gradle/init.gradle.kts spotlessApply detekt lint test 
+./gradlew --init-script gradle/init.gradle.kts spotlessApply detekt lint test --no-configuration-cache
 ```
 
 When merging your PR, you must make sure to use `squash and merge` and not `create merge commit`.
