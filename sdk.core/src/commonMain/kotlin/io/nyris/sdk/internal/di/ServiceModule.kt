@@ -44,7 +44,7 @@ internal object ServiceModule {
                 xOptionsBuilder = ServiceLocator.get<XOptionsBuilder>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,
-                coroutineContext = Dispatchers.IO
+                coroutineContext = Dispatchers.Default
             )
         }
     }
@@ -55,7 +55,7 @@ internal object ServiceModule {
                 logger = ServiceLocator.get<Logger>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,
-                coroutineContext = Dispatchers.IO
+                coroutineContext = Dispatchers.Default
             )
         }
     }
@@ -66,7 +66,7 @@ internal object ServiceModule {
                 logger = ServiceLocator.get<Logger>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,
-                coroutineContext = Dispatchers.IO
+                coroutineContext = Dispatchers.Default
             )
         }
     }
@@ -77,7 +77,7 @@ internal object ServiceModule {
                 logger = ServiceLocator.get<Logger>().value,
                 httpClient = ServiceLocator.get<NyrisHttpClient>().value,
                 endpoints = ServiceLocator.get<Endpoints>().value,
-                coroutineContext = Dispatchers.IO
+                coroutineContext = Dispatchers.Default
             )
         }
     }

@@ -1,14 +1,14 @@
 //
-//  iOSTests.swift
-//  iOSTests
+//  NyrisSearcherTests.swift
+//  NyrisSearcherTests
 //
-//  Created by MOSTEFAOUIM on 18/03/2023.
+//  Created by MOSTEFAOUIM on 19/03/2023.
 //
 
 import XCTest
-@testable import iOS
+@testable import NyrisSearcher
 
-final class iOSTests: XCTestCase {
+final class NyrisSearcherTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -19,7 +19,6 @@ final class iOSTests: XCTestCase {
     }
 
     func testExample() throws {
-        
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // Any test you write for XCTest can be annotated as throws and async.

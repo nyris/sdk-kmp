@@ -7,157 +7,157 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		132C1DC329C63D8E0060F822 /* iOS.docc in Sources */ = {isa = PBXBuildFile; fileRef = 132C1DC229C63D8E0060F822 /* iOS.docc */; };
-		132C1DC929C63D8F0060F822 /* iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 132C1DBE29C63D8E0060F822 /* iOS.framework */; };
-		132C1DCE29C63D8F0060F822 /* iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132C1DCD29C63D8F0060F822 /* iOSTests.swift */; };
-		132C1DCF29C63D8F0060F822 /* iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 132C1DC129C63D8E0060F822 /* iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1377BDB329C72F0200B2839E /* TestFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1377BDB229C72F0200B2839E /* TestFile.swift */; };
+		1377BDE729C74D9B00B2839E /* NyrisSearcher.docc in Sources */ = {isa = PBXBuildFile; fileRef = 1377BDE629C74D9B00B2839E /* NyrisSearcher.docc */; };
+		1377BDED29C74D9B00B2839E /* NyrisSearcher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1377BDE229C74D9B00B2839E /* NyrisSearcher.framework */; };
+		1377BDF229C74D9B00B2839E /* NyrisSearcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1377BDF129C74D9B00B2839E /* NyrisSearcherTests.swift */; };
+		1377BDF329C74D9B00B2839E /* NyrisSearcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1377BDE529C74D9B00B2839E /* NyrisSearcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1377BDFE29C74FEC00B2839E /* IntegrationKMP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1377BDFD29C74FEC00B2839E /* IntegrationKMP.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		132C1DCA29C63D8F0060F822 /* PBXContainerItemProxy */ = {
+		1377BDEE29C74D9B00B2839E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 132C1DB529C63D8E0060F822 /* Project object */;
+			containerPortal = 1377BDD929C74D9B00B2839E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 132C1DBD29C63D8E0060F822;
-			remoteInfo = iOS;
+			remoteGlobalIDString = 1377BDE129C74D9B00B2839E;
+			remoteInfo = NyrisSearcher;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		132C1DBE29C63D8E0060F822 /* iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		132C1DC129C63D8E0060F822 /* iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOS.h; sourceTree = "<group>"; };
-		132C1DC229C63D8E0060F822 /* iOS.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = iOS.docc; sourceTree = "<group>"; };
-		132C1DC829C63D8F0060F822 /* iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		132C1DCD29C63D8F0060F822 /* iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSTests.swift; sourceTree = "<group>"; };
-		1377BDB229C72F0200B2839E /* TestFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFile.swift; sourceTree = "<group>"; };
+		1377BDE229C74D9B00B2839E /* NyrisSearcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NyrisSearcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1377BDE529C74D9B00B2839E /* NyrisSearcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NyrisSearcher.h; sourceTree = "<group>"; };
+		1377BDE629C74D9B00B2839E /* NyrisSearcher.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = NyrisSearcher.docc; sourceTree = "<group>"; };
+		1377BDEC29C74D9B00B2839E /* NyrisSearcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NyrisSearcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1377BDF129C74D9B00B2839E /* NyrisSearcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NyrisSearcherTests.swift; sourceTree = "<group>"; };
+		1377BDFD29C74FEC00B2839E /* IntegrationKMP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationKMP.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		132C1DBB29C63D8E0060F822 /* Frameworks */ = {
+		1377BDDF29C74D9B00B2839E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		132C1DC529C63D8F0060F822 /* Frameworks */ = {
+		1377BDE929C74D9B00B2839E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				132C1DC929C63D8F0060F822 /* iOS.framework in Frameworks */,
+				1377BDED29C74D9B00B2839E /* NyrisSearcher.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		132C1DB429C63D8E0060F822 = {
+		1377BDD829C74D9B00B2839E = {
 			isa = PBXGroup;
 			children = (
-				132C1DC029C63D8E0060F822 /* iOS */,
-				132C1DCC29C63D8F0060F822 /* iOSTests */,
-				132C1DBF29C63D8E0060F822 /* Products */,
+				1377BDE429C74D9B00B2839E /* NyrisSearcher */,
+				1377BDF029C74D9B00B2839E /* NyrisSearcherTests */,
+				1377BDE329C74D9B00B2839E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		132C1DBF29C63D8E0060F822 /* Products */ = {
+		1377BDE329C74D9B00B2839E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				132C1DBE29C63D8E0060F822 /* iOS.framework */,
-				132C1DC829C63D8F0060F822 /* iOSTests.xctest */,
+				1377BDE229C74D9B00B2839E /* NyrisSearcher.framework */,
+				1377BDEC29C74D9B00B2839E /* NyrisSearcherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		132C1DC029C63D8E0060F822 /* iOS */ = {
+		1377BDE429C74D9B00B2839E /* NyrisSearcher */ = {
 			isa = PBXGroup;
 			children = (
-				132C1DC129C63D8E0060F822 /* iOS.h */,
-				132C1DC229C63D8E0060F822 /* iOS.docc */,
-				1377BDB229C72F0200B2839E /* TestFile.swift */,
+				1377BDE529C74D9B00B2839E /* NyrisSearcher.h */,
+				1377BDE629C74D9B00B2839E /* NyrisSearcher.docc */,
+				1377BDFD29C74FEC00B2839E /* IntegrationKMP.swift */,
 			);
-			path = iOS;
+			path = NyrisSearcher;
 			sourceTree = "<group>";
 		};
-		132C1DCC29C63D8F0060F822 /* iOSTests */ = {
+		1377BDF029C74D9B00B2839E /* NyrisSearcherTests */ = {
 			isa = PBXGroup;
 			children = (
-				132C1DCD29C63D8F0060F822 /* iOSTests.swift */,
+				1377BDF129C74D9B00B2839E /* NyrisSearcherTests.swift */,
 			);
-			path = iOSTests;
+			path = NyrisSearcherTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		132C1DB929C63D8E0060F822 /* Headers */ = {
+		1377BDDD29C74D9B00B2839E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				132C1DCF29C63D8F0060F822 /* iOS.h in Headers */,
+				1377BDF329C74D9B00B2839E /* NyrisSearcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		132C1DBD29C63D8E0060F822 /* iOS */ = {
+		1377BDE129C74D9B00B2839E /* NyrisSearcher */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 132C1DD229C63D8F0060F822 /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildConfigurationList = 1377BDF629C74D9B00B2839E /* Build configuration list for PBXNativeTarget "NyrisSearcher" */;
 			buildPhases = (
-				132C1DD829C63DB00060F822 /* Buikd and embed kmp */,
-				132C1DB929C63D8E0060F822 /* Headers */,
-				132C1DBA29C63D8E0060F822 /* Sources */,
-				132C1DBB29C63D8E0060F822 /* Frameworks */,
-				132C1DBC29C63D8E0060F822 /* Resources */,
+				1377BDFC29C74E8C00B2839E /* Run Script KMP integration */,
+				1377BDDD29C74D9B00B2839E /* Headers */,
+				1377BDDE29C74D9B00B2839E /* Sources */,
+				1377BDDF29C74D9B00B2839E /* Frameworks */,
+				1377BDE029C74D9B00B2839E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = iOS;
-			productName = iOS;
-			productReference = 132C1DBE29C63D8E0060F822 /* iOS.framework */;
+			name = NyrisSearcher;
+			productName = NyrisSearcher;
+			productReference = 1377BDE229C74D9B00B2839E /* NyrisSearcher.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		132C1DC729C63D8F0060F822 /* iOSTests */ = {
+		1377BDEB29C74D9B00B2839E /* NyrisSearcherTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 132C1DD529C63D8F0060F822 /* Build configuration list for PBXNativeTarget "iOSTests" */;
+			buildConfigurationList = 1377BDF929C74D9B00B2839E /* Build configuration list for PBXNativeTarget "NyrisSearcherTests" */;
 			buildPhases = (
-				132C1DC429C63D8F0060F822 /* Sources */,
-				132C1DC529C63D8F0060F822 /* Frameworks */,
-				132C1DC629C63D8F0060F822 /* Resources */,
+				1377BDE829C74D9B00B2839E /* Sources */,
+				1377BDE929C74D9B00B2839E /* Frameworks */,
+				1377BDEA29C74D9B00B2839E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				132C1DCB29C63D8F0060F822 /* PBXTargetDependency */,
+				1377BDEF29C74D9B00B2839E /* PBXTargetDependency */,
 			);
-			name = iOSTests;
-			productName = iOSTests;
-			productReference = 132C1DC829C63D8F0060F822 /* iOSTests.xctest */;
+			name = NyrisSearcherTests;
+			productName = NyrisSearcherTests;
+			productReference = 1377BDEC29C74D9B00B2839E /* NyrisSearcherTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		132C1DB529C63D8E0060F822 /* Project object */ = {
+		1377BDD929C74D9B00B2839E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
-					132C1DBD29C63D8E0060F822 = {
+					1377BDE129C74D9B00B2839E = {
 						CreatedOnToolsVersion = 14.2;
 					};
-					132C1DC729C63D8F0060F822 = {
+					1377BDEB29C74D9B00B2839E = {
 						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
-			buildConfigurationList = 132C1DB829C63D8E0060F822 /* Build configuration list for PBXProject "iOS" */;
+			buildConfigurationList = 1377BDDC29C74D9B00B2839E /* Build configuration list for PBXProject "NyrisSearcher" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -165,26 +165,26 @@
 				en,
 				Base,
 			);
-			mainGroup = 132C1DB429C63D8E0060F822;
-			productRefGroup = 132C1DBF29C63D8E0060F822 /* Products */;
+			mainGroup = 1377BDD829C74D9B00B2839E;
+			productRefGroup = 1377BDE329C74D9B00B2839E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				132C1DBD29C63D8E0060F822 /* iOS */,
-				132C1DC729C63D8F0060F822 /* iOSTests */,
+				1377BDE129C74D9B00B2839E /* NyrisSearcher */,
+				1377BDEB29C74D9B00B2839E /* NyrisSearcherTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		132C1DBC29C63D8E0060F822 /* Resources */ = {
+		1377BDE029C74D9B00B2839E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		132C1DC629C63D8F0060F822 /* Resources */ = {
+		1377BDEA29C74D9B00B2839E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -194,7 +194,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		132C1DD829C63DB00060F822 /* Buikd and embed kmp */ = {
+		1377BDFC29C74E8C00B2839E /* Run Script KMP integration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -203,7 +203,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Buikd and embed kmp";
+			name = "Run Script KMP integration";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -215,35 +215,35 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		132C1DBA29C63D8E0060F822 /* Sources */ = {
+		1377BDDE29C74D9B00B2839E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				132C1DC329C63D8E0060F822 /* iOS.docc in Sources */,
-				1377BDB329C72F0200B2839E /* TestFile.swift in Sources */,
+				1377BDE729C74D9B00B2839E /* NyrisSearcher.docc in Sources */,
+				1377BDFE29C74FEC00B2839E /* IntegrationKMP.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		132C1DC429C63D8F0060F822 /* Sources */ = {
+		1377BDE829C74D9B00B2839E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				132C1DCE29C63D8F0060F822 /* iOSTests.swift in Sources */,
+				1377BDF229C74D9B00B2839E /* NyrisSearcherTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		132C1DCB29C63D8F0060F822 /* PBXTargetDependency */ = {
+		1377BDEF29C74D9B00B2839E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 132C1DBD29C63D8E0060F822 /* iOS */;
-			targetProxy = 132C1DCA29C63D8F0060F822 /* PBXContainerItemProxy */;
+			target = 1377BDE129C74D9B00B2839E /* NyrisSearcher */;
+			targetProxy = 1377BDEE29C74D9B00B2839E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		132C1DD029C63D8F0060F822 /* Debug */ = {
+		1377BDF429C74D9B00B2839E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -280,6 +280,10 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../sdk.core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -298,6 +302,11 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					nyris,
+				);
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -306,7 +315,7 @@
 			};
 			name = Debug;
 		};
-		132C1DD129C63D8F0060F822 /* Release */ = {
+		1377BDF529C74D9B00B2839E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -343,6 +352,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../sdk.core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -354,6 +367,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					nyris,
+				);
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -363,7 +381,7 @@
 			};
 			name = Release;
 		};
-		132C1DD329C63D8F0060F822 /* Debug */ = {
+		1377BDF729C74D9B00B2839E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -373,10 +391,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../sdk.core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
-				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -386,12 +400,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					nyris,
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.iOS;
+				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.NyrisSearcher;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -400,7 +409,7 @@
 			};
 			name = Debug;
 		};
-		132C1DD429C63D8F0060F822 /* Release */ = {
+		1377BDF829C74D9B00B2839E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -410,10 +419,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../sdk.core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
-				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -423,12 +428,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					nyris,
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.iOS;
+				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.NyrisSearcher;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -437,20 +437,16 @@
 			};
 			name = Release;
 		};
-		132C1DD629C63D8F0060F822 /* Debug */ = {
+		1377BDFA29C74D9B00B2839E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JKPGZ623Z2;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../sdk.core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
-				);
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.iOSTests;
+				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.NyrisSearcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -458,7 +454,7 @@
 			};
 			name = Debug;
 		};
-		132C1DD729C63D8F0060F822 /* Release */ = {
+		1377BDFB29C74D9B00B2839E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -467,7 +463,7 @@
 				DEVELOPMENT_TEAM = JKPGZ623Z2;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.iOSTests;
+				PRODUCT_BUNDLE_IDENTIFIER = io.nyris.sdk.ui.NyrisSearcherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -478,34 +474,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		132C1DB829C63D8E0060F822 /* Build configuration list for PBXProject "iOS" */ = {
+		1377BDDC29C74D9B00B2839E /* Build configuration list for PBXProject "NyrisSearcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				132C1DD029C63D8F0060F822 /* Debug */,
-				132C1DD129C63D8F0060F822 /* Release */,
+				1377BDF429C74D9B00B2839E /* Debug */,
+				1377BDF529C74D9B00B2839E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		132C1DD229C63D8F0060F822 /* Build configuration list for PBXNativeTarget "iOS" */ = {
+		1377BDF629C74D9B00B2839E /* Build configuration list for PBXNativeTarget "NyrisSearcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				132C1DD329C63D8F0060F822 /* Debug */,
-				132C1DD429C63D8F0060F822 /* Release */,
+				1377BDF729C74D9B00B2839E /* Debug */,
+				1377BDF829C74D9B00B2839E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		132C1DD529C63D8F0060F822 /* Build configuration list for PBXNativeTarget "iOSTests" */ = {
+		1377BDF929C74D9B00B2839E /* Build configuration list for PBXNativeTarget "NyrisSearcherTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				132C1DD629C63D8F0060F822 /* Debug */,
-				132C1DD729C63D8F0060F822 /* Release */,
+				1377BDFA29C74D9B00B2839E /* Debug */,
+				1377BDFB29C74D9B00B2839E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 132C1DB529C63D8E0060F822 /* Project object */;
+	rootObject = 1377BDD929C74D9B00B2839E /* Project object */;
 }
