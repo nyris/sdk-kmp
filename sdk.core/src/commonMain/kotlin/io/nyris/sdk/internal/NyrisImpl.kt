@@ -44,7 +44,7 @@ internal class NyrisImpl private constructor(
         fun createInstance(
             apiKey: String,
             config: NyrisConfig,
-        ): NyrisImpl {
+        ): Nyris {
             return NyrisImpl(apiKey, config)
         }
     }
