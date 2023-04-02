@@ -13,8 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.camera
+package io.nyris.sdk.camera.core
 
-object HelloCameraProvider {
-    const val get = "Hello from SDK Camera!"
+import androidx.annotation.IntDef
+import io.nyris.sdk.camera.core.CompressionFormat.Companion.JPEG
+import io.nyris.sdk.camera.core.CompressionFormat.Companion.WEBP
+
+enum class CompressionFormatEnum { WebP, Jpeg }
+
+@IntDef(WEBP, JPEG)
+@Retention(AnnotationRetention.SOURCE)
+annotation class CompressionFormat {
+    companion object {
+        const val WEBP: Int = 0
+        const val JPEG: Int = 1
+    }
 }
