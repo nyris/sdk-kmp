@@ -17,23 +17,23 @@ package io.nyris.sdk.builder
 
 import io.nyris.sdk.model.MatchResponse
 
-interface ImageMatchingRequestBuilder {
-    fun limit(limit: Int): ImageMatchingRequestBuilder
+interface ImageMatchingRequestBuilder<D> {
+    fun limit(limit: Int): ImageMatchingRequestBuilder<D>
 
-    fun language(language: String): ImageMatchingRequestBuilder
+    fun language(language: String): ImageMatchingRequestBuilder<D>
 
-    fun threshold(threshold: Float): ImageMatchingRequestBuilder
+    fun threshold(threshold: Float): ImageMatchingRequestBuilder<D>
 
     fun geolocation(
         lat: Float,
         lon: Float,
         dist: Int,
-    ): ImageMatchingRequestBuilder
+    ): ImageMatchingRequestBuilder<D>
 
-    fun filters(filters: Map<String, List<String>>): ImageMatchingRequestBuilder
+    fun filters(filters: Map<String, List<String>>): ImageMatchingRequestBuilder<D>
 
-    fun session(session: String): ImageMatchingRequestBuilder
+    fun session(session: String): ImageMatchingRequestBuilder<D>
 
     // Put the params before this call
-    suspend fun match(image: ByteArray): Result<MatchResponse>
+    suspend fun match(image: D): Result<MatchResponse>
 }
