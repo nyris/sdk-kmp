@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright 2023 nyris GmbH
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="nyris_barcode_format_label">Barcode format</string>
+    <string name="nyris_barcode_format_unknown">UNKNOWN</string>
+    <string name="nyris_barcode_format_all">ALL</string>
+    <string name="nyris_barcode_format_code_128">CODE-128</string>
+    <string name="nyris_barcode_format_code_39">CODE-39</string>
+    <string name="nyris_barcode_format_code_93">CODE-93</string>
+    <string name="nyris_barcode_format_codebar">CODABAR</string>
+    <string name="nyris_barcode_format_ean_8">EAN-8</string>
+    <string name="nyris_barcode_format_ean_13">EAN-13</string>
+    <string name="nyris_barcode_format_ean_itf">ITF</string>
+    <string name="nyris_barcode_format_upc_a">UPC-A</string>
+    <string name="nyris_barcode_format_upc_e">UPC-E</string>
+    <string name="nyris_barcode_format_pdf417">PDF417</string>
+    <string name="nyris_barcode_format_qr_code">QR-CODE</string>
+    <string name="nyris_barcode_format_aztec">AZTEC</string>
+    <string name="nyris_barcode_format_data_matrix">DATA-MATRIX</string>
+</resources>
