@@ -77,7 +77,7 @@ internal fun Project.configureDefaultDependencies(includeLibs: Boolean = true) {
         if (includeLibs) {
             add("implementation", fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
         }
-        add("testImplementation", libs().findLibrary("test_junit").get())
+        add("testImplementation", libs().findLibrary("test_junit_engine").get())
         add("testImplementation", libs().findLibrary("test_mockk.core").get())
         add("testImplementation", libs().findLibrary("test_assertj_core").get())
     }

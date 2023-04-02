@@ -20,6 +20,7 @@ import io.nyris.gradle.utils.Configuration
 import io.nyris.gradle.utils.applyKotlinJvmToolChain
 import io.nyris.gradle.utils.configureDefaultDependencies
 import io.nyris.gradle.utils.configureDefaultLibraryPlugins
+import io.nyris.gradle.utils.kotlinOptions
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -65,6 +66,10 @@ internal fun Project.configureLibrary() {
             unitTests.all {
                 it.jvmArgs = listOf("-noverify")
             }
+        }
+
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjvm-default=all")
         }
     }
 }
