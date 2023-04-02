@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation(project(Modules.sdk_core))
+    implementation(project(Modules.sdk_camera_android))
     implementation(project(Modules.sdk_ui_android))
 
     implementation(libs.androidx.appcompat)

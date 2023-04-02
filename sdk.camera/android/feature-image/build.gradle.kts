@@ -13,13 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import io.nyris.gradle.utils.Modules
+
 plugins {
     id("io.nyris.gradle.library")
     id("io.nyris.gradle.publisher")
 }
 
-(this as? ProjectDescriptor)?.name = ""
-
 android {
-    namespace = "io.nyris.sdk.camera"
+    namespace = "io.nyris.sdk.camera.feature.image"
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
+}
+
+dependencies {
+    compileOnly(libs.androidx.camera.core)
+    compileOnly(libs.androidx.camera.view)
+    compileOnly(project(Modules.sdk_camera_core_android))
+
+    testImplementation(libs.androidx.camera.view)
+    testImplementation(project(Modules.sdk_camera_core_android))
 }

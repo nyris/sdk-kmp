@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.gradle.utils
+plugins {
+    id("io.nyris.gradle.library")
+    id("io.nyris.gradle.publisher")
+}
 
-object Modules {
-    const val sdk_core = ":core"
-    const val sdk_camera_android = ":sdk.camera:android:camera-view"
-    const val sdk_camera_core_android = ":sdk.camera:android:camera-core"
-    const val sdk_camera_feature_image_android = ":sdk.camera:android:camera-feature-image"
-    const val sdk_camera_feature_barcode_android = ":sdk.camera:android:camera-feature-barcode"
-    const val sdk_ui_android = ":sdk.ui:ui"
+android {
+    namespace = "io.nyris.sdk.camera.core"
+}
+
+dependencies {
+    implementation(libs.androidx.camera.core)
 }
