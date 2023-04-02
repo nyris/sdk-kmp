@@ -21,6 +21,8 @@ androidxMaterial = "1.7.0"
 androidxConstraintlayout = "2.1.4"
 firebaseCrashlytics = "18.3.3"
 firebaseAnalytics = "21.2.0"
+cameraX = "1.2.1"
+mlkitBarcode = "17.1.0"
 
 [libraries]
 # classpath plugin
@@ -30,7 +32,9 @@ android_plugin = { group = "com.android.tools.build", name = "gradle", version.r
 testlogger_plugin = { group = "com.adarshr", name = "gradle-test-logger-plugin", version.ref = "testLoggerPlugin" }
 firebase_appdist_plugin = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppDistPlugin" }
 firebase_crashlytics_plugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+
 google_services_plugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServicesPlugin" }
+google_mlkit_barcode = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "mlkitBarcode" }
 
 kotlin_serialization_plugin = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlinPlugin" }
 detekt_formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detektPlugin" }
@@ -54,11 +58,16 @@ ktor_jvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" 
 androidx_appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcomapt" }
 androidx_material = { group = "com.google.android.material", name = "material", version.ref = "androidxMaterial" }
 androidx_constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx_camera_core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
+androidx_camera_view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
+androidx_camera_lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
+androidx_camera_camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
 
 firebase_crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 firebase_analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 
-test_junit = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+test_junit_engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
+test_junit_params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit" }
 test_mockk_common = { group = "io.mockk", name = "mockk-common", version.ref = "mockk" }
 test_mockk_core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 test_assertj_core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
