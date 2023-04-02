@@ -54,6 +54,7 @@ ktor_loggin = { group = "io.ktor", name = "ktor-client-logging", version.ref = "
 ktor_serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor_okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor_android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor_ios = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor_jvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 
 androidx_core = { group = "androidx.core", name = "core", version.ref = "androidxCore" }
