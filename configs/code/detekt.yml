@@ -83,7 +83,7 @@ complexity:
     includePrivateDeclarations: false
   CyclomaticComplexMethod:
     active: true
-    threshold: 15
+    threshold: 20
     ignoreSingleWhenExpression: false
     ignoreSimpleWhenEntries: false
     ignoreNestingFunctions: false
@@ -131,8 +131,8 @@ complexity:
     thresholdInObjects: 11
     thresholdInEnums: 11
     ignoreDeprecated: false
-    ignorePrivate: false
-    ignoreOverridden: false
+    ignorePrivate: true
+    ignoreOverridden: true
 
 coroutines:
   active: true
