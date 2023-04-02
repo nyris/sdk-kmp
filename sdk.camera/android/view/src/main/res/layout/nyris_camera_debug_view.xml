@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright 2023 nyris GmbH
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="#88000000"
+    tools:ignore="HardcodedText,SmallSp,UseCompoundDrawables,ContentDescription"
+    tools:layout_height="wrap_content"
+    tools:layout_width="150dp"
+    tools:orientation="vertical"
+    tools:padding="4dp"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Debug Info:"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dTorch"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Torch disabled"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/dCameraState"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Camera State"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/dFocusMode"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Focus Mode: Automatic"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/dPreviewSize"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        tools:text="Preview Size: 1280x720" />
+
+    <TextView
+        android:id="@+id/dCaptureMode"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        tools:text="Capture Mode: Screenshot" />
+
+    <TextView
+        android:id="@+id/dCompressionFormat"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        tools:text="Compression format: 1s" />
+
+    <TextView
+        android:id="@+id/dCompressionQuality"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        tools:text="Compression quality: 1s" />
+
+    <TextView
+        android:id="@+id/dBarcode"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:visibility="gone"
+        tools:text="Barcode: 18903890218"
+        tools:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/dImageContainer"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/dCaptureTime"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            tools:text="Capture Time: 1s" />
+
+        <LinearLayout
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/dCaptureTime"
+            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:background="@android:color/black"
+                android:id="@+id/dCapturedOptimizedImageSize"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="2dp"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                tools:text="Image Size: 1KB" />
+
+            <ImageView
+                android:background="@android:color/black"
+                android:id="@+id/dCapturedOptimizedImage"
+                android:layout_height="150dp"
+                android:layout_width="70dp"
+                android:padding="4dp"
+                tools:background="@android:color/holo_red_dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/dCaptureTime"
+            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:background="@android:color/black"
+                android:id="@+id/dCapturedOriginalImageSize"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="2dp"
+                android:textColor="@android:color/white"
+                android:textSize="10sp"
+                tools:text="Image Size: 1KB" />
+
+            <ImageView
+                android:background="@android:color/black"
+                android:id="@+id/dCapturedOriginalImage"
+                android:layout_height="150dp"
+                android:layout_width="70dp"
+                android:padding="4dp"
+                tools:background="@android:color/holo_green_dark"
+                tools:visibility="visible" />
+        </LinearLayout>
+    </RelativeLayout>
+</merge>

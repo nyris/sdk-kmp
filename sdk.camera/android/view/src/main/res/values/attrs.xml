@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright 2023 nyris GmbH
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <declare-styleable name="CameraView">
+        <attr name="capture_mode" format="enum">
+            <!-- default mode -->
+            <enum name="screenshot" value="0" />
+            <enum name="lens" value="1" />
+            <enum name="barcode" value="2" />
+        </attr>
+        <attr name="focus_mode" format="enum">
+            <!-- default mode -->
+            <enum name="automatic" value="0" />
+            <enum name="manual" value="1" />
+        </attr>
+        <attr name="quality" format="integer" />
+        <attr name="compression_format" format="enum">
+            <!-- default -->
+            <enum name="webp" value="0" />
+            <enum name="jpeg" value="1" />
+        </attr>
+        <attr name="barcode_format" format="enum">
+            <!-- default format -->
+            <enum name="all" value="0" />
+            <enum name="code_128" value="1" />
+            <enum name="code_39" value="2" />
+            <enum name="code_93" value="3" />
+            <enum name="codabar" value="4" />
+            <enum name="ean_8" value="5" />
+            <enum name="ean_13" value="6" />
+            <enum name="itf" value="7" />
+            <enum name="upc_a" value="8" />
+            <enum name="upc_e" value="9" />
+            <enum name="qr_code" value="10" />
+            <enum name="pdf417" value="11" />
+            <enum name="aztec" value="12" />
+            <enum name="data_matrix" value="13" />
+        </attr>
+    </declare-styleable>
+</resources>
