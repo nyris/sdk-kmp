@@ -15,9 +15,7 @@
  */
 package io.nyris.sdk.ui
 
-import io.nyris.sdk.camera.HelloCameraProvider
-
 object HelloSearcherWorld {
     const val get =
-        "Hello from Searcher UI! \n${HelloCameraProvider.get}"
+        "Hello from Searcher UI!"
 }

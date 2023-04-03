@@ -23,7 +23,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import io.nyris.sdk.camera.databinding.NyrisCameraFocusViewBinding
 
-class FocusMarkerView @JvmOverloads constructor(
+internal class FocusMarkerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,

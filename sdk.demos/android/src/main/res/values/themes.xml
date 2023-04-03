@@ -13,7 +13,7 @@
 -->
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.SDK.Demo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.SDK.Demo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

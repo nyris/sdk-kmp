@@ -26,6 +26,10 @@ android {
         versionName = rootProject.extra["LIB_VERSION_NAME"].toString()
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes.forEach {
         it.buildConfigField("String", "API_KEY", "\"${System.getenv("PUBLIC_API_KEY")}\"")
     }
@@ -34,6 +38,7 @@ android {
 dependencies {
     implementation(project(Modules.sdk_core))
     implementation(project(Modules.sdk_camera_android))
+    implementation(project(Modules.sdk_camera_feature_barcode_android))
     implementation(project(Modules.sdk_ui_android))
 
     implementation(libs.androidx.appcompat)

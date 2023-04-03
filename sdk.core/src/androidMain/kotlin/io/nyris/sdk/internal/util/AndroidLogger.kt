@@ -24,6 +24,6 @@ internal actual val Logger.Companion.DEFAULT: Logger
     get() = object : Logger {
         override fun log(message: String?) {
             if (message == null) return
-            Log.d("sdk.core", message)
+            Log.d("nyris.sdk.core", message)
         }
     }
