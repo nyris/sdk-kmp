@@ -43,14 +43,20 @@ class RootBuildGradleConfigPlugin : Plugin<Project> {
 }
 
 private fun ExtraPropertiesExtension.loadExtras(target: Project) {
+    loadDemoVersionCode(target)
     loadLibVersionName(target)
     loadGithubProperties(target)
     loadReleaseSigningProperties(target)
 }
 
+private fun ExtraPropertiesExtension.loadDemoVersionCode(target: Project) {
+    set("DEMO_VERSION_CODE", generateVersionCode(target))
+}
+
 private fun ExtraPropertiesExtension.loadLibVersionName(target: Project) {
     set("LIB_VERSION_NAME", generateVersionName(target))
 }
+
 
 private fun ExtraPropertiesExtension.loadGithubProperties(target: Project) {
     val propertiesFile = target.rootDir.resolve("local.properties")
@@ -80,6 +86,10 @@ private fun ExtraPropertiesExtension.loadReleaseSigningProperties(target: Projec
         set("RELEASE_KEY_ALIAS", "")
         set("RELEASE_KEY_PASSWORD", "")
     }
+}
+
+private fun generateVersionCode(project: Project): Int {
+    return "git rev-list --count main".execute(project)?.toIntOrNull() ?: 1
 }
 
 private fun generateVersionName(project: Project): String {

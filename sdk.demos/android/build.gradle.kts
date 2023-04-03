@@ -23,6 +23,7 @@ android {
     namespace = "io.nyris.sdk.demo"
     defaultConfig {
         applicationId = "io.nyris.sdk.demo"
+        versionCode = rootProject.extra["DEMO_VERSION_CODE"].toString().toIntOrNull() ?: 1
         versionName = rootProject.extra["LIB_VERSION_NAME"].toString()
     }
 
