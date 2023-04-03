@@ -26,4 +26,4 @@ jobs:
           java-version: 11
 
       - name: Publish to github packages
-        run: ./gradlew ::sdk.camera:camera:publishAllPublicationsToGithubRepository
+        run: ./gradlew publishCameraModulesToGithub --no-configuration-cache

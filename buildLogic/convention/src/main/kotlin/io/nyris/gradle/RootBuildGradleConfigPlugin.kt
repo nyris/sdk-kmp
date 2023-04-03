@@ -25,14 +25,17 @@ import org.gradle.kotlin.dsl.repositories
 class RootBuildGradleConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
+            extra.loadExtras(this)
+
             allprojects {
                 repositories {
                     google()
                     mavenCentral()
+                    maven {
+                        url = uri("file://$rootDir/build/maven")
+                    }
                 }
             }
-
-            extra.loadExtras(this)
 
             applyWorkaroundIssue247906487()
         }

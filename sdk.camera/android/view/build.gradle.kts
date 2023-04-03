@@ -61,3 +61,17 @@ dependencies {
     testImplementation(libs.test.junit.params)
     implementation(project(Modules.sdk_camera_feature_barcode_android))
 }
+
+tasks.create("publishCameraModulesToGithub") {
+    dependsOn(":sdk.camera:android:camera-core:publishAllPublicationsToGithubRepository")
+    dependsOn(":sdk.camera:android:camera-feature-image:publishAllPublicationsToGithubRepository")
+    dependsOn(":sdk.camera:android:camera-feature-barcode:publishAllPublicationsToGithubRepository")
+    dependsOn(":sdk.camera:android:camera-view:publishAllPublicationsToGithubRepository")
+}
+
+tasks.create("publishCameraModulesToLocal") {
+    dependsOn(":sdk.camera:android:camera-core:publishAllPublicationsToLocalMavenRepository")
+    dependsOn(":sdk.camera:android:camera-feature-image:publishAllPublicationsToLocalMavenRepository")
+    dependsOn(":sdk.camera:android:camera-feature-barcode:publishAllPublicationsToLocalMavenRepository")
+    dependsOn(":sdk.camera:android:camera-view:publishAllPublicationsToLocalMavenRepository")
+}
