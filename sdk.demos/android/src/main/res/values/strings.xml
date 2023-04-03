@@ -12,5 +12,38 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">nyris Demo</string>
+    <string name="app_name">Nyris Demos</string>
+
+    <string-array name="capture_mode_array">
+        <item>Screenshot</item>
+        <item>Lens</item>
+        <item>Barcode</item>
+    </string-array>
+
+    <string-array name="focus_mode_array">
+        <item>Automatic</item>
+        <item>Manual</item>
+    </string-array>
+
+    <string-array name="barcode_format">
+        <item>ALL</item>
+        <item>CODE_128</item>
+        <item>CODE_39</item>
+        <item>CODE_93</item>
+        <item>CODABAR</item>
+        <item>EAN_8</item>
+        <item>EAN_13</item>
+        <item>ITF</item>
+        <item>UPC_A</item>
+        <item>UPC_E</item>
+        <item>QR_CODE</item>
+        <item>PDF417</item>
+        <item>AZTEC</item>
+        <item>DATA_MATRIX</item>
+    </string-array>
+
+    <string-array name="compression_format">
+        <item>WebP</item>
+        <item>JPEG</item>
+    </string-array>
 </resources>

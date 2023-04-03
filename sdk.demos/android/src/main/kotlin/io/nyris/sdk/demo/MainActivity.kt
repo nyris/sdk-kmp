@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
             val onClickListener = View.OnClickListener { view ->
                 val kclass = when (view.id) {
-                    R.id.cameraBtn -> CameraActivity::class
+                    R.id.cameraBtn -> CameraConfigActivity::class
                     R.id.sdkBtn -> SdkActivity::class
                     R.id.searcherBtn -> SearcherActivity::class
                     else -> throw IllegalArgumentException("Button click not handled!")

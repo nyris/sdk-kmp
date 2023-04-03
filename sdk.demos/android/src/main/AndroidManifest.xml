@@ -32,6 +32,10 @@
 
         <activity
             android:exported="false"
+            android:name=".CameraConfigActivity" />
+
+        <activity
+            android:exported="false"
             android:name=".CameraActivity"
             android:theme="@style/Theme.SDK.Demo.Camera" />
 
