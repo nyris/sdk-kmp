@@ -26,7 +26,6 @@ import androidx.annotation.IntRange
 import androidx.camera.core.CameraState
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
-import com.google.mlkit.vision.barcode.common.Barcode
 import io.nyris.sdk.camera.CameraView
 import io.nyris.sdk.camera.R
 import io.nyris.sdk.camera.Result
@@ -35,6 +34,7 @@ import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.databinding.NyrisCameraViewBinding
+import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeOverlayDrawable
 import io.nyris.sdk.camera.feature.image.DEFAULT_QUALITY
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
@@ -170,7 +170,7 @@ internal class CameraViewDelegate(
         binding.debugView.visibility = FrameLayout.GONE
     }
 
-    override fun setBarcodesDebugInfo(barcodes: List<Barcode>) {
+    override fun setBarcodesDebugInfo(barcodes: List<BarcodeInternal>) {
         binding.debugView.setBarcodesDebugInfo(barcodes)
     }
 
@@ -215,15 +215,21 @@ internal class CameraViewDelegate(
         block: CaptureBlock<R>?,
     ) {
         captureBlock = block as? CaptureBlock<Result>
-        presenter?.capture(kClass)
+        cameraView.post {
+            presenter?.capture(kClass)
+        }
     }
 
     internal fun enableTorch() {
-        presenter?.enableTorch()
+        cameraView.post {
+            presenter?.enableTorch()
+        }
     }
 
     internal fun disableTorch() {
-        presenter?.disableTorch()
+        cameraView.post {
+            presenter?.disableTorch()
+        }
     }
 
     internal fun torchState(block: TorchStateBlock?) {

@@ -48,13 +48,12 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.0")
-
+    implementation(libs.androidx.core)
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.camera2)
 
-    implementation(project(Modules.sdk_camera_core_android))
+    api(project(Modules.sdk_camera_core_android))
     implementation(project(Modules.sdk_camera_feature_image_android))
     compileOnly(project(Modules.sdk_camera_feature_barcode_android))
 

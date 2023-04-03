@@ -15,11 +15,16 @@
  */
 package io.nyris.sdk.camera
 
-import com.google.mlkit.vision.barcode.common.Barcode
+import io.nyris.sdk.camera.core.BarcodeFormat
 
 interface Result
 
-class BarcodeResult(val barcodes: List<Barcode>) : Result
+data class BarcodeResult(val barcodes: List<Barcode>) : Result
+data class Barcode(
+    val code: String?,
+    @BarcodeFormat
+    val format: Int,
+)
 
 class ImageResult(
     val originalImage: ByteArray,

@@ -32,7 +32,12 @@ import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class BarcodeResultInternal(val barcodes: List<Barcode>) : ResultInternal
+class BarcodeResultInternal(val barcodes: List<BarcodeInternal>) : ResultInternal
+class BarcodeInternal(
+    val code: String?,
+    @BarcodeFormat
+    val format: Int,
+)
 
 @Suppress("UnsafeOptInUsageError")
 class BarcodeImageFeature internal constructor(
@@ -73,7 +78,8 @@ class BarcodeImageFeature internal constructor(
             scanner.process(inputImage)
                 .addOnSuccessListener { barcodes ->
                     if (barcodes.isEmpty()) return@addOnSuccessListener
-                    resultCallback?.invoke(BarcodeResultInternal(barcodes))
+                    val mappedBarcodes = barcodes.map { it.toBarcodeInternal() }
+                    resultCallback?.invoke(BarcodeResultInternal(mappedBarcodes))
                 }
                 .addOnFailureListener { e ->
                     errorCallback?.invoke(
@@ -84,6 +90,9 @@ class BarcodeImageFeature internal constructor(
                 }
         }
     }
+
+    private fun Barcode.toBarcodeInternal() =
+        BarcodeInternal(code = this.rawValue, format = this.format.toBarcodeFormat())
 
     companion object {
         @Suppress("SpreadOperator") // Small Array

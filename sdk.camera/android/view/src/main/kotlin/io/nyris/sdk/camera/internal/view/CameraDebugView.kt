@@ -21,11 +21,12 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.camera.core.CameraState
-import com.google.mlkit.vision.barcode.common.Barcode
+import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.databinding.NyrisCameraDebugViewBinding
+import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
 import io.nyris.sdk.camera.feature.image.toBitmap
 import io.nyris.sdk.camera.internal.byteToKb
 import io.nyris.sdk.camera.internal.byteToMb
@@ -58,10 +59,10 @@ internal class CameraDebugView @JvmOverloads constructor(
         binding.dPreviewSize.text = "Preview Size: ${width}x$height"
     }
 
-    fun setBarcodesDebugInfo(barcodes: List<Barcode>) {
+    fun setBarcodesDebugInfo(barcodes: List<BarcodeInternal>) {
         val barcode = barcodes.first()
         binding.dBarcode.visibility = VISIBLE
-        binding.dBarcode.text = "Barcode: ${barcode.rawValue}\n" +
+        binding.dBarcode.text = "Barcode: ${barcode.code}\n" +
             "Barcode Format: ${barcode.format.toBarcodeFormatStr()}"
     }
 
@@ -123,19 +124,19 @@ internal class CameraDebugView @JvmOverloads constructor(
     }
 
     private fun Int.toBarcodeFormatStr(): String = when (this) {
-        Barcode.FORMAT_CODE_128 -> "CODE_128"
-        Barcode.FORMAT_CODE_39 -> "CODE_39"
-        Barcode.FORMAT_CODE_93 -> "CODE_93"
-        Barcode.FORMAT_CODABAR -> "CODABAR"
-        Barcode.FORMAT_EAN_8 -> "EAN_8"
-        Barcode.FORMAT_EAN_13 -> "EAN_13"
-        Barcode.FORMAT_ITF -> "ITF"
-        Barcode.FORMAT_UPC_A -> "UPC_A"
-        Barcode.FORMAT_UPC_E -> "UPC_E"
-        Barcode.FORMAT_QR_CODE -> "QR_CODE"
-        Barcode.FORMAT_PDF417 -> "PDF417"
-        Barcode.FORMAT_AZTEC -> "AZTEC"
-        Barcode.FORMAT_DATA_MATRIX -> "DATA_MATRIX"
+        BarcodeFormat.CODE_128 -> "CODE_128"
+        BarcodeFormat.CODE_39 -> "CODE_39"
+        BarcodeFormat.CODE_93 -> "CODE_93"
+        BarcodeFormat.CODABAR -> "CODABAR"
+        BarcodeFormat.EAN_8 -> "EAN_8"
+        BarcodeFormat.EAN_13 -> "EAN_13"
+        BarcodeFormat.ITF -> "ITF"
+        BarcodeFormat.UPC_A -> "UPC_A"
+        BarcodeFormat.UPC_E -> "UPC_E"
+        BarcodeFormat.QR_CODE -> "QR_CODE"
+        BarcodeFormat.PDF417 -> "PDF417"
+        BarcodeFormat.AZTEC -> "AZTEC"
+        BarcodeFormat.DATA_MATRIX -> "DATA_MATRIX"
         else -> "UNKNOWN"
     }
 }

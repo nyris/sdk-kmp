@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    api(libs.google.mlkit.barcode)
+    implementation(libs.google.mlkit.barcode)
     compileOnly(libs.androidx.camera.core)
     compileOnly(project(Modules.sdk_camera_core_android))
 

@@ -16,6 +16,7 @@
 package io.nyris.sdk.camera.internal
 
 import androidx.annotation.IntRange
+import io.nyris.sdk.camera.Barcode
 import io.nyris.sdk.camera.BarcodeResult
 import io.nyris.sdk.camera.ImageResult
 import io.nyris.sdk.camera.Result
@@ -24,6 +25,7 @@ import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ResultInternal
+import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeResultInternal
 import io.nyris.sdk.camera.feature.image.ImageResultInternal
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
@@ -169,7 +171,12 @@ internal class CameraViewPresenter(
 }
 
 internal fun BarcodeResultInternal.toBarcodeResult(): BarcodeResult = BarcodeResult(
-    barcodes = this.barcodes,
+    barcodes = this.barcodes.map { it.toBarcode() },
+)
+
+internal fun BarcodeInternal.toBarcode() = Barcode(
+    code = this.code,
+    format = this.format
 )
 
 internal fun ImageResultInternal.toImageResult(): ImageResult = ImageResult(

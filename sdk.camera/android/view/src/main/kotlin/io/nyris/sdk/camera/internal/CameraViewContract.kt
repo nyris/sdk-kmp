@@ -20,12 +20,12 @@ import androidx.annotation.IntRange
 import androidx.camera.core.CameraState
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
-import com.google.mlkit.vision.barcode.common.Barcode
 import io.nyris.sdk.camera.Result
 import io.nyris.sdk.camera.core.CameraError
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
+import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
 import io.nyris.sdk.camera.feature.image.MIN_QUALITY
 import kotlin.reflect.KClass
@@ -79,7 +79,7 @@ internal interface CameraViewContract {
         fun showDebugInfo()
         fun hideDebugInfo()
 
-        fun setBarcodesDebugInfo(barcodes: List<Barcode>)
+        fun setBarcodesDebugInfo(barcodes: List<BarcodeInternal>)
 
         fun onTorchStateChanged(isEnabled: Boolean?)
         fun observeTouch()

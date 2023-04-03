@@ -15,48 +15,31 @@
  */
 package io.nyris.sdk.demo
 
-import android.content.res.AssetManager
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import io.nyris.sdk.Nyris
-import io.nyris.sdk.NyrisConfig
-import io.nyris.sdk.ResponseException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import io.nyris.sdk.demo.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        with(ActivityMainBinding.inflate(layoutInflater)) {
+            setContentView(root)
 
-        val nyris = Nyris.createInstance(
-            apiKey = BuildConfig.API_KEY,
-            config = NyrisConfig(isDebug = true)
-        )
+            val onClickListener = View.OnClickListener { view ->
+                val kclass = when (view.id) {
+                    R.id.cameraBtn -> CameraActivity::class
+                    R.id.sdkBtn -> SdkActivity::class
+                    R.id.searcherBtn -> SearcherActivity::class
+                    else -> throw IllegalArgumentException("Button click not handled!")
+                }
+                startActivity(Intent(this@MainActivity, kclass.java))
+            }
 
-        CoroutineScope(Dispatchers.Main + Job()).launch {
-            nyris.imageMatching()
-                .match(assets.loadImage("test_image.jpg"))
-                .onSuccess {
-                    Toast.makeText(applicationContext, "Woop Woop!", Toast.LENGTH_LONG).show()
-                }
-                .onFailure {
-                    if (it is ResponseException) {
-                        Toast.makeText(applicationContext, it.toString(), Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
-                    }
-                }
+            cameraBtn.setOnClickListener(onClickListener)
+            sdkBtn.setOnClickListener(onClickListener)
+            searcherBtn.setOnClickListener(onClickListener)
         }
-    }
-}
-
-private fun AssetManager.loadImage(path: String): ByteArray = open(path).run {
-    ByteArray(available()).apply {
-        read(this)
-        close()
     }
 }

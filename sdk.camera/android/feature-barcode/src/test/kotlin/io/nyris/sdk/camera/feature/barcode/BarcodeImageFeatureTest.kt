@@ -73,7 +73,7 @@ class BarcodeImageFeatureTest {
         classToTest.resultCallback = resultCallback
 
         classToTest.processImageProxy(imageProxy)
-        successListenerSlot.captured.onSuccess(listOf(mockk()))
+        successListenerSlot.captured.onSuccess(listOf(mockk(relaxed = true)))
 
         verify { resultCallback.invoke(any()) }
     }

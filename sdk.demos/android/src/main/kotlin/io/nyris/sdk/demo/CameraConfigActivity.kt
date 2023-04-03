@@ -12,7 +12,7 @@ import io.nyris.sdk.camera.core.CompressionFormat
 import io.nyris.sdk.camera.core.FocusMode
 import io.nyris.sdk.demo.databinding.ActivityCameraBinding
 
-class CameraActivity : AppCompatActivity() {
+class CameraConfigActivity : AppCompatActivity() {
     private var cameraView: CameraView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class CameraActivity : AppCompatActivity() {
             capture.setOnClickListener {
                 cameraView?.capture(ImageResult::class) { result ->
                     Toast.makeText(
-                        this@CameraActivity,
+                        this@CameraConfigActivity,
                         "Image Captured! $result",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -59,7 +59,7 @@ class CameraActivity : AppCompatActivity() {
 
             cameraView?.error { error ->
                 Toast.makeText(
-                    this@CameraActivity,
+                    this@CameraConfigActivity,
                     error.message,
                     Toast.LENGTH_SHORT
                 ).show()
