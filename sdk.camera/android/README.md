@@ -30,7 +30,7 @@ On top of the optimization, the SDK Offers:
 ## ⚠️ Requirements
 
 * Min sdk: 21
-* You need to handle the camera permission on your end. If you don't then you will just a black screen.
+* You need to handle the camera permission on your end. If you don't then you will just see a black screen.
 * Activity of Fragment needs to be `LifecycleOwner`. The Camera SDK relies on Jetpack CameraX which is relying
   on `LifecycleOwner` implementation
 
@@ -192,10 +192,6 @@ override fun onDestroy() {
 
 Yes, you can just need to add this names to your app and the desired values!
 
-### Can I use two capture mode at the same time ?
-
-No, you can't. The camera support only 1 capture mode at the same time.
-
 ```
 colors.xml
 <resources>
@@ -231,6 +227,10 @@ strings.xml
     <string name="nyris_barcode_format_data_matrix">DATA-MATRIX</string>
 </resources>
 ```
+
+### Can I use two capture mode at the same time ?
+
+No, you can't. The camera support only 1 capture mode at the same time.
 
 ## 📜 License
 
