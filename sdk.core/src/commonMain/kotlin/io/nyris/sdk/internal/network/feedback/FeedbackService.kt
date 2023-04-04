@@ -18,6 +18,7 @@ package io.nyris.sdk.internal.network.feedback
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.nyris.sdk.builder.NyrisResult
 import io.nyris.sdk.internal.network.Endpoints
 import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.util.Logger
@@ -25,7 +26,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.withContext
 
 internal interface FeedbackService {
-    suspend fun send(feedbackRequest: FeedbackRequest): Result<Unit>
+    suspend fun send(feedbackRequest: FeedbackRequest): NyrisResult
 }
 
 internal class FeedbackServiceImpl(
@@ -36,7 +37,7 @@ internal class FeedbackServiceImpl(
 ) : FeedbackService {
     override suspend fun send(
         feedbackRequest: FeedbackRequest,
-    ): Result<Unit> = withContext(coroutineContext) {
+    ): NyrisResult = withContext(coroutineContext) {
         logger.log("[FeedbackServiceImpl] send")
         return@withContext try {
             httpClient.post(endpoints.feedback) {
@@ -44,11 +45,9 @@ internal class FeedbackServiceImpl(
 
                 setBody(feedbackRequest)
             }
-            Result.success(Unit)
+            NyrisResult.Successfull
         } catch (e: Throwable) {
-            Result.failure<Unit>(e).also {
-                logger.log("[RegionsServiceImpl] result is failure")
-            }
+            NyrisResult.Fail
         }
     }
 }

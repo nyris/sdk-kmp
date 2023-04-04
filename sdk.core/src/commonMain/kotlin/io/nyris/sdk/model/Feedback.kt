@@ -22,6 +22,10 @@ sealed class Feedback private constructor(
     class Click(
         requestId: String,
         sessionId: String,
+        //TODO: Check if we can use @ShouldRefineInSwift
+        // https://kotlinlang.org/docs/native-objc-interop.html#hiding-kotlin-declarations
+        // @ShouldRefineInSwift
+        // TODO: try to rename KotlinInt to just NSNumber to make it more iOS friendly.
         val positions: List<Int>,
         val productIds: List<String>,
     ) : Feedback(requestId, sessionId)

@@ -20,18 +20,27 @@ import nyris
 
 class IntegrationWithKMP {
 
-    var b =  "test"
     
     func greetings() -> Bool {
+        let feedback = Feedback.Click(requestId: "", sessionId: "", positions: [0, 1, 2], productIds: ["", "", ""])
+        
         let a = NyrisService(apiKey: "", isDebug: true)
-            .imageMatching()
-            .match(image: KotlinByteArray()) { (data, error) in
+        a.feedback().send(feedback: feedback) { result, error in
+            
+            guard result != NyrisResult.Fail.shared else {
+                return
             }
-        print(a.timeout)
+            
+            if(result == NyrisResult.Successfull.shared) {
+                print("1")
+            } 
+        }
+        
+
+        
         return false
     }
 }
 
 
 
-let a = IOSClass(requestId: "a", sessionId: "b")

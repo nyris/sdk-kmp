@@ -16,6 +16,7 @@
 package io.nyris.sdk.internal.repository.feedback
 
 import io.nyris.sdk.builder.FeedbackRequestBuilder
+import io.nyris.sdk.builder.NyrisResult
 import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.Feedback
 
@@ -23,7 +24,7 @@ internal class FeedbackRequestBuilderImpl(
     private val logger: Logger,
     private val feedbackRepository: FeedbackRepository,
 ) : FeedbackRequestBuilder {
-    override suspend fun send(feedback: Feedback): Result<Unit> {
+    override suspend fun send(feedback: Feedback): NyrisResult {
         logger.log("[FeedbackRequestBuilderImpl] send")
         return feedbackRepository.send(feedback)
     }

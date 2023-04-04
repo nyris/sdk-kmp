@@ -1,6 +1,7 @@
 package io.nyris.sdk.internal.repository.imagematching
 
 import io.nyris.sdk.internal.util.Logger
+import io.nyris.sdk.internal.util.toByteArray
 import io.nyris.sdk.model.MatchResponse
 import platform.Foundation.NSData
 
@@ -13,10 +14,10 @@ internal actual class ImageMatchingRequestBuilderImpl actual constructor(
 
         // Convert NSData to byte array
         return imageMatchingRepository.match(
-            image = image,
+            image = image.toByteArray(),
             params = createParams()
         )
     }
 }
 
-internal typealias DataType = NSData
+internal actual typealias DataType = NSData

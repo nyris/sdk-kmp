@@ -6,7 +6,7 @@ import io.nyris.sdk.internal.util.Logger
 internal abstract class CommonImageMatchingRequestBuilderImpl(
     protected val logger: Logger,
     protected val imageMatchingRepository: ImageMatchingRepository,
-) : ImageMatchingRequestBuilder<DataType> {
+) : ImageMatchingRequestBuilder {
     private var limit: Int? = null
     private var language: String? = null
     private var threshold: Float? = null
@@ -49,7 +49,7 @@ internal abstract class CommonImageMatchingRequestBuilderImpl(
         this.filters = filters
     }
 
-    override fun session(session: String): ImageMatchingRequestBuilder<DataType> = apply {
+    override fun session(session: String): ImageMatchingRequestBuilder = apply {
         logger.log("[ImageMatchingRequestBuilderImpl] session=$session")
         this.session = session
     }

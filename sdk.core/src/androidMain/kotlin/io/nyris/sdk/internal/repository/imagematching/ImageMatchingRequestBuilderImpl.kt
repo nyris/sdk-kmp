@@ -17,4 +17,4 @@ internal actual class ImageMatchingRequestBuilderImpl actual constructor(
     }
 }
 
-internal typealias DataType = ByteArray
+internal actual typealias DataType = ByteArray

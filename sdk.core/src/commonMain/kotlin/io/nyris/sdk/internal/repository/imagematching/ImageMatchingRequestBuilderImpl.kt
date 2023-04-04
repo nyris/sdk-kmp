@@ -20,6 +20,6 @@ import io.nyris.sdk.internal.util.Logger
 internal expect class ImageMatchingRequestBuilderImpl(
     logger: Logger,
     imageMatchingRepository: ImageMatchingRepository,
-)
+) : CommonImageMatchingRequestBuilderImpl
 
-internal expect class DataType
+expect class DataType

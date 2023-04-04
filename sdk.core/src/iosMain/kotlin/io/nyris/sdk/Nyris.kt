@@ -28,7 +28,7 @@ actual interface Nyris {
     actual fun skuMatching(): SkuMatchingRequestBuilder
 
     actual companion object {
-        internal actual fun createInstance(
+        actual fun createInstance(
             apiKey: String,
             config: NyrisConfig,
         ): Nyris = NyrisImpl.createInstance(
@@ -48,7 +48,7 @@ class NyrisService(
         apiKey = apiKey,
         config = NyrisConfig(isDebug = true, platform = NyrisPlatform.IOS)
     )
-
+    
     override fun imageMatching(): ImageMatchingRequestBuilder {
         return instance.imageMatching()
     }
