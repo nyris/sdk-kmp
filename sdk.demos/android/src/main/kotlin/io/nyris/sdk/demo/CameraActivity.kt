@@ -29,6 +29,7 @@ import io.nyris.sdk.camera.CameraViewBuilder
 import io.nyris.sdk.camera.ImageResult
 import io.nyris.sdk.camera.core.CaptureMode
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.BARCODE_FORMAT_KEY
+import io.nyris.sdk.demo.CameraConfigActivity.Companion.BARCODE_GUIDE_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.CAPTURE_MODE_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.COMPRESSION_FORMAT_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.COMPRESSION_QUALITY_KEY
@@ -51,6 +52,7 @@ class CameraActivity : AppCompatActivity() {
                 .captureMode(captureMode)
                 .focusMode(getInt(FOCUS_MODE_KEY))
                 .barcodeFormat(getInt(BARCODE_FORMAT_KEY))
+                .barcodeGuide(getBoolean(BARCODE_GUIDE_KEY))
                 .compressionFormat(getInt(COMPRESSION_FORMAT_KEY))
                 .quality(getInt(COMPRESSION_QUALITY_KEY))
                 .build().apply {

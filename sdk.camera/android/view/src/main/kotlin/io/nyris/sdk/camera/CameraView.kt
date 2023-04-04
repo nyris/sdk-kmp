@@ -47,6 +47,7 @@ class CameraView @JvmOverloads constructor(
     quality: Int = DEFAULT_QUALITY,
     @BarcodeFormat
     barcodeFormat: Int = 0,
+    isBarcodeGuideEnabled: Boolean = false,
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val delegate = CameraViewDelegate(
@@ -56,7 +57,8 @@ class CameraView @JvmOverloads constructor(
         captureMode = captureMode,
         compressionFormat = compressionFormat,
         quality = quality,
-        barcodeFormat = barcodeFormat
+        barcodeFormat = barcodeFormat,
+        isBarcodeGuideEnabled = isBarcodeGuideEnabled
     )
 
     fun <R : Result> capture(

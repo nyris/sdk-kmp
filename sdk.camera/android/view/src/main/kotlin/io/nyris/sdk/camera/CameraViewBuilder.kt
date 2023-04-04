@@ -41,6 +41,8 @@ class CameraViewBuilder(private val parent: ViewGroup) {
     @BarcodeFormat
     private var barcodeFormat: Int = BarcodeFormat.ALL
 
+    private var isBarcodeGuideEnabled: Boolean = false
+
     fun captureMode(
         @CaptureMode captureMode: Int,
     ) = apply { this.captureMode = captureMode }
@@ -61,13 +63,18 @@ class CameraViewBuilder(private val parent: ViewGroup) {
         @BarcodeFormat barcodeFormat: Int,
     ) = apply { this.barcodeFormat = barcodeFormat }
 
+    fun barcodeGuide(isBarcodeGuideEnabled: Boolean) = apply {
+        this.isBarcodeGuideEnabled = isBarcodeGuideEnabled
+    }
+
     fun build(): CameraView = CameraView(
         context = parent.context,
         focusMode = focusMode,
         captureMode = captureMode,
         compressionFormat = compressionFormat,
         quality = quality,
-        barcodeFormat = barcodeFormat
+        barcodeFormat = barcodeFormat,
+        isBarcodeGuideEnabled = isBarcodeGuideEnabled
     ).apply {
         layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,

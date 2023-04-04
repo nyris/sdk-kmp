@@ -57,7 +57,6 @@ private fun ExtraPropertiesExtension.loadLibVersionName(target: Project) {
     set("LIB_VERSION_NAME", generateVersionName(target))
 }
 
-
 private fun ExtraPropertiesExtension.loadGithubProperties(target: Project) {
     val propertiesFile = target.rootDir.resolve("local.properties")
     if (propertiesFile.exists()) {

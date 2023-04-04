@@ -31,6 +31,7 @@ class CameraConfigActivity : AppCompatActivity() {
     private var captureMode = 0
     private var focusMode = 0
     private var barcodeFormat = 0
+    private var isBarcodeGuideEnabled = false
     private var compressionFormat = 0
     private var compressionQuality = QUALITY
     private var isDebugInfo = true
@@ -45,6 +46,7 @@ class CameraConfigActivity : AppCompatActivity() {
                 R.id.captureModeSp -> {
                     captureMode = position
                     binding.barcodeFormatSp.isEnabled = captureMode == 2
+                    binding.barcodeGuideSwitch.isEnabled = captureMode == 2
                 }
                 R.id.barcodeFormatSp -> barcodeFormat = position
                 R.id.focusModeSp -> focusMode = position
@@ -67,6 +69,7 @@ class CameraConfigActivity : AppCompatActivity() {
             compressionFormatSp.onItemSelectedListener = onItemSelectedListener
 
             debugInfoSwitch.setOnCheckedChangeListener { _, isChecked -> isDebugInfo = isChecked }
+            barcodeGuideSwitch.setOnCheckedChangeListener { _, isChecked -> isBarcodeGuideEnabled = isChecked }
 
             startCameraBtn.setOnClickListener {
                 compressionQuality = qualityEt.text.toString().toIntOrNull() ?: compressionQuality
@@ -78,6 +81,7 @@ class CameraConfigActivity : AppCompatActivity() {
                                 CAPTURE_MODE_KEY to captureMode,
                                 FOCUS_MODE_KEY to focusMode,
                                 BARCODE_FORMAT_KEY to barcodeFormat,
+                                BARCODE_GUIDE_KEY to isBarcodeGuideEnabled,
                                 COMPRESSION_FORMAT_KEY to compressionFormat,
                                 COMPRESSION_QUALITY_KEY to compressionQuality,
                                 IS_DEBUG_KEY to isDebugInfo
@@ -93,6 +97,7 @@ class CameraConfigActivity : AppCompatActivity() {
         const val CAPTURE_MODE_KEY = "CAPTURE_MODE_KEY"
         const val FOCUS_MODE_KEY = "FOCUS_MODE_KEY"
         const val BARCODE_FORMAT_KEY = "BARCODE_FORMAT_KEY"
+        const val BARCODE_GUIDE_KEY = "BARCODE_GUIDE_KEY"
         const val COMPRESSION_FORMAT_KEY = "COMPRESSION_FORMAT_KEY"
         const val COMPRESSION_QUALITY_KEY = "COMPRESSION_QUALITY_KEY"
         const val IS_DEBUG_KEY = "IS_DEBUG_KEY"

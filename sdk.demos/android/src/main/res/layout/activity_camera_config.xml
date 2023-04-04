@@ -39,6 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:checked="false"
+        android:id="@+id/barcodeGuideSwitch"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Show barcode guide  " />
+
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

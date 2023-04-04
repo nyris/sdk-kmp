@@ -57,6 +57,7 @@ internal class CameraViewDelegate(
     compressionFormat: Int = 0,
     quality: Int = DEFAULT_QUALITY,
     barcodeFormat: Int = 0,
+    isBarcodeGuideEnabled: Boolean = false,
 ) : CameraViewContract.View {
     private val styledAttributes: TypedArray by lazy {
         cameraView.context.obtainStyledAttributes(
@@ -109,7 +110,7 @@ internal class CameraViewDelegate(
 
             setPreviewSizeDebugInfo()
 
-            if (captureModeEnum == CaptureModeEnum.Barcode) {
+            if (isBarcodeGuideEnabled && captureModeEnum == CaptureModeEnum.Barcode) {
                 binding.previewView.overlay.add(
                     BarcodeOverlayDrawable(
                         barcodeFormat = barcodeFormat,

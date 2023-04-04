@@ -76,13 +76,14 @@ By default if you don't specify the view parameters, the camera will start with:
 
 ```kotlin
 val cameraView = CameraViewBuilder(binding.cameraContainer) // Set your view group or camera container
-    .captureMode(CaptureMode.Screenshot)
-    .focusMode(FocusMode.Automatic)
-    .barcodeFormat(BarcodeFormat.All)
-    .compressionFormat(CompressionFormat.WEBP)
+    .captureMode(CaptureMode.Screenshot) // Set the capture mode [Lens, Screenshot and Barcode]
+    .focusMode(FocusMode.Automatic) // Set the focus mode 
+    .barcodeFormat(BarcodeFormat.All) // Set the target barcode format
+    .barcodeGuide(false) // Disable / Enable barcode ui guide | Available only on kotlin not in xml attrs. 
+    .compressionFormat(CompressionFormat.WEBP) // Set the compression
     .quality(90) // This will crash if the value is not between 10-100
     .build().apply {
-        showDebug(true)
+        showDebug(true) // Enabled / Disable debug information
     }
 ```
 
@@ -190,6 +191,10 @@ override fun onDestroy() {
 ### Can I override the existing resources in the Camera SDK ?
 
 Yes, you can just need to add this names to your app and the desired values!
+
+### Can I use two capture mode at the same time ?
+
+No, you can't. The camera support only 1 capture mode at the same time.
 
 ```
 colors.xml

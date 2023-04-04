@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Option to enable and disable barcode ui guide
+
+## android-camera-1.0.0 - 03.04.2023
+
+### Added
+
 * Camera SDK
 * Image Capturing using Lens and Screenshot features
 * Barcode Scanning feature
