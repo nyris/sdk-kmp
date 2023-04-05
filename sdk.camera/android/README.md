@@ -93,9 +93,8 @@ Please check our [demos](../../sdk.demos/android) project or this [video](demo.w
 
 ## 🔬 Debug/Logs
 
-To Enable Camera Debug logs, you just need to:
-
 <img src="debug_info.png" width="400">
+To Enable Camera Debug logs, you just need to:
 
 ```kotlin
 cameraView.showDebug(true)
@@ -228,9 +227,9 @@ strings.xml
 </resources>
 ```
 
-### Can I use two capture mode at the same time ?
+### Can I use two captures mode at the same time ?
 
-No, you can't. The camera support only 1 capture mode at the same time.
+No, you can't. The camera supports only 1 capture mode at the same time.
 
 ## 📜 License
 

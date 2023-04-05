@@ -31,6 +31,6 @@ jobs:
           gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch signing.properties.asc > configs/signing/signing.properties
           echo -e "${{ secrets.MAVEN_KEY }}" > release-maven.asc
           gpg -d --passphrase ${{ secrets.GPG_KEY }} --batch release-maven.asc > configs/signing/release-maven.txt
-          
-      - name: Publish to github packages
+
+      - name: Publish to Github Packages and t Maven Central
         run: ./gradlew publishCameraModulesToGithub publishCameraModulesToSonaType --no-configuration-cache
