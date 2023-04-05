@@ -15,19 +15,20 @@
  */
 package io.nyris.sdk.internal.repository.feedback
 
+import io.nyris.sdk.NyrisResultCompletable
 import io.nyris.sdk.internal.network.feedback.FeedbackService
 import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.Feedback
 
 internal interface FeedbackRepository {
-    suspend fun send(feedback: Feedback): Result<Unit>
+    suspend fun send(feedback: Feedback): NyrisResultCompletable
 }
 
 internal class FeedbackRepositoryImpl(
     private val logger: Logger,
     private val feedbackService: FeedbackService,
 ) : FeedbackRepository {
-    override suspend fun send(feedback: Feedback): Result<Unit> {
+    override suspend fun send(feedback: Feedback): NyrisResultCompletable {
         logger.log("[FeedbackRepositoryImpl] send")
         return feedbackService.send(feedback.toFeedbackRequest())
     }

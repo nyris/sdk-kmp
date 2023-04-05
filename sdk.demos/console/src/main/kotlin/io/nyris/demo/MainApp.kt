@@ -19,6 +19,8 @@ import io.nyris.sdk.Nyris
 import io.nyris.sdk.NyrisConfig
 import io.nyris.sdk.ResponseException
 import io.nyris.sdk.model.Feedback
+import io.nyris.sdk.onFailure
+import io.nyris.sdk.onSuccess
 import kotlinx.coroutines.runBlocking
 
 object MainApp {

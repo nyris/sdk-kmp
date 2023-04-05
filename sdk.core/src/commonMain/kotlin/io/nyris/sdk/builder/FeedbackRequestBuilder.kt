@@ -15,8 +15,9 @@
  */
 package io.nyris.sdk.builder
 
+import io.nyris.sdk.NyrisResultCompletable
 import io.nyris.sdk.model.Feedback
 
 interface FeedbackRequestBuilder {
-    suspend fun send(feedback: Feedback): Result<Unit>
+    suspend fun send(feedback: Feedback): NyrisResultCompletable
 }
