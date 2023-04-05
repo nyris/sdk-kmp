@@ -24,6 +24,7 @@ firebaseCrashlytics = "18.3.3"
 firebaseAnalytics = "21.2.0"
 cameraX = "1.2.1"
 mlkitBarcode = "17.1.0"
+nexusPublishing = "1.3.0"
 
 [libraries]
 # classpath plugin
@@ -33,6 +34,7 @@ android_plugin = { group = "com.android.tools.build", name = "gradle", version.r
 testlogger_plugin = { group = "com.adarshr", name = "gradle-test-logger-plugin", version.ref = "testLoggerPlugin" }
 firebase_appdist_plugin = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppDistPlugin" }
 firebase_crashlytics_plugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+nexus_publish_plugin = { group = "io.github.gradle-nexus", name = "publish-plugin", version.ref = "nexusPublishing" }
 
 google_services_plugin = { group = "com.google.gms", name = "google-services", version.ref = "googleServicesPlugin" }
 google_mlkit_barcode = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "mlkitBarcode" }
@@ -86,3 +88,4 @@ testlogger = { id = "com.adarshr.test-logger", version.ref = "testLoggerPlugin" 
 firebase_appdist = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppDistPlugin" }
 firebase_crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 google_services = { id = "com.google.gms.google-services", version.ref = "googleServicesPlugin" }
+nexus_publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusPublishing" }

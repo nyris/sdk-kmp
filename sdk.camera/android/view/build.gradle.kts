@@ -62,6 +62,13 @@ dependencies {
     implementation(project(Modules.sdk_camera_feature_barcode_android))
 }
 
+tasks.create("publishCameraModulesToLocal") {
+    dependsOn(":sdk.camera:android:camera-core:publishAllPublicationsToLocalMavenRepository")
+    dependsOn(":sdk.camera:android:camera-feature-image:publishAllPublicationsToLocalMavenRepository")
+    dependsOn(":sdk.camera:android:camera-feature-barcode:publishAllPublicationsToLocalMavenRepository")
+    dependsOn(":sdk.camera:android:camera-view:publishAllPublicationsToLocalMavenRepository")
+}
+
 tasks.create("publishCameraModulesToGithub") {
     dependsOn(":sdk.camera:android:camera-core:publishAllPublicationsToGithubRepository")
     dependsOn(":sdk.camera:android:camera-feature-image:publishAllPublicationsToGithubRepository")
@@ -69,9 +76,9 @@ tasks.create("publishCameraModulesToGithub") {
     dependsOn(":sdk.camera:android:camera-view:publishAllPublicationsToGithubRepository")
 }
 
-tasks.create("publishCameraModulesToLocal") {
-    dependsOn(":sdk.camera:android:camera-core:publishAllPublicationsToLocalMavenRepository")
-    dependsOn(":sdk.camera:android:camera-feature-image:publishAllPublicationsToLocalMavenRepository")
-    dependsOn(":sdk.camera:android:camera-feature-barcode:publishAllPublicationsToLocalMavenRepository")
-    dependsOn(":sdk.camera:android:camera-view:publishAllPublicationsToLocalMavenRepository")
+tasks.create("publishCameraModulesToSonaType") {
+    dependsOn(":sdk.camera:android:camera-core:publishAllPublicationsToSonatypeRepository")
+    dependsOn(":sdk.camera:android:camera-feature-image:publishAllPublicationsToSonatypeRepository")
+    dependsOn(":sdk.camera:android:camera-feature-barcode:publishAllPublicationsToSonatypeRepository")
+    dependsOn(":sdk.camera:android:camera-view:publishAllPublicationsToSonatypeRepository")
 }

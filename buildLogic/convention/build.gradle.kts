@@ -21,6 +21,7 @@ dependencies {
     compileOnly(libs.testlogger.plugin)
     compileOnly(libs.firebase.appdist.plugin)
     compileOnly(libs.firebase.crashlytics.plugin)
+    compileOnly(libs.nexus.publish.plugin)
 }
 
 gradlePlugin {
@@ -68,6 +69,11 @@ gradlePlugin {
         register("crash-reporter-plugin") {
             id = "io.nyris.gradle.crash-reporter"
             implementationClass = "io.nyris.gradle.ApplicationCrashReporterConventionPlugin"
+        }
+
+        register("gradle-nexus-publisher") {
+            id = "io.nyris.gradle.sonatype-publisher"
+            implementationClass = "io.nyris.gradle.SonatypePublisherPlugin"
         }
     }
 }

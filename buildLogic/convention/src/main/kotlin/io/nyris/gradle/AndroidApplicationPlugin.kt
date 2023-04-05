@@ -18,6 +18,7 @@ package io.nyris.gradle
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import io.nyris.gradle.utils.Configuration
+import io.nyris.gradle.utils.Vars
 import io.nyris.gradle.utils.applyKotlinJvmToolChain
 import io.nyris.gradle.utils.configureDefaultApplicationPlugins
 import io.nyris.gradle.utils.configureDefaultDependencies
@@ -131,7 +132,7 @@ private fun BaseAppModuleExtension.defaultBuildTypes(project: Project) {
             // Since we don't have firebase configuration for .debug app, we want to add the suffix
             // only when the environment is not CI, which will allow the app to compile on
             // debug build type.
-            if (!System.getenv().containsKey("CI")) {
+            if (!Vars.IS_CI) {
                 applicationIdSuffix = ".debug"
             }
 
@@ -142,7 +143,7 @@ private fun BaseAppModuleExtension.defaultBuildTypes(project: Project) {
 
             enableUnitTestCoverage = false
 
-            if (System.getenv().containsKey("CI")) {
+            if (Vars.IS_CI) {
                 extra.set("enableCrashlytics", false)
                 configure<CrashlyticsExtension> { mappingFileUploadEnabled = false }
             }
@@ -158,7 +159,7 @@ private fun BaseAppModuleExtension.defaultBuildTypes(project: Project) {
 
             signingConfig = signingConfigs.getByName("release")
 
-            if (System.getenv().containsKey("CI")) {
+            if (Vars.IS_CI) {
                 extra.set("enableCrashlytics", false)
                 configure<CrashlyticsExtension> { mappingFileUploadEnabled = false }
             }

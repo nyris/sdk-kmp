@@ -37,14 +37,14 @@ On top of the optimization, the SDK Offers:
 ## 💻 Install
 
 ```kotlin
-// Add the SDK maven repository to your gradle repositories
+// [Optional]: Needed only if you have access to this repo
 maven {
     url = uri("https://maven.pkg.github.com/nyris/sdk-kmp")
 }
 
-implementation("io.nyris.sdk:camera-view:1.1.0")
-// Optional needed only when you need to use barcode scanning
-implementation("io.nyris.sdk:camera-feature-barcode:1.1.0")
+implementation("io.nyris.sdk:camera-view:1.0.0")
+// [Optional]: needed only when you need to use barcode scanning
+implementation("io.nyris.sdk:camera-feature-barcode:1.0.0")
 ```
 
 ## 🏗️️ Usage

@@ -16,6 +16,8 @@
 package io.nyris.gradle
 
 import io.nyris.gradle.utils.Configuration
+import io.nyris.gradle.utils.Vars
+import java.time.LocalDate
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
@@ -25,46 +27,56 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.withType
+import org.gradle.plugins.signing.SigningExtension
+import org.gradle.plugins.signing.SigningPlugin
 
 class SdkMavenPublisherPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply(MavenPublishPlugin::class.java)
+            pluginManager.apply(SigningPlugin::class.java)
             group = "io.nyris.sdk"
             version = rootProject.extra["LIB_VERSION_NAME"]
                 .toString()
                 .cleanVersionName()
 
             afterEvaluate {
-                configure<PublishingExtension> {
-                    repositories {
-                        maven {
-                            name = "Github"
-                            url = uri("https://maven.pkg.github.com/nyris/sdk-kmp")
-                            credentials {
-                                username = rootProject.extra["NYRIS_BOT_USER"].toString()
-                                password = rootProject.extra["NYRIS_BOT_TAP"].toString()
-                            }
-                        }
-                        maven {
-                            name = "LocalMaven"
-                            url = uri("file://$rootDir/build/maven")
-                        }
-                    }
+                configurePublishing()
+            }
+        }
+    }
 
-                    publications {
-                        // KMM project has already a defined project Published, in this
-                        // case we need to make sure to use the publication and attach to
-                        // it the pom configuration
-                        if (pluginManager.hasPlugin(Configuration.kotlinMultiplatform)) {
-                            withType<MavenPublication> {
-                                configurePom(target)
-                            }
-                        } else {
-                            create<MavenPublication>("release") {
-                                from(components.findByName("release"))
-                                configurePom(target)
-                            }
+    private fun Project.configurePublishing() {
+        configure<PublishingExtension> {
+            repositories {
+                maven {
+                    name = "Github"
+                    url = uri("https://maven.pkg.github.com/nyris/sdk-kmp")
+                    credentials {
+                        username = rootProject.extra["NYRIS_BOT_USER"].toString()
+                        password = rootProject.extra["NYRIS_BOT_TAP"].toString()
+                    }
+                }
+                maven {
+                    name = "LocalMaven"
+                    url = uri("file://$rootDir/build/maven")
+                }
+            }
+
+            publications {
+                // KMM project has already a defined project Published, in this case we need to make sure to
+                // use the publication and attach to it the pom configuration
+                if (pluginManager.hasPlugin(Configuration.kotlinMultiplatform)) {
+                    withType<MavenPublication> {
+                        configurePom(this@configurePublishing)
+                        configureSigning(this)
+                    }
+                } else {
+                    create<MavenPublication>("release") {
+                        from(components.findByName("release"))
+                        configurePom(this@configurePublishing)
+                        if (Vars.IS_CI) {
+                            configureSigning(this)
                         }
                     }
                 }
@@ -72,10 +84,23 @@ class SdkMavenPublisherPlugin : Plugin<Project> {
         }
     }
 
+    private fun Project.configureSigning(mavenPublication: MavenPublication) {
+        configure<SigningExtension> {
+            useInMemoryPgpKeys(
+                rootProject.extra["MAVEN_GPG_KEY_ID"].toString(),
+                file("$rootDir/configs/signing/release-maven.txt").readText(),
+                rootProject.extra["MAVEN_GPG_PASSWORD"].toString()
+            )
+            sign(mavenPublication)
+        }
+    }
+
     private fun MavenPublication.configurePom(target: Project) {
         pom {
             name.set("Nyris SDK - ${target.name}")
-            inceptionYear.set("2023")
+            description.set("Nyris SDK - ${target.name}")
+            inceptionYear.set(LocalDate.now().year.toString())
+            url.set("https://github.com/nyris/sdk-kmp")
 
             organization {
                 name.set("nyris GmbH")
@@ -87,6 +112,15 @@ class SdkMavenPublisherPlugin : Plugin<Project> {
                     name.set("APACHE LICENSE, VERSION 2.0")
                     url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                 }
+            }
+
+            developers {
+                developer {
+                    id.set("github/nyris")
+                    name.set("nyris GmbH")
+                    email.set("hi@nyris.io")
+                }
+                // Add all other devs here...
             }
 
             issueManagement {

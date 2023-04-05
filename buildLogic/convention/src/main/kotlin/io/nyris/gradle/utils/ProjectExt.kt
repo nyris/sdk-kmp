@@ -31,7 +31,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 internal fun Project.configureDefaultApplicationPlugins() {
     with(pluginManager) {
         apply(Configuration.androidApplicationPlugin)
-        if (System.getenv().containsKey("CI")) {
+        if (Vars.IS_CI) {
             apply(Configuration.appDist)
             apply(Configuration.crashReporter)
             apply(Configuration.googleServices)

@@ -4,6 +4,7 @@
 plugins {
     id("io.nyris.gradle.configuration")
     id("io.nyris.gradle.detekt")
+    id("io.nyris.gradle.sonatype-publisher")
 
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -15,6 +16,7 @@ plugins {
     alias(libs.plugins.firebase.appdist) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.nexus.publish) apply false
 }
 
 buildscript {

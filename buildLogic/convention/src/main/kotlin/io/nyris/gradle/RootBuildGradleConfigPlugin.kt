@@ -15,6 +15,7 @@
  */
 package io.nyris.gradle
 
+import io.nyris.gradle.utils.Vars
 import java.io.ByteArrayOutputStream
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -46,7 +47,7 @@ private fun ExtraPropertiesExtension.loadExtras(target: Project) {
     loadDemoVersionCode(target)
     loadLibVersionName(target)
     loadGithubProperties(target)
-    loadReleaseSigningProperties(target)
+    loadSigningProperties(target)
 }
 
 private fun ExtraPropertiesExtension.loadDemoVersionCode(target: Project) {
@@ -66,12 +67,12 @@ private fun ExtraPropertiesExtension.loadGithubProperties(target: Project) {
         set("NYRIS_BOT_USER", properties["NYRIS_BOT_USER"])
         set("NYRIS_BOT_TAP", properties["NYRIS_BOT_TAP"])
     } else {
-        set("NYRIS_BOT_USER", System.getenv("NYRIS_BOT_USER") ?: "")
-        set("NYRIS_BOT_TAP", System.getenv("NYRIS_BOT_TAP") ?: "")
+        set("NYRIS_BOT_USER", Vars.NYRIS_BOT_USER ?: "")
+        set("NYRIS_BOT_TAP", Vars.NYRIS_BOT_TAP ?: "")
     }
 }
 
-private fun ExtraPropertiesExtension.loadReleaseSigningProperties(target: Project) {
+private fun ExtraPropertiesExtension.loadSigningProperties(target: Project) {
     val propertiesFile = target.rootDir.resolve("configs/signing/signing.properties")
     if (propertiesFile.exists()) {
         val properties = java.util.Properties()
@@ -80,10 +81,26 @@ private fun ExtraPropertiesExtension.loadReleaseSigningProperties(target: Projec
         set("RELEASE_KEYSTORE_PASSWORD", properties["RELEASE_KEYSTORE_PASSWORD"])
         set("RELEASE_KEY_ALIAS", properties["RELEASE_KEY_ALIAS"])
         set("RELEASE_KEY_PASSWORD", properties["RELEASE_KEY_PASSWORD"])
+
+        set("MAVEN_GPG_KEY_ID", properties["MAVEN_GPG_KEY_ID"])
+        set("MAVEN_GPG_PASSWORD", properties["MAVEN_GPG_PASSWORD"])
+        set("MAVEN_GPG_KEY", properties["MAVEN_GPG_KEY"])
+
+        set("SONATYPE_OSSRH_USERNAME", properties["SONATYPE_OSSRH_USERNAME"])
+        set("SONATYPE_OSSRH_PASSWORD", properties["SONATYPE_OSSRH_PASSWORD"])
+        set("SONATYPE_STAGING_PROFILE_ID", properties["SONATYPE_STAGING_PROFILE_ID"])
     } else {
         set("RELEASE_KEYSTORE_PASSWORD", "")
         set("RELEASE_KEY_ALIAS", "")
         set("RELEASE_KEY_PASSWORD", "")
+
+        set("MAVEN_GPG_KEY_ID", "")
+        set("MAVEN_GPG_PASSWORD", "")
+        set("MAVEN_GPG_KEY", "")
+
+        set("SONATYPE_OSSRH_USERNAME", "")
+        set("SONATYPE_OSSRH_PASSWORD", "")
+        set("SONATYPE_STAGING_PROFILE_ID", "")
     }
 }
 
@@ -92,10 +109,9 @@ private fun generateVersionCode(project: Project): Int {
 }
 
 private fun generateVersionName(project: Project): String {
-    val versionName = System.getenv("LIB_VERSION_NAME")
-    val isRelease = System.getenv().containsKey("CI")
+    val versionName = Vars.LIB_VERSION_NAME
 
-    return if (isRelease && versionName != null) {
+    return if (Vars.IS_CI && versionName != null) {
         versionName
     } else {
         val hash = "git rev-parse --short HEAD".execute(project)

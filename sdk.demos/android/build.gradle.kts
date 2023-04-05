@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import io.nyris.gradle.utils.Modules
+import io.nyris.gradle.utils.Vars
 
 plugins {
     id("io.nyris.gradle.app")
@@ -32,7 +33,7 @@ android {
     }
 
     buildTypes.forEach {
-        it.buildConfigField("String", "API_KEY", "\"${System.getenv("PUBLIC_API_KEY")}\"")
+        it.buildConfigField("String", "API_KEY", "\"${Vars.PUBLIC_API_KEY}\"")
     }
 }
 
