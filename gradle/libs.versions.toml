@@ -1,7 +1,7 @@
 [versions]
 # Gradle Plugins
 androidPlugin = "7.4.0"
-kotlinPlugin = "1.8.0"
+kotlinPlugin = "1.6.10"
 detektPlugin = "1.22.0"
 testLoggerPlugin = "3.2.0"
 firebaseAppDistPlugin = "3.2.0"

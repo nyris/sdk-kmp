@@ -15,7 +15,7 @@
  */
 plugins {
     id("io.nyris.gradle.multiplatform.library")
-    id("io.nyris.gradle.publisher")
+    //id("io.nyris.gradle.publisher")
     id("kotlinx-serialization")
 }
 
@@ -44,35 +44,35 @@ kotlin {
                 implementation(libs.ktx.date)
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-                implementation(libs.test.mockk.core)
-                implementation(libs.test.coroutines)
-            }
-        }
+//        val commonTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-common"))
+//                implementation(kotlin("test-annotations-common"))
+//                implementation(libs.test.mockk.core)
+//                implementation(libs.test.coroutines)
+//            }
+//        }
         val androidMain by getting {
             dependencies {
                 api(libs.ktor.android)
             }
         }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation(libs.test.mockk.core)
-            }
-        }
+//        val androidTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-junit"))
+//                implementation(libs.test.mockk.core)
+//            }
+//        }
         val jvmMain by getting {
             dependencies {
                 implementation(libs.ktor.jvm)
             }
         }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation(libs.test.mockk.core)
-            }
-        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-junit"))
+//                implementation(libs.test.mockk.core)
+//            }
+//        }
     }
 }

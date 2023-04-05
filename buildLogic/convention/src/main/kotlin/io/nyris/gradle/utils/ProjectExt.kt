@@ -58,9 +58,9 @@ internal fun Project.configureDefaultLibraryPlugins() {
 }
 
 internal fun Project.applyKotlinJvmToolChain() {
-    extensions.configure<KotlinProjectExtension> {
-        jvmToolchain(Configuration.javaVersion)
-    }
+//    extensions.configure<KotlinProjectExtension> {
+//        jvmToolchain(Configuration.javaVersion)
+//    }
 }
 
 internal fun Project.configureDefaultLibrarySerializationPlugins() {
