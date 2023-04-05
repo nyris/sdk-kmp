@@ -17,8 +17,31 @@ package io.nyris.sdk.internal.repository.feedback
 
 import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.NyrisResult
+import io.nyris.sdk.internal.network.feedback.ClickFeedbackDto
+import io.nyris.sdk.internal.network.feedback.CommentFeedbackDto
+import io.nyris.sdk.internal.network.feedback.ConversationFeedbackDto
+import io.nyris.sdk.internal.network.feedback.FeedbackDto
+import io.nyris.sdk.internal.network.feedback.FeedbackRequest
+import io.nyris.sdk.internal.network.feedback.FeedbackService
+import io.nyris.sdk.internal.network.feedback.RectDto
+import io.nyris.sdk.internal.network.feedback.RegionFeedbackDto
 import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.Feedback
+import kotlinx.datetime.Clock
+
+internal interface FeedbackRepository {
+    suspend fun send(feedback: Feedback): NyrisResult
+}
+
+internal class FeedbackRepositoryImpl(
+    private val logger: Logger,
+    private val feedbackService: FeedbackService,
+) : FeedbackRepository {
+    override suspend fun send(feedback: Feedback): NyrisResult {
+        logger.log("[FeedbackRepositoryImpl] send")
+        return feedbackService.send(feedback.toFeedbackRequest())
+    }
+}
 
 internal class FeedbackRequestBuilderImpl(
     private val logger: Logger,
@@ -28,4 +51,56 @@ internal class FeedbackRequestBuilderImpl(
         logger.log("[FeedbackRequestBuilderImpl] send")
         return feedbackRepository.send(feedback)
     }
+}
+
+internal fun Feedback.toFeedbackRequest(): FeedbackRequest = with(this) {
+    FeedbackRequest(
+        requestId = this.requestId,
+        sessionId = this.sessionId,
+        timestamp = TimeProvider.currentTime(),
+        eventType = this.toEventType(),
+        data = this.toData()
+    )
+}
+
+internal fun Feedback.toEventType(): String = when (this) {
+    is Feedback.Click -> "click"
+    is Feedback.Conversion -> "conversion"
+    is Feedback.Comment -> "feedback"
+    is Feedback.Region -> "region"
+}
+
+internal fun Feedback.toData(): FeedbackDto = when (this) {
+    is Feedback.Click -> {
+        ClickFeedbackDto(
+            productIds = this.productIds,
+            positions = this.positions
+        )
+    }
+    is Feedback.Conversion -> {
+        ConversationFeedbackDto(
+            productIds = this.productIds,
+            positions = this.positions
+        )
+    }
+    is Feedback.Comment -> {
+        CommentFeedbackDto(
+            success = this.success,
+            comment = this.comment
+        )
+    }
+    is Feedback.Region -> {
+        RegionFeedbackDto(
+            RectDto(
+                x = this.left,
+                y = this.top,
+                w = this.width,
+                h = this.height
+            )
+        )
+    }
+}
+
+internal object TimeProvider {
+    fun currentTime(): String = Clock.System.now().toString()
 }

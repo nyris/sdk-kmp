@@ -29,17 +29,12 @@ actual interface Nyris {
     actual fun feedback(): FeedbackRequestBuilder
 
     actual fun skuMatching(): SkuMatchingRequestBuilder
-
-    actual companion object {
-        @JvmStatic
-        actual fun createInstance(
-            apiKey: String,
-            config: NyrisConfig,
-        ): Nyris = NyrisImpl.createInstance(
-            apiKey = apiKey,
-            config = config.copy(
-                platform = NyrisPlatform.Android
-            )
-        )
-    }
 }
+
+actual fun createInstance(
+    apiKey: String,
+    config: NyrisConfig,
+): Nyris = NyrisImpl.createInstance(
+    apiKey = apiKey,
+    config = config
+)

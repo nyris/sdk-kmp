@@ -14,5 +14,3 @@
  * limitations under the License.
  */
 package io.nyris.sdk
-
-enum class NyrisPlatform { Generic, Android, IOS, Jvm }

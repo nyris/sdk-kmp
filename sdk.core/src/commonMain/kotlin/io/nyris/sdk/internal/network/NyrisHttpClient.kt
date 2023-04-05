@@ -25,6 +25,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
+import io.nyris.sdk.NyrisPlatform
 import io.nyris.sdk.internal.util.Logger
 
 internal class NyrisHttpClient(
@@ -96,7 +97,7 @@ internal class HttpClientWrapper(private val httpClient: HttpClient) {
     ): HttpResponse = httpClient.get(urlString, block)
 }
 
-object NyrisHttpHeaders {
+internal object NyrisHttpHeaders {
     val UserAgent: String = HttpHeaders.UserAgent
     val AcceptLanguage: String = HttpHeaders.AcceptLanguage
     val ContentLength: String = HttpHeaders.ContentLength
@@ -111,3 +112,43 @@ object NyrisHttpHeaders {
 private const val OK_MIN = 200
 private const val OK_MAX = 200
 private val OK_STATUS = OK_MIN..OK_MAX
+
+internal class UserAgent(
+    private val sdkVersion: String,
+    private val platform: NyrisPlatform,
+    private val osVersion: String,
+) {
+    override fun toString(): String = "sdk-client/$sdkVersion ($platform $osVersion)"
+}
+
+internal class XOptionsBuilder {
+    private var limit: Int? = null
+    private var threshold: Float? = null
+
+    fun limit(limit: Int?) = apply {
+        this.limit = limit
+    }
+
+    fun threshold(threshold: Float?) = apply {
+        this.threshold = threshold
+    }
+
+    fun build(): String? = StringBuilder().apply {
+        if (limit != null) {
+            append("limit=$limit ")
+        }
+        if (threshold != null) {
+            append("threshold=$threshold ")
+        }
+    }.toString().takeIf { xOptions ->
+        xOptions.isNotEmpty()
+    }.also {
+        reset()
+    }
+
+    private fun reset() {
+        limit = null
+        threshold = null
+    }
+}
+

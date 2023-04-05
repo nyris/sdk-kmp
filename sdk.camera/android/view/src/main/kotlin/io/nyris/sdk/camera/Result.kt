@@ -19,8 +19,8 @@ import io.nyris.sdk.camera.core.BarcodeFormat
 
 interface Result
 
-data class BarcodeResult(val barcodes: List<Barcode>) : Result
-data class Barcode(
+class BarcodeResult(val barcodes: List<Barcode>) : Result
+class Barcode(
     val code: String?,
     @BarcodeFormat
     val format: Int,

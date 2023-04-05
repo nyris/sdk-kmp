@@ -15,7 +15,42 @@
  */
 package io.nyris.sdk.internal.network
 
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.ServerResponseException
+import io.nyris.sdk.ClientException
+import io.nyris.sdk.ResponseException
+import io.nyris.sdk.ServerException
 import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+class ApiError(
+    @SerialName("title")
+    val title: String? = null,
+
+    @SerialName("status")
+    val status: Int? = null,
+
+    @SerialName("detail")
+    val detail: String? = null,
+
+    @SerialName("traceId")
+    val traceId: String? = null,
+
+    @SerialName("itemKey")
+    val itemKey: String? = null,
+)
+
+internal class CommonHeaders(
+    apiKey: String,
+    userAgent: UserAgent,
+) {
+    val default: Map<String, String> = mapOf(
+        NyrisHttpHeaders.XApiKey to apiKey,
+        NyrisHttpHeaders.UserAgent to userAgent.toString(),
+    )
+}
 
 internal class Endpoints(baseUrl: String) {
     private val find: String = "${baseUrl}find/v1.1"
@@ -32,3 +67,15 @@ internal class Endpoints(baseUrl: String) {
 
     fun recommend(sku: String) = "$recommend/$sku"
 }
+
+internal fun ApiError.toNyrisException(): ResponseException = ResponseException(
+    title = title,
+    status = status,
+    detail = detail,
+    traceId = traceId,
+    itemKey = itemKey
+)
+
+internal fun ClientRequestException.toNyrisException(): ClientException = ClientException(message)
+
+internal fun ServerResponseException.toNyrisException(): ServerException = ServerException(message)

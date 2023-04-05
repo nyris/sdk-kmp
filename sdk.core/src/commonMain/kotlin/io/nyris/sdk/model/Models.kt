@@ -1,19 +1,20 @@
-/*
- * Copyright 2023 nyris GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.nyris.sdk.model
+
+class DetectResponse(
+    val regions: List<Region> = emptyList(),
+)
+
+class Region(
+    val confidence: Float = 0.0F,
+    val position: Position? = null,
+)
+
+class Position(
+    val left: Float = 0F,
+    val top: Float = 0F,
+    val right: Float = 0F,
+    val bottom: Float = 0F,
+)
 
 sealed class Feedback private constructor(
     internal val requestId: String,
@@ -63,3 +64,50 @@ sealed class Feedback private constructor(
 
 private const val RANGE_MIN = 0.0
 private const val RANGE_MAX = 1.0
+
+class MatchResponse(
+    val requestId: String? = null,
+
+    val sessionId: String? = null,
+
+    val offers: List<Offer> = emptyList(),
+)
+
+class Offer(
+    val id: String? = null,
+    val title: String? = null,
+    val description: String? = null,
+    val descriptionLong: String? = null,
+    val language: String? = null,
+    val brand: String? = null,
+    val catalogNumbers: List<String> = emptyList(),
+    val customIds: Map<String, String> = emptyMap(),
+    val keywords: List<String>? = null,
+    val categories: List<String> = emptyList(),
+    val availability: String? = null,
+    val feedId: String? = null,
+    val groupId: String? = null,
+    val priceStr: String? = null,
+    val salePrice: String? = null,
+    val links: Links? = null,
+    val images: List<String> = emptyList(),
+    val metadata: String? = null,
+    val sku: String? = null,
+    val score: Float? = null,
+)
+
+class Links(
+    val main: String? = null,
+    val mobile: String? = null,
+)
+
+class SkuResponse(
+    val requestId: String?,
+    val sessionId: String?,
+    val offers: List<SkuOffer> = emptyList(),
+)
+
+class SkuOffer(
+    val sku: String?,
+    val score: Float?,
+)

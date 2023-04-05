@@ -15,8 +15,6 @@
  */
 package io.nyris.sdk
 
-import io.ktor.client.engine.HttpClientEngineConfig
-import io.ktor.client.engine.HttpClientEngineFactory
 import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
@@ -30,13 +28,39 @@ expect interface Nyris {
     fun feedback(): FeedbackRequestBuilder
 
     fun skuMatching(): SkuMatchingRequestBuilder
-
-    companion object {
-        fun createInstance(
-            apiKey: String,
-            config: NyrisConfig = NyrisConfig(),
-        ): Nyris
-    }
 }
 
-typealias HttpEngine = HttpClientEngineFactory<HttpClientEngineConfig>
+expect fun createInstance(
+    apiKey: String,
+    config: NyrisConfig = NyrisConfig(),
+): Nyris
+
+class NyrisConfig(
+    val isDebug: Boolean = false,
+    val baseUrl: String = BASE_URL,
+    val timeout: Long = TIMEOUT,
+    internal val platform: NyrisPlatform = NyrisPlatform.Generic,
+)
+
+const val BASE_URL = "https://api.nyris.io/"
+const val TIMEOUT = 3000L
+
+sealed class NyrisException(message: String?) : Throwable(message)
+
+class ResponseException(
+    val title: String?,
+    val status: Int?,
+    val detail: String?,
+    val traceId: String?,
+    val itemKey: String?,
+) : NyrisException(detail)
+
+class ClientException(
+    override val message: String?,
+) : NyrisException(message)
+
+class ServerException(
+    override val message: String?,
+) : NyrisException(message)
+
+enum class NyrisPlatform { Generic, Android, IOS, Jvm }

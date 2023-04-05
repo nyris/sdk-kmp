@@ -33,6 +33,8 @@ import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
 import io.nyris.sdk.internal.util.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 internal interface FindService {
     suspend fun find(
@@ -80,7 +82,7 @@ internal class FindServiceImpl(
     }
 }
 
-internal data class FindServiceParams(
+internal class FindServiceParams(
     val language: String?,
     val limit: Int?,
     val threshold: Float?,
@@ -121,3 +123,89 @@ internal fun FormBuilder.appendFilters(map: Map<String, List<String>>) {
         }
     }
 }
+
+
+@Serializable
+internal class FindResponse(
+    @SerialName("id")
+    val requestId: String? = null,
+
+    @SerialName("session")
+    val sessionId: String? = null,
+
+    @SerialName("results")
+    val offers: List<OfferDto> = emptyList(),
+)
+
+@Serializable
+@Suppress("LongParameterList")
+internal class OfferDto(
+    @SerialName("oid")
+    val id: String? = null,
+
+    @SerialName("title")
+    val title: String? = null,
+
+    @SerialName("descriptionShort")
+    val description: String? = null,
+
+    @SerialName("descriptionLong")
+    val descriptionLong: String? = null,
+
+    @SerialName("language")
+    val language: String? = null,
+
+    @SerialName("brand")
+    val brand: String? = null,
+
+    @SerialName("catalogNumbers")
+    val catalogNumbers: List<String> = emptyList(),
+
+    @SerialName("customIds")
+    val customIds: Map<String, String> = emptyMap(),
+
+    @SerialName("keywords")
+    val keywords: List<String> = emptyList(),
+
+    @SerialName("categories")
+    val categories: List<String> = emptyList(),
+
+    @SerialName("availability")
+    val availability: String? = null,
+
+    @SerialName("feedId")
+    val feedId: String? = null,
+
+    @SerialName("groupId")
+    val groupId: String? = null,
+
+    @SerialName("price")
+    val priceStr: String? = null,
+
+    @SerialName("salePrice")
+    val salePrice: String? = null,
+
+    @SerialName("links")
+    val links: LinksDto? = null,
+
+    @SerialName("images")
+    val images: List<String> = emptyList(),
+
+    @SerialName("metadata")
+    val metadata: String? = null,
+
+    @SerialName("sku")
+    val sku: String? = null,
+
+    @SerialName("score")
+    val score: Float? = null,
+)
+
+@Serializable
+internal class LinksDto(
+    @SerialName("main")
+    val main: String? = null,
+
+    @SerialName("mobile")
+    val mobile: String? = null,
+)

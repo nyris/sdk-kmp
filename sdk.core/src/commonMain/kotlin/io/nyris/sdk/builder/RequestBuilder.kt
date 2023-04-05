@@ -1,22 +1,19 @@
-/*
- * Copyright 2023 nyris GmbH
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.nyris.sdk.builder
 
 import io.nyris.sdk.internal.repository.imagematching.DataType
+import io.nyris.sdk.model.DetectResponse
+import io.nyris.sdk.model.Feedback
 import io.nyris.sdk.model.MatchResponse
+import io.nyris.sdk.model.SkuResponse
+
+interface FeedbackRequestBuilder {
+    suspend fun send(feedback: Feedback): NyrisResult
+}
+
+sealed class NyrisResult {
+    object Successfull : NyrisResult()
+    object Fail : NyrisResult()
+}
 
 interface ImageMatchingRequestBuilder {
     fun limit(limit: Int): ImageMatchingRequestBuilder
@@ -38,3 +35,14 @@ interface ImageMatchingRequestBuilder {
     // Put the params before this call
     suspend fun match(image: DataType): Result<MatchResponse>
 }
+
+interface ObjectDetectingRequestBuilder {
+    fun session(session: String): ObjectDetectingRequestBuilder
+
+    suspend fun detect(image: ByteArray): Result<DetectResponse>
+}
+
+interface SkuMatchingRequestBuilder {
+    suspend fun match(sku: String): Result<SkuResponse>
+}
+

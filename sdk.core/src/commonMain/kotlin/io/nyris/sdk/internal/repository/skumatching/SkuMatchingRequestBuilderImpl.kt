@@ -16,7 +16,11 @@
 package io.nyris.sdk.internal.repository.skumatching
 
 import io.nyris.sdk.builder.SkuMatchingRequestBuilder
+import io.nyris.sdk.internal.network.recommend.RecommendResponse
+import io.nyris.sdk.internal.network.recommend.RecommendService
+import io.nyris.sdk.internal.network.recommend.SkuOfferDto
 import io.nyris.sdk.internal.util.Logger
+import io.nyris.sdk.model.SkuOffer
 import io.nyris.sdk.model.SkuResponse
 
 internal class SkuMatchingRequestBuilderImpl(
@@ -27,4 +31,37 @@ internal class SkuMatchingRequestBuilderImpl(
         logger.log("[SkuMatchingRequestBuilderImpl] match")
         return skuMatchingRepository.match(sku)
     }
+}
+
+internal interface SkuMatchingRepository {
+    suspend fun match(sku: String): Result<SkuResponse>
+}
+
+internal class SkuMatchingRepositoryImpl(
+    private val logger: Logger,
+    private val recommendService: RecommendService,
+) : SkuMatchingRepository {
+    override suspend fun match(sku: String): Result<SkuResponse> {
+        logger.log("[SkuMatchingRepositoryImpl] match")
+        return recommendService.match(sku).map { recommendResponse ->
+            recommendResponse.toSkuResponse()
+        }
+    }
+}
+
+internal fun RecommendResponse.toSkuResponse(): SkuResponse = SkuResponse(
+    requestId = requestId,
+    sessionId = sessionId,
+    offers = result.toSkuOfferList()
+)
+
+internal fun List<SkuOfferDto>.toSkuOfferList() = this.map { dto ->
+    dto.toSkuOffer()
+}
+
+internal fun SkuOfferDto.toSkuOffer() = with(this) {
+    SkuOffer(
+        sku = sku,
+        score = score
+    )
 }

@@ -26,19 +26,15 @@ actual interface Nyris {
     actual fun objectDetecting(): ObjectDetectingRequestBuilder
     actual fun feedback(): FeedbackRequestBuilder
     actual fun skuMatching(): SkuMatchingRequestBuilder
-
-    actual companion object {
-        actual fun createInstance(
-            apiKey: String,
-            config: NyrisConfig,
-        ): Nyris = NyrisImpl.createInstance(
-            apiKey = apiKey,
-            config = config.copy(
-                platform = NyrisPlatform.IOS
-            )
-        )
-    }
 }
+
+actual fun createInstance(
+    apiKey: String,
+    config: NyrisConfig,
+): Nyris = NyrisImpl.createInstance(
+    apiKey = apiKey,
+    config = config
+)
 
 class NyrisService(
     apiKey: String,
@@ -48,7 +44,7 @@ class NyrisService(
         apiKey = apiKey,
         config = NyrisConfig(isDebug = true, platform = NyrisPlatform.IOS)
     )
-    
+
     override fun imageMatching(): ImageMatchingRequestBuilder {
         return instance.imageMatching()
     }

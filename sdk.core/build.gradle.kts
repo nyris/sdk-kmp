@@ -27,7 +27,7 @@ kotlin {
     android {
         publishLibraryVariants("release")
     }
-    jvm()
+    //jvm()
     listOf(
         iosX64(),
         iosArm64(),
@@ -35,6 +35,8 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "nyris"
+            embedBitcode("DISABLE")
+            isStatic = true
         }
     }
 
@@ -72,17 +74,17 @@ kotlin {
                 implementation(libs.test.mockk.core)
             }
         }
-        val jvmMain by getting {
-            dependencies {
-                implementation(libs.ktor.jvm)
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation(libs.test.mockk.core)
-            }
-        }
+//        val jvmMain by getting {
+//            dependencies {
+//                implementation(libs.ktor.jvm)
+//            }
+//        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-junit"))
+//                implementation(libs.test.mockk.core)
+//            }
+//        }
         // iOS build
         val iosX64Main by getting
         val iosArm64Main by getting

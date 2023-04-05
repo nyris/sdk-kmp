@@ -21,6 +21,8 @@ import io.nyris.sdk.internal.network.NyrisHttpClient
 import io.nyris.sdk.internal.util.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 internal interface RecommendService {
     suspend fun match(sku: String): Result<RecommendResponse>
@@ -47,3 +49,21 @@ internal class RecommendServiceImpl(
         }
     }
 }
+
+@Serializable
+internal class RecommendResponse(
+    @SerialName("id")
+    val requestId: String? = null,
+    @SerialName("session")
+    val sessionId: String? = null,
+    @SerialName("results")
+    val result: List<SkuOfferDto> = emptyList(),
+)
+
+@Serializable
+internal class SkuOfferDto(
+    @SerialName("sku")
+    val sku: String? = null,
+    @SerialName("score")
+    val score: Float? = null,
+)

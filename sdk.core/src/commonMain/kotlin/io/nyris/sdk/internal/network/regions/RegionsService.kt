@@ -26,6 +26,8 @@ import io.nyris.sdk.internal.network.NyrisHttpHeaders
 import io.nyris.sdk.internal.util.Logger
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 internal interface RegionsService {
     suspend fun detect(
@@ -68,6 +70,38 @@ internal class RegionsServiceImpl(
     }
 }
 
-internal data class RegionsServiceParams(
+internal class RegionsServiceParams(
     val session: String?,
 )
+
+
+@Serializable
+internal class RegionsResponse(
+    @SerialName("regions")
+    val regionsDto: List<RegionDto> = emptyList(),
+)
+
+@Serializable
+internal class RegionDto(
+    @SerialName("confidence")
+    val confidence: Float = 0.0F,
+
+    @SerialName("region")
+    val positionDto: PositionDto? = null,
+)
+
+@Serializable
+internal class PositionDto(
+    @SerialName("left")
+    val left: Float = 0F,
+
+    @SerialName("top")
+    val top: Float = 0F,
+
+    @SerialName("right")
+    val right: Float = 0F,
+
+    @SerialName("bottom")
+    val bottom: Float = 0F,
+)
+

@@ -46,7 +46,7 @@ internal class BarcodeRectFactory {
     }
 }
 
-data class KRectF(
+class KRectF(
     val left: Float,
     val top: Float,
     val right: Float,

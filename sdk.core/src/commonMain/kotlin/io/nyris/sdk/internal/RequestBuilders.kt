@@ -29,3 +29,18 @@ internal interface RequestBuilders {
 
     fun skuMatching(): SkuMatchingRequestBuilder
 }
+
+internal class RequestBuildersImpl(
+    private val imageMatching: Lazy<ImageMatchingRequestBuilder>,
+    private val objectDetecting: Lazy<ObjectDetectingRequestBuilder>,
+    private val feedback: Lazy<FeedbackRequestBuilder>,
+    private val skuMatching: Lazy<SkuMatchingRequestBuilder>,
+) : RequestBuilders {
+    override fun imageMatching(): ImageMatchingRequestBuilder = imageMatching.value
+
+    override fun objectDetecting(): ObjectDetectingRequestBuilder = objectDetecting.value
+
+    override fun feedback(): FeedbackRequestBuilder = feedback.value
+
+    override fun skuMatching(): SkuMatchingRequestBuilder = skuMatching.value
+}
