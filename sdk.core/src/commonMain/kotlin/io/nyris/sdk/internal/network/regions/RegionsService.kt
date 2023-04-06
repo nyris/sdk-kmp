@@ -15,18 +15,6 @@
  */
 package io.nyris.sdk.internal.network.regions
 
-import io.ktor.client.call.body
-import io.ktor.client.request.header
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import io.nyris.sdk.internal.network.Endpoints
-import io.nyris.sdk.internal.network.NyrisHttpClient
-import io.nyris.sdk.internal.network.NyrisHttpHeaders
-import io.nyris.sdk.internal.util.Logger
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.withContext
-
 internal interface RegionsService {
     suspend fun detect(
         image: ByteArray,
@@ -34,40 +22,33 @@ internal interface RegionsService {
     ): Result<RegionsResponse>
 }
 
-internal class RegionsServiceImpl(
-    private val logger: Logger,
-    private val endpoints: Endpoints,
-    private val httpClient: NyrisHttpClient,
-    private val coroutineContext: CoroutineContext,
-) : RegionsService {
-
+internal class RegionsServiceImpl : RegionsService {
     override suspend fun detect(
         image: ByteArray,
         params: RegionsServiceParams,
-    ): Result<RegionsResponse> = withContext(coroutineContext) {
-        logger.log("[RegionsServiceImpl] detect")
-        return@withContext try {
-            with(params) {
-                Result.success(
-                    httpClient.post(endpoints.regions) {
-                        contentType(ContentType.Image.JPEG)
-                        header(NyrisHttpHeaders.XSession, session)
-                        header(NyrisHttpHeaders.ContentLength, image.size)
-
-                        setBody(image)
-                    }.body<RegionsResponse>()
-                ).also {
-                    logger.log("[RegionsServiceImpl] result is success")
-                }
-            }
-        } catch (e: Throwable) {
-            Result.failure<RegionsResponse>(e).also {
-                logger.log("[RegionsServiceImpl] result is failure")
-            }
-        }
+    ): Result<RegionsResponse> {
+        TODO("Not yet implemented")
     }
 }
 
-internal data class RegionsServiceParams(
+internal class RegionsServiceParams(
     val session: String?,
 )
+
+
+internal class RegionsResponse(
+    val regionsDto: List<RegionDto> = emptyList(),
+)
+
+internal class RegionDto(
+    val confidence: Float = 0.0F,
+    val positionDto: PositionDto? = null,
+)
+
+internal class PositionDto(
+    val left: Float = 0F,
+    val top: Float = 0F,
+    val right: Float = 0F,
+    val bottom: Float = 0F,
+)
+

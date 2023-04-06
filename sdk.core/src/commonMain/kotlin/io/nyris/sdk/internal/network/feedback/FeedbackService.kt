@@ -15,40 +15,53 @@
  */
 package io.nyris.sdk.internal.network.feedback
 
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import io.nyris.sdk.internal.network.Endpoints
-import io.nyris.sdk.internal.network.NyrisHttpClient
-import io.nyris.sdk.internal.util.Logger
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.withContext
+import io.nyris.sdk.builder.NyrisResult
 
 internal interface FeedbackService {
-    suspend fun send(feedbackRequest: FeedbackRequest): Result<Unit>
+    suspend fun send(feedbackRequest: FeedbackRequest): NyrisResult
 }
 
-internal class FeedbackServiceImpl(
-    private val logger: Logger,
-    private val endpoints: Endpoints,
-    private val httpClient: NyrisHttpClient,
-    private val coroutineContext: CoroutineContext,
-) : FeedbackService {
-    override suspend fun send(
-        feedbackRequest: FeedbackRequest,
-    ): Result<Unit> = withContext(coroutineContext) {
-        logger.log("[FeedbackServiceImpl] send")
-        return@withContext try {
-            httpClient.post(endpoints.feedback) {
-                contentType(ContentType.Application.Json)
-
-                setBody(feedbackRequest)
-            }
-            Result.success(Unit)
-        } catch (e: Throwable) {
-            Result.failure<Unit>(e).also {
-                logger.log("[RegionsServiceImpl] result is failure")
-            }
-        }
+internal class FeedbackServiceImpl : FeedbackService {
+    override suspend fun send(feedbackRequest: FeedbackRequest): NyrisResult {
+        TODO("Not yet implemented")
     }
 }
+
+
+internal class FeedbackRequest(
+    val requestId: String,
+    val sessionId: String,
+    val timestamp: String,
+    val eventType: String,
+    val data: FeedbackDto,
+)
+
+internal sealed class FeedbackDto {
+    internal object EMPTY : FeedbackDto()
+}
+
+internal class ClickFeedbackDto(
+    val positions: List<Int>,
+    val productIds: List<String>,
+) : FeedbackDto()
+
+internal class ConversationFeedbackDto(
+    val positions: List<Int>,
+    val productIds: List<String>,
+) : FeedbackDto()
+
+internal class CommentFeedbackDto(
+    val success: Boolean,
+    val comment: String?,
+) : FeedbackDto()
+
+internal class RegionFeedbackDto(
+    val rect: RectDto,
+) : FeedbackDto()
+
+internal class RectDto(
+    val x: Float,
+    val y: Float,
+    val w: Float,
+    val h: Float,
+)

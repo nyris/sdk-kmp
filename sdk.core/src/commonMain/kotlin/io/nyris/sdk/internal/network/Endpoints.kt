@@ -15,7 +15,24 @@
  */
 package io.nyris.sdk.internal.network
 
+import io.nyris.sdk.ResponseException
 import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
+
+class ApiError(
+    val title: String? = null,
+    val status: Int? = null,
+    val detail: String? = null,
+    val traceId: String? = null,
+    val itemKey: String? = null,
+)
+
+internal class CommonHeaders(
+    apiKey: String,
+    userAgent: UserAgent,
+) {
+    val default: Map<String, String> = mapOf(
+    )
+}
 
 internal class Endpoints(baseUrl: String) {
     private val find: String = "${baseUrl}find/v1.1"
@@ -32,3 +49,11 @@ internal class Endpoints(baseUrl: String) {
 
     fun recommend(sku: String) = "$recommend/$sku"
 }
+
+internal fun ApiError.toNyrisException(): ResponseException = ResponseException(
+    title = title,
+    status = status,
+    detail = detail,
+    traceId = traceId,
+    itemKey = itemKey
+)

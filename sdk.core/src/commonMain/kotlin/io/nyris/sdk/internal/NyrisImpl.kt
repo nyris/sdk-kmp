@@ -23,7 +23,7 @@ import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 import io.nyris.sdk.internal.di.ServiceLocator
 
-internal class NyrisImpl private constructor(
+internal class NyrisImpl internal constructor(
     apiKey: String,
     config: NyrisConfig,
 ) : Nyris {
@@ -39,13 +39,17 @@ internal class NyrisImpl private constructor(
     override fun feedback(): FeedbackRequestBuilder = requestBuilders.feedback()
 
     override fun skuMatching(): SkuMatchingRequestBuilder = requestBuilders.skuMatching()
-
-    companion object {
-        fun createInstance(
-            apiKey: String,
-            config: NyrisConfig,
-        ): NyrisImpl {
-            return NyrisImpl(apiKey, config)
-        }
-    }
 }
+
+internal fun createInstanceNyrisImpl(
+    apiKey: String,
+    config: NyrisConfig,
+): Nyris {
+    return NyrisImpl(apiKey, config)
+}
+
+internal class ConfigInternal(
+    val apiKey: String,
+    val isDebug: Boolean,
+    val timeout: Long,
+)

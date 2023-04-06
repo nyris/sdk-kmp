@@ -21,6 +21,7 @@ import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verify
+import io.nyris.sdk.Nyris
 import io.nyris.sdk.NyrisConfig
 import io.nyris.sdk.internal.di.ServiceLocator
 import kotlin.test.BeforeTest
@@ -30,7 +31,7 @@ class NyrisImplTest {
     private val config = mockk<NyrisConfig>(relaxed = true)
     private val requestBuilders = mockk<RequestBuilders>(relaxed = true)
 
-    private val classToTest: NyrisImpl by lazy {
+    private val classToTest: Nyris by lazy {
         NyrisImpl.createInstance(API_KEY, config)
     }
 

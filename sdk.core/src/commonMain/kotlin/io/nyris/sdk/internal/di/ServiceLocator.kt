@@ -18,7 +18,34 @@
 package io.nyris.sdk.internal.di
 
 import io.nyris.sdk.NyrisConfig
+import io.nyris.sdk.NyrisPlatform
+import io.nyris.sdk.builder.FeedbackRequestBuilder
+import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.builder.SkuMatchingRequestBuilder
 import io.nyris.sdk.internal.ConfigInternal
+import io.nyris.sdk.internal.RequestBuilders
+import io.nyris.sdk.internal.RequestBuildersImpl
+import io.nyris.sdk.internal.network.CommonHeaders
+import io.nyris.sdk.internal.network.Endpoints
+import io.nyris.sdk.internal.network.UserAgent
+import io.nyris.sdk.internal.network.XOptionsBuilder
+import io.nyris.sdk.internal.network.feedback.FeedbackService
+import io.nyris.sdk.internal.network.find.FindService
+import io.nyris.sdk.internal.network.recommend.RecommendService
+import io.nyris.sdk.internal.network.regions.RegionsService
+import io.nyris.sdk.internal.repository.feedback.FeedbackRepository
+import io.nyris.sdk.internal.repository.feedback.FeedbackRepositoryImpl
+import io.nyris.sdk.internal.repository.feedback.FeedbackRequestBuilderImpl
+import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepository
+import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRepositoryImpl
+import io.nyris.sdk.internal.repository.imagematching.ImageMatchingRequestBuilderImpl
+import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepository
+import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRepositoryImpl
+import io.nyris.sdk.internal.repository.objectdetecting.ObjectDetectingRequestBuilderImpl
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRepository
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRepositoryImpl
+import io.nyris.sdk.internal.repository.skumatching.SkuMatchingRequestBuilderImpl
 import io.nyris.sdk.internal.util.DEFAULT
 import io.nyris.sdk.internal.util.Logger
 import kotlin.reflect.KClass
@@ -56,16 +83,16 @@ internal object ServiceLocator {
             ConfigInternal(
                 apiKey = apiKey,
                 isDebug = config.isDebug,
-                httpEngine = config.httpEngine,
                 timeout = config.timeout
             )
         )
 
         // Init your modules here
-        NetworkModule.init(config.platform, config.baseUrl)
-        ServiceModule.init()
-        RepositoryModule.init()
-        RequestBuilderModule.init()
+        initNetworkModule(config.platform, config.baseUrl)
+
+        initServiceModule()
+        initRepositories()
+        initRequestModule()
     }
 
     private fun putLogger(logger: Logger) {
@@ -75,4 +102,179 @@ internal object ServiceLocator {
     private fun putConfig(config: ConfigInternal) {
         put(ConfigInternal::class) { config }
     }
+
+    //region Network Module
+    private fun initNetworkModule(
+        platform: NyrisPlatform,
+        baseUrl: String,
+    ) {
+        putUserAgent(platform)
+        putCommonHeaders()
+        putXOptionsBuilder()
+        putEndpoints(baseUrl)
+        puJson()
+        putHttpClient()
+    }
+
+    private fun putUserAgent(platform: NyrisPlatform) {
+        put(UserAgent::class) {
+            UserAgent(
+                sdkVersion = "1.0.0",
+                platform = platform,
+                osVersion = "12.0"
+            )
+        }
+    }
+
+    private fun putCommonHeaders() {
+        put(CommonHeaders::class) {
+            CommonHeaders(
+                get<ConfigInternal>().value.apiKey,
+                get<UserAgent>().value
+            )
+        }
+    }
+
+    private fun putXOptionsBuilder() {
+        put(XOptionsBuilder::class) {
+            XOptionsBuilder()
+        }
+    }
+
+    private fun putEndpoints(baseUrl: String) {
+        put(Endpoints::class) {
+            Endpoints(baseUrl)
+        }
+    }
+
+    private fun puJson() {
+    }
+
+    private fun putHttpClient() {
+    }
+    //endregion
+
+    //region Service Module
+    private fun initServiceModule() {
+        putFindService()
+        putRegionsService()
+        putFeedbackService()
+        putRecommendService()
+    }
+
+    private fun putFindService() {
+    }
+
+    private fun putRegionsService() {
+    }
+
+    private fun putFeedbackService() {
+    }
+
+    private fun putRecommendService() {
+    }
+    //endregion
+
+    //region Repositories module
+    private fun initRepositories() {
+        putImageMatchingRepository()
+        putObjectDetectingRepository()
+        putFeedbackRepository()
+        putSkuMatchingRepository()
+    }
+
+    private fun putImageMatchingRepository() {
+        put(ImageMatchingRepository::class) {
+            ImageMatchingRepositoryImpl(
+                logger = get<Logger>().value,
+                findService = get<FindService>().value,
+            )
+        }
+    }
+
+    private fun putObjectDetectingRepository() {
+        put(ObjectDetectingRepository::class) {
+            ObjectDetectingRepositoryImpl(
+                logger = get<Logger>().value,
+                regionsService = get<RegionsService>().value,
+            )
+        }
+    }
+
+    private fun putFeedbackRepository() {
+        put(FeedbackRepository::class) {
+            FeedbackRepositoryImpl(
+                logger = get<Logger>().value,
+                feedbackService = get<FeedbackService>().value,
+            )
+        }
+    }
+
+    private fun putSkuMatchingRepository() {
+        put(SkuMatchingRepository::class) {
+            SkuMatchingRepositoryImpl(
+                logger = get<Logger>().value,
+                recommendService = get<RecommendService>().value,
+            )
+        }
+    }
+    //endregion
+
+    //region Request Builder Module
+    private fun initRequestModule() {
+        putImageMatchingRequestBuilder()
+        putObjectDetectingRequestBuilder()
+        putFeedbackRequestBuilder()
+        putSkuMatchingBuilder()
+
+        putRequestBuilders()
+    }
+
+    private fun putImageMatchingRequestBuilder() {
+        put(ImageMatchingRequestBuilder::class) {
+            ImageMatchingRequestBuilderImpl(
+                logger = get<Logger>().value,
+                imageMatchingRepository = get<ImageMatchingRepository>().value
+            )
+        }
+    }
+
+    private fun putObjectDetectingRequestBuilder() {
+        put(ObjectDetectingRequestBuilder::class) {
+            ObjectDetectingRequestBuilderImpl(
+                logger = get<Logger>().value,
+                objectDetectingRepository = get<ObjectDetectingRepository>().value
+            )
+        }
+    }
+
+    private fun putFeedbackRequestBuilder() {
+        put(FeedbackRequestBuilder::class) {
+            FeedbackRequestBuilderImpl(
+                logger = get<Logger>().value,
+                feedbackRepository = get<FeedbackRepository>().value
+            )
+        }
+    }
+
+    private fun putSkuMatchingBuilder() {
+        put(SkuMatchingRequestBuilder::class) {
+            SkuMatchingRequestBuilderImpl(
+                logger = get<Logger>().value,
+                skuMatchingRepository = get<SkuMatchingRepository>().value
+            )
+        }
+    }
+
+    private fun putRequestBuilders() {
+        put(RequestBuilders::class) {
+            RequestBuildersImpl(
+                imageMatching = get(),
+                objectDetecting = get(),
+                feedback = get(),
+                skuMatching = get(),
+            )
+        }
+    }
+    //endregion
 }

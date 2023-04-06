@@ -44,6 +44,15 @@ rootProject {
                     "(^(?![\\/ ]\\*).*$)"
                 )
             }
+            format("swift") {
+                target("**/*.swift")
+                targetExclude("**/build/**/*.swift")
+                // Look for the first line that doesn't have a block comment (assumed to be the license)
+                licenseHeaderFile(
+                    rootProject.file("configs/code/spotless/copyright.swift"),
+                    "(^(?![\\/ ]\\*).*$)"
+                )
+            }
             format("xml") {
                 target("**/*.xml")
                 targetExclude("**/build/**/*.xml")

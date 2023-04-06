@@ -16,12 +16,19 @@
 package io.nyris.sdk.internal.repository.imagematching
 
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
+import io.nyris.sdk.internal.network.find.FindResponse
+import io.nyris.sdk.internal.network.find.FindService
+import io.nyris.sdk.internal.network.find.FindServiceParams
+import io.nyris.sdk.internal.network.find.LinksDto
+import io.nyris.sdk.internal.network.find.OfferDto
 import io.nyris.sdk.internal.util.Logger
+import io.nyris.sdk.model.Links
 import io.nyris.sdk.model.MatchResponse
+import io.nyris.sdk.model.Offer
 
-internal class ImageMatchingRequestBuilderImpl(
-    private val logger: Logger,
-    private val imageMatchingRepository: ImageMatchingRepository,
+internal abstract class CommonImageMatchingRequestBuilderImpl(
+    protected val logger: Logger,
+    protected val imageMatchingRepository: ImageMatchingRepository,
 ) : ImageMatchingRequestBuilder {
     private var limit: Int? = null
     private var language: String? = null
@@ -70,15 +77,6 @@ internal class ImageMatchingRequestBuilderImpl(
         this.session = session
     }
 
-    override suspend fun match(image: ByteArray): Result<MatchResponse> {
-        logger.log("[ImageMatchingRequestBuilderImpl] match")
-
-        return imageMatchingRepository.match(
-            image = image,
-            params = createParams()
-        )
-    }
-
     internal fun createParams(): ImageMatchingParams = ImageMatchingParams(
         limit = limit,
         language = language,
@@ -106,3 +104,105 @@ private const val LIMIT_MIN = 1
 private const val LIMIT_MAX = 100
 private const val THRESHOLD_MIN = 0.01F
 private const val THRESHOLD_MAX = 1.0F
+
+internal expect class ImageMatchingRequestBuilderImpl(
+    logger: Logger,
+    imageMatchingRepository: ImageMatchingRepository,
+) : CommonImageMatchingRequestBuilderImpl
+
+expect class DataType
+
+
+internal interface ImageMatchingRepository {
+    suspend fun match(
+        image: ByteArray,
+        params: ImageMatchingParams,
+    ): Result<MatchResponse>
+}
+
+internal class ImageMatchingRepositoryImpl(
+    private val logger: Logger,
+    private val findService: FindService,
+) : ImageMatchingRepository {
+    override suspend fun match(
+        image: ByteArray,
+        params: ImageMatchingParams,
+    ): Result<MatchResponse> {
+        logger.log("[ImageMatchingRepositoryImpl] match")
+        return findService.find(
+            image,
+            params.toParams()
+        ).map { findResponse ->
+            logger.log("[ImageMatchingRepositoryImpl] mapping findResponse to match response")
+            findResponse.toMatchResponse()
+        }
+    }
+}
+
+internal class ImageMatchingParams(
+    val limit: Int?,
+    val language: String?,
+    val threshold: Float?,
+    val geolocation: GeolocationParam?,
+    val filters: Map<String, List<String>>,
+    val session: String?,
+)
+
+internal class GeolocationParam(
+    val lat: Float,
+    val lon: Float,
+    val dist: Int,
+)
+
+internal fun ImageMatchingParams.toParams(): FindServiceParams = FindServiceParams(
+    language = language,
+    limit = limit,
+    threshold = threshold,
+    geolocation = geolocation,
+    filters = filters,
+    session = session
+)
+
+
+internal fun FindResponse.toMatchResponse(): MatchResponse = with(this) {
+    MatchResponse(
+        requestId = requestId,
+        sessionId = sessionId,
+        offers = offers.toOfferList()
+    )
+}
+
+internal fun List<OfferDto>.toOfferList(): List<Offer> = map { dto ->
+    dto.toOffer()
+}
+
+internal fun OfferDto.toOffer(): Offer = with(this) {
+    Offer(
+        id = id,
+        title = title,
+        description = description,
+        descriptionLong = descriptionLong,
+        language = language,
+        brand = brand,
+        catalogNumbers = catalogNumbers,
+        customIds = customIds,
+        keywords = keywords,
+        categories = categories,
+        availability = availability,
+        feedId = feedId,
+        groupId = groupId,
+        priceStr = priceStr,
+        salePrice = salePrice,
+        links = links.toLinks(),
+        images = images,
+        metadata = metadata,
+        sku = sku,
+        score = score,
+    )
+}
+
+internal fun LinksDto?.toLinks(): Links = Links(
+    main = this?.main,
+    mobile = this?.mobile
+)
+

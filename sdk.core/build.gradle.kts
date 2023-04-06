@@ -27,21 +27,20 @@ kotlin {
     android {
         publishLibraryVariants("release")
     }
-    jvm()
+    //jvm()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "nyris"
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.ktx.coroutines.core)
-                implementation(libs.ktor.core)
-                implementation(libs.ktor.json)
-                implementation(libs.ktor.loggin)
-                implementation(libs.ktor.contentnegotiation)
-                implementation(libs.ktor.serialization)
-
-                implementation(libs.ktx.json)
-
-                implementation(libs.ktx.date)
             }
         }
         val commonTest by getting {
@@ -63,16 +62,31 @@ kotlin {
                 implementation(libs.test.mockk.core)
             }
         }
-        val jvmMain by getting {
+//        val jvmMain by getting {
+//            dependencies {
+//                implementation(libs.ktor.jvm)
+//            }
+//        }
+//        val jvmTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-junit"))
+//                implementation(libs.test.mockk.core)
+//            }
+//        }
+        // iOS build
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+
+        val iosMain by creating {
+            dependsOn(commonMain)
             dependencies {
-                implementation(libs.ktor.jvm)
+                implementation(libs.ktor.ios)
             }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation(libs.test.mockk.core)
-            }
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+
+            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }

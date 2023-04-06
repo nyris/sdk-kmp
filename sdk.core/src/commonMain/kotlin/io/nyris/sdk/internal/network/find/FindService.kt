@@ -15,24 +15,7 @@
  */
 package io.nyris.sdk.internal.network.find
 
-import io.ktor.client.call.body
-import io.ktor.client.request.forms.FormBuilder
-import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.header
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.Headers
-import io.ktor.utils.io.core.buildPacket
-import io.ktor.utils.io.core.writeFully
-import io.nyris.sdk.internal.network.Endpoints
-import io.nyris.sdk.internal.network.NyrisHttpClient
-import io.nyris.sdk.internal.network.NyrisHttpHeaders
-import io.nyris.sdk.internal.network.XOptionsBuilder
 import io.nyris.sdk.internal.repository.imagematching.GeolocationParam
-import io.nyris.sdk.internal.util.Logger
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.withContext
 
 internal interface FindService {
     suspend fun find(
@@ -41,46 +24,17 @@ internal interface FindService {
     ): Result<FindResponse>
 }
 
-internal class FindServiceImpl(
-    private val logger: Logger,
-    private val xOptionsBuilder: XOptionsBuilder,
-    private val endpoints: Endpoints,
-    private val httpClient: NyrisHttpClient,
-    private val coroutineContext: CoroutineContext,
-) : FindService {
+internal class FindServiceImpl : FindService {
     override suspend fun find(
         image: ByteArray,
         params: FindServiceParams,
-    ): Result<FindResponse> = withContext(coroutineContext) {
-        logger.log("[FindServiceImpl] find")
-        logger.log("[FindServiceImpl] params[$params]")
-
-        return@withContext try {
-            with(params) {
-                logger.log("[FindServiceImpl] find post ${endpoints.find(geolocation)}")
-                Result.success(
-                    httpClient.post(
-                        endpoints.find(geolocation)
-                    ) {
-                        header(NyrisHttpHeaders.AcceptLanguage, language)
-                        header(NyrisHttpHeaders.XSession, session)
-                        header(NyrisHttpHeaders.XOptions, xOptionsBuilder.limit(limit).threshold(threshold).build())
-
-                        setBody(buildMultiParamForm(image, params))
-                    }.body<FindResponse>()
-                ).also {
-                    logger.log("[FindServiceImpl] result is success")
-                }
-            }
-        } catch (e: Throwable) {
-            Result.failure<FindResponse>(e).also {
-                logger.log("[FindServiceImpl] result is failure")
-            }
-        }
+    ): Result<FindResponse> {
+        TODO("Not yet implemented")
     }
+
 }
 
-internal data class FindServiceParams(
+internal class FindServiceParams(
     val language: String?,
     val limit: Int?,
     val threshold: Float?,
@@ -89,35 +43,37 @@ internal data class FindServiceParams(
     val session: String?,
 )
 
-internal fun buildMultiParamForm(
-    image: ByteArray,
-    params: FindServiceParams,
-): MultiPartFormDataContent = MultiPartFormDataContent(
-    formData {
-        appendImage(image)
-        appendFilters(params.filters)
-    }
+
+internal class FindResponse(
+    val requestId: String? = null,
+    val sessionId: String? = null,
+    val offers: List<OfferDto> = emptyList(),
 )
 
-internal fun FormBuilder.appendImage(image: ByteArray) {
-    appendInput(
-        key = "image",
-        headers = Headers.build {
-            this.append(NyrisHttpHeaders.ContentDisposition, "filename=image.jpg")
-            this.append(NyrisHttpHeaders.ContentType, ContentType.Image.JPEG.toString())
-            this.append(NyrisHttpHeaders.ContentLength, image.size.toString())
-        },
-        size = image.size.toLong()
-    ) {
-        buildPacket { writeFully(image) }
-    }
-}
+internal class OfferDto(
+    val id: String? = null,
+    val title: String? = null,
+    val description: String? = null,
+    val descriptionLong: String? = null,
+    val language: String? = null,
+    val brand: String? = null,
+    val catalogNumbers: List<String> = emptyList(),
+    val customIds: Map<String, String> = emptyMap(),
+    val keywords: List<String> = emptyList(),
+    val categories: List<String> = emptyList(),
+    val availability: String? = null,
+    val feedId: String? = null,
+    val groupId: String? = null,
+    val priceStr: String? = null,
+    val salePrice: String? = null,
+    val links: LinksDto? = null,
+    val images: List<String> = emptyList(),
+    val metadata: String? = null,
+    val sku: String? = null,
+    val score: Float? = null,
+)
 
-internal fun FormBuilder.appendFilters(map: Map<String, List<String>>) {
-    map.keys.forEachIndexed { i, filterType ->
-        append("filters[$i].filterType", filterType)
-        map[filterType]?.forEachIndexed { j, filterTypeValue ->
-            append("filters[$i].filterValues[$j]", filterTypeValue)
-        }
-    }
-}
+internal class LinksDto(
+    val main: String? = null,
+    val mobile: String? = null,
+)

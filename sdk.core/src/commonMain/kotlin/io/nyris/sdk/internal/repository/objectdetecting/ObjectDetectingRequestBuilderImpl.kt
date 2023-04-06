@@ -16,8 +16,15 @@
 package io.nyris.sdk.internal.repository.objectdetecting
 
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
+import io.nyris.sdk.internal.network.regions.PositionDto
+import io.nyris.sdk.internal.network.regions.RegionDto
+import io.nyris.sdk.internal.network.regions.RegionsResponse
+import io.nyris.sdk.internal.network.regions.RegionsService
+import io.nyris.sdk.internal.network.regions.RegionsServiceParams
 import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.DetectResponse
+import io.nyris.sdk.model.Position
+import io.nyris.sdk.model.Region
 
 internal class ObjectDetectingRequestBuilderImpl(
     private val logger: Logger,
@@ -46,4 +53,60 @@ internal class ObjectDetectingRequestBuilderImpl(
         logger.log("[ObjectDetectingRequestBuilderImpl] reset")
         session = null
     }
+}
+
+
+internal interface ObjectDetectingRepository {
+    suspend fun detect(
+        image: ByteArray,
+        params: ObjectDetectingParams,
+    ): Result<DetectResponse>
+}
+
+internal class ObjectDetectingRepositoryImpl(
+    private val logger: Logger,
+    private val regionsService: RegionsService,
+) : ObjectDetectingRepository {
+    override suspend fun detect(
+        image: ByteArray,
+        params: ObjectDetectingParams,
+    ): Result<DetectResponse> {
+        logger.log("[ObjectDetectingRepositoryImpl] detect")
+        return regionsService.detect(image, params.toParams()).map { regionsResponse ->
+            logger.log("[ObjectDetectingRepositoryImpl] mapping regions response to detect response")
+            regionsResponse.toDetectResponse()
+        }
+    }
+}
+
+internal class ObjectDetectingParams(
+    val session: String?,
+)
+
+internal fun ObjectDetectingParams.toParams(): RegionsServiceParams = RegionsServiceParams(
+    session = session,
+)
+
+internal fun RegionsResponse.toDetectResponse(): DetectResponse = with(this) {
+    DetectResponse(regions = regionsDto.toRegions())
+}
+
+private fun List<RegionDto>.toRegions(): List<Region> = map { dto ->
+    dto.toRegion()
+}
+
+private fun RegionDto.toRegion(): Region = with(this) {
+    Region(
+        confidence = confidence,
+        position = positionDto?.toPosition()
+    )
+}
+
+private fun PositionDto.toPosition(): Position = with(this) {
+    Position(
+        left = left,
+        top = top,
+        right = right,
+        bottom
+    )
 }

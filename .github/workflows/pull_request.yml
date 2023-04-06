@@ -1,5 +1,5 @@
-# Pipeline to publish core sdk
-name: Publish Core SDK
+# Pipeline for pull request
+name: Pull request pipeline
 
 on:
   pull_request:

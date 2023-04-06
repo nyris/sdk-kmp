@@ -23,11 +23,8 @@ import io.nyris.sdk.internal.createInstanceNyrisImpl
 
 actual interface Nyris {
     actual fun imageMatching(): ImageMatchingRequestBuilder
-
     actual fun objectDetecting(): ObjectDetectingRequestBuilder
-
     actual fun feedback(): FeedbackRequestBuilder
-
     actual fun skuMatching(): SkuMatchingRequestBuilder
 }
 
@@ -38,3 +35,29 @@ actual fun createInstance(
     apiKey = apiKey,
     config = config
 )
+
+class NyrisService(
+    apiKey: String,
+    isDebug: Boolean,
+) : Nyris {
+    private val instance = createInstance(
+        apiKey = apiKey,
+        config = NyrisConfig(isDebug = true, platform = NyrisPlatform.IOS)
+    )
+
+    override fun imageMatching(): ImageMatchingRequestBuilder {
+        return instance.imageMatching()
+    }
+
+    override fun objectDetecting(): ObjectDetectingRequestBuilder {
+        return instance.objectDetecting()
+    }
+
+    override fun feedback(): FeedbackRequestBuilder {
+        return instance.feedback()
+    }
+
+    override fun skuMatching(): SkuMatchingRequestBuilder {
+        return instance.skuMatching()
+    }
+}

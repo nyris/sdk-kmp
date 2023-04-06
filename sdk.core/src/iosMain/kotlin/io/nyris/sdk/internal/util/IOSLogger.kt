@@ -13,26 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.nyris.sdk.internal.network.recommend
+package io.nyris.sdk.internal.util
 
-internal interface RecommendService {
-    suspend fun match(sku: String): Result<RecommendResponse>
-}
-
-internal class RecommendServiceImpl : RecommendService {
-    override suspend fun match(sku: String): Result<RecommendResponse> {
-        TODO("Not yet implemented")
-    }
-
-}
-
-internal class RecommendResponse(
-    val requestId: String? = null,
-    val sessionId: String? = null,
-    val result: List<SkuOfferDto> = emptyList(),
-)
-
-internal class SkuOfferDto(
-    val sku: String? = null,
-    val score: Float? = null,
-)
+/**
+ * Will print logs based on platform
+ */
+internal actual val Logger.Companion.DEFAULT: Logger
+    get() = TODO("Not yet implemented")
