@@ -41,7 +41,7 @@ internal class NyrisImpl internal constructor(
     override fun skuMatching(): SkuMatchingRequestBuilder = requestBuilders.skuMatching()
 }
 
-internal fun createInstance(
+internal fun createInstanceNyrisImpl(
     apiKey: String,
     config: NyrisConfig,
 ): Nyris {

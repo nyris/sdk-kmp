@@ -15,99 +15,23 @@
  */
 package io.nyris.sdk.internal.network
 
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.post
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpHeaders
 import io.nyris.sdk.NyrisPlatform
-import io.nyris.sdk.internal.util.Logger
 
-internal class NyrisHttpClient(
-    private val logger: Logger,
-    private val commonHeaders: CommonHeaders,
-    private val httpClient: HttpClientWrapper,
-) {
-    suspend fun post(
-        endpoint: String,
-        block: HttpRequestBuilder.() -> Unit = {},
-    ): HttpResponse = sendHttpRequestAndHandleError {
-        logger.log("[NyrisHttpClient] post $endpoint")
-        logger.log("[NyrisHttpClient] apiHeaders[${commonHeaders.default}]")
-        val response = httpClient.post(endpoint) {
-            this.apply(block)
-            commonHeaders.default.forEach { entry -> header(entry.key, entry.value) }
-        }
-        if (response.status.value in OK_STATUS) {
-            logger.log("[NyrisHttpClient] post status ok")
-            response
-        } else {
-            logger.log("[NyrisHttpClient] post status ${response.status}")
-            throw response.body<ApiError>().toNyrisException()
-        }
+internal class NyrisHttpClient {
+    suspend fun post() {
+        TODO("Not yet implemented")
     }
 
-    suspend fun get(
-        endpoint: String,
-        block: HttpRequestBuilder.() -> Unit = {},
-    ): HttpResponse = sendHttpRequestAndHandleError {
-        logger.log("[NyrisHttpClient] get $endpoint")
-        logger.log("[NyrisHttpClient] apiHeaders[${commonHeaders.default}]")
-        val response = httpClient.get(endpoint) {
-            this.apply(block)
-            commonHeaders.default.forEach { entry -> header(entry.key, entry.value) }
-        }
-        if (response.status.value in OK_STATUS) {
-            logger.log("[NyrisHttpClient] get status ok")
-            response
-        } else {
-            logger.log("[NyrisHttpClient] post status ${response.status}")
-            throw response.body<ApiError>().toNyrisException()
-        }
+    suspend fun get() {
+        TODO("Not yet implemented")
     }
 
-    private suspend fun sendHttpRequestAndHandleError(block: suspend Unit.() -> HttpResponse): HttpResponse = try {
-        block(Unit)
-    } catch (ignore: ClientRequestException) {
-        logger.log("[NyrisHttpClient] ClientRequestException is thrown")
-        throw ignore.toNyrisException()
-    } catch (ignore: ServerResponseException) {
-        logger.log("[NyrisHttpClient] ServerResponseException is thrown")
-        throw ignore.toNyrisException()
-    } catch (e: Throwable) {
-        logger.log("[NyrisHttpClient] General Exception is thrown")
-        throw e
+    private suspend fun sendHttpRequestAndHandleError() {
+        TODO("Not yet implemented")
     }
 }
 
-internal class HttpClientWrapper(private val httpClient: HttpClient) {
-    suspend fun post(
-        urlString: String,
-        block: HttpRequestBuilder.() -> Unit = {},
-    ): HttpResponse = httpClient.post(urlString, block)
-
-    suspend fun get(
-        urlString: String,
-        block: HttpRequestBuilder.() -> Unit = {},
-    ): HttpResponse = httpClient.get(urlString, block)
-}
-
-internal object NyrisHttpHeaders {
-    val UserAgent: String = HttpHeaders.UserAgent
-    val AcceptLanguage: String = HttpHeaders.AcceptLanguage
-    val ContentLength: String = HttpHeaders.ContentLength
-    val ContentDisposition: String = HttpHeaders.ContentDisposition
-    val ContentType: String = HttpHeaders.ContentType
-
-    const val XApiKey: String = "X-Api-Key"
-    const val XSession: String = "X-Session"
-    const val XOptions: String = "X-Options"
-}
+internal object NyrisHttpHeaders
 
 private const val OK_MIN = 200
 private const val OK_MAX = 200

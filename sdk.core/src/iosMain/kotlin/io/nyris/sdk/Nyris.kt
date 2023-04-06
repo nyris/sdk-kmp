@@ -19,7 +19,7 @@ import io.nyris.sdk.builder.FeedbackRequestBuilder
 import io.nyris.sdk.builder.ImageMatchingRequestBuilder
 import io.nyris.sdk.builder.ObjectDetectingRequestBuilder
 import io.nyris.sdk.builder.SkuMatchingRequestBuilder
-import io.nyris.sdk.internal.NyrisImpl
+import io.nyris.sdk.internal.createInstanceNyrisImpl
 
 actual interface Nyris {
     actual fun imageMatching(): ImageMatchingRequestBuilder
@@ -31,7 +31,7 @@ actual interface Nyris {
 actual fun createInstance(
     apiKey: String,
     config: NyrisConfig,
-): Nyris = NyrisImpl.createInstance(
+): Nyris = createInstanceNyrisImpl(
     apiKey = apiKey,
     config = config
 )
@@ -40,7 +40,7 @@ class NyrisService(
     apiKey: String,
     isDebug: Boolean,
 ) : Nyris {
-    private val instance = NyrisImpl.createInstance(
+    private val instance = createInstance(
         apiKey = apiKey,
         config = NyrisConfig(isDebug = true, platform = NyrisPlatform.IOS)
     )

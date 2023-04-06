@@ -27,7 +27,6 @@ import io.nyris.sdk.internal.network.feedback.RectDto
 import io.nyris.sdk.internal.network.feedback.RegionFeedbackDto
 import io.nyris.sdk.internal.util.Logger
 import io.nyris.sdk.model.Feedback
-import kotlinx.datetime.Clock
 
 internal interface FeedbackRepository {
     suspend fun send(feedback: Feedback): NyrisResult
@@ -57,7 +56,7 @@ internal fun Feedback.toFeedbackRequest(): FeedbackRequest = with(this) {
     FeedbackRequest(
         requestId = this.requestId,
         sessionId = this.sessionId,
-        timestamp = TimeProvider.currentTime(),
+        timestamp = "",
         eventType = this.toEventType(),
         data = this.toData()
     )
@@ -99,8 +98,4 @@ internal fun Feedback.toData(): FeedbackDto = when (this) {
             )
         )
     }
-}
-
-internal object TimeProvider {
-    fun currentTime(): String = Clock.System.now().toString()
 }

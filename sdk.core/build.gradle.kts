@@ -35,24 +35,12 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "nyris"
-            embedBitcode("DISABLE")
-            isStatic = true
         }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.ktx.coroutines.core)
-                implementation(libs.ktor.core)
-                implementation(libs.ktor.json)
-                implementation(libs.ktor.loggin)
-                implementation(libs.ktor.contentnegotiation)
-                implementation(libs.ktor.serialization)
-
-                implementation(libs.ktx.json)
-
-                implementation(libs.ktx.date)
             }
         }
         val commonTest by getting {

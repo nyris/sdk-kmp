@@ -15,103 +15,53 @@
  */
 package io.nyris.sdk.internal.network.feedback
 
-import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import io.nyris.sdk.builder.NyrisResult
-import io.nyris.sdk.internal.network.Endpoints
-import io.nyris.sdk.internal.network.NyrisHttpClient
-import io.nyris.sdk.internal.util.Logger
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 internal interface FeedbackService {
     suspend fun send(feedbackRequest: FeedbackRequest): NyrisResult
 }
 
-internal class FeedbackServiceImpl(
-    private val logger: Logger,
-    private val endpoints: Endpoints,
-    private val httpClient: NyrisHttpClient,
-    private val coroutineContext: CoroutineContext,
-) : FeedbackService {
-    override suspend fun send(
-        feedbackRequest: FeedbackRequest,
-    ): NyrisResult = withContext(coroutineContext) {
-        logger.log("[FeedbackServiceImpl] send")
-        return@withContext try {
-            httpClient.post(endpoints.feedback) {
-                contentType(ContentType.Application.Json)
-
-                setBody(feedbackRequest)
-            }
-            NyrisResult.Successfull
-        } catch (e: Throwable) {
-            NyrisResult.Fail
-        }
+internal class FeedbackServiceImpl : FeedbackService {
+    override suspend fun send(feedbackRequest: FeedbackRequest): NyrisResult {
+        TODO("Not yet implemented")
     }
 }
 
 
-@Serializable
 internal class FeedbackRequest(
-    @SerialName("request_id")
     val requestId: String,
-    @SerialName("session_id")
     val sessionId: String,
-    @SerialName("timestamp")
     val timestamp: String,
-    @SerialName("event")
     val eventType: String,
-    @SerialName("data")
     val data: FeedbackDto,
 )
 
-@Serializable(FeedbackDtoSerializer::class)
 internal sealed class FeedbackDto {
     internal object EMPTY : FeedbackDto()
 }
 
-@Serializable
 internal class ClickFeedbackDto(
-    @SerialName("positions")
     val positions: List<Int>,
-    @SerialName("product_ids")
     val productIds: List<String>,
 ) : FeedbackDto()
 
-@Serializable
 internal class ConversationFeedbackDto(
-    @SerialName("positions")
     val positions: List<Int>,
-    @SerialName("product_ids")
     val productIds: List<String>,
 ) : FeedbackDto()
 
-@Serializable
 internal class CommentFeedbackDto(
-    @SerialName("success")
     val success: Boolean,
-    @SerialName("comment")
     val comment: String?,
 ) : FeedbackDto()
 
-@Serializable
 internal class RegionFeedbackDto(
-    @SerialName("rect")
     val rect: RectDto,
 ) : FeedbackDto()
 
-@Serializable
 internal class RectDto(
-    @SerialName("x")
     val x: Float,
-    @SerialName("y")
     val y: Float,
-    @SerialName("w")
     val w: Float,
-    @SerialName("h")
     val h: Float,
 )
