@@ -21,7 +21,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(Configuration.javaVersion)
+    //jvmToolchain(Configuration.javaVersion)
 }
 
 dependencies {
