@@ -18,7 +18,7 @@ package io.nyris.gradle.utils
 import org.gradle.api.JavaVersion
 
 object Configuration {
-    const val compileSdkVersion = 33
+    const val compileSdkVersion = 31
     const val minSdkVersion = 21
     const val targetSdkVersion = 33
     const val javaVersion = 11

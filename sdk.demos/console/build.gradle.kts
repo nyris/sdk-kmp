@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import io.nyris.gradle.utils.Configuration
 import io.nyris.gradle.utils.Modules
 
 plugins {
@@ -21,7 +20,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(Configuration.javaVersion)
+    // jvmToolchain(Configuration.javaVersion)
 }
 
 dependencies {

@@ -21,7 +21,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import io.nyris.sdk.demo.databinding.ActivityCameraConfigBinding
 
 class CameraConfigActivity : AppCompatActivity() {
@@ -77,15 +76,15 @@ class CameraConfigActivity : AppCompatActivity() {
                 startActivity(
                     Intent(this@CameraConfigActivity, CameraActivity::class.java).apply {
                         putExtras(
-                            bundleOf(
-                                CAPTURE_MODE_KEY to captureMode,
-                                FOCUS_MODE_KEY to focusMode,
-                                BARCODE_FORMAT_KEY to barcodeFormat,
-                                BARCODE_GUIDE_KEY to isBarcodeGuideEnabled,
-                                COMPRESSION_FORMAT_KEY to compressionFormat,
-                                COMPRESSION_QUALITY_KEY to compressionQuality,
-                                IS_DEBUG_KEY to isDebugInfo
-                            )
+                            Bundle().apply {
+                                putInt(CAPTURE_MODE_KEY,captureMode)
+                                putInt(FOCUS_MODE_KEY,focusMode)
+                                putInt(BARCODE_FORMAT_KEY,barcodeFormat)
+                                putBoolean(BARCODE_GUIDE_KEY,isBarcodeGuideEnabled)
+                                putInt(COMPRESSION_FORMAT_KEY,compressionFormat)
+                                putInt(COMPRESSION_QUALITY_KEY,compressionQuality)
+                                putBoolean(IS_DEBUG_KEY,isDebugInfo)
+                            }
                         )
                     }
                 )
