@@ -42,9 +42,9 @@ maven {
     url = uri("https://maven.pkg.github.com/nyris/sdk-kmp")
 }
 
-implementation("io.nyris.sdk:camera-view:1.0.0")
+implementation("io.nyris.sdk:camera-view:1.1.0")
 // [Optional]: needed only when you need to use barcode scanning
-implementation("io.nyris.sdk:camera-feature-barcode:1.0.0")
+implementation("io.nyris.sdk:camera-feature-barcode:1.1.0")
 ```
 
 ## 🏗️️ Usage
@@ -64,6 +64,7 @@ By default if you don't specify the view parameters, the camera will start with:
     <io.nyris.sdk.camera.CameraView 
         android:layout_height="match_parent" 
         android:layout_width="match_parent"
+        app:feature_modes="capture|barcode" // Combine features
         app:barcode_format="all" 
         app:capture_mode="screenshot" 
         app:compression_format="webp" 
@@ -76,6 +77,7 @@ By default if you don't specify the view parameters, the camera will start with:
 
 ```kotlin
 val cameraView = CameraViewBuilder(binding.cameraContainer) // Set your view group or camera container
+    .featureModes(FeatureMode.CAPTURE or FeatureMode.BARCODE) // Set the expected features by default [FeatureMode.CAPTURE is selected!]
     .captureMode(CaptureMode.Screenshot) // Set the capture mode [Lens, Screenshot and Barcode]
     .focusMode(FocusMode.Automatic) // Set the focus mode 
     .barcodeFormat(BarcodeFormat.All) // Set the target barcode format
@@ -122,9 +124,26 @@ cameraView.disableTorch()
 ### How I can capture an image or barcode ?
 
 For barcode:
+You need to make sure the barcode mode is enabled by using dynamic declaration or view xml declaration
 
 ```kotlin
-cameraView.capture(BarcodeResult::class) { result ->
+val cameraView = CameraViewBuilder(binding.cameraContainer) // Set your view group or camera container
+    .featureModes(FeatureMode.BARCODE)
+...
+```
+
+```
+    <io.nyris.sdk.camera.CameraView 
+        android:layout_height="match_parent" 
+        android:layout_width="match_parent"
+        app:feature_modes="barcode" // Combine features
+    ...
+```
+
+once the barcode feature is enabled then you can capture the barcode like the following:
+
+```kotlin
+camera.capture(FeatureMode.BARCODE, BarcodeResult::class) {
     result.code // Represents the barcode value
     result.format // Represents the barcode format
 }
@@ -133,14 +152,14 @@ cameraView.capture(BarcodeResult::class) { result ->
 For Image:
 
 ```kotlin
-cameraView.capture(ImageResult::class) { result ->
+camera.capture(FeatureMode.CAPTURE, ImageResult::class) {
     result.optimizedImage // Represents the byte array that needs to be sent to nyris api
     result.originalImage // Represents the original byte array
 }
 ```
 
-!!Note!!: The capture method work properly only when you set the correct CaptureMode. For instance, if the capture mode
-is the Screenshot and capture method expecting barcodes then capturing will not work properly!
+!!Note!!: The capture method work properly only when you set the correct FeatureMode. For instance, if the feature mode
+is the CAPTURE and capture method expecting barcodes then capturing will not work properly!
 
 ### How I can subscribe to Camera Errors ?
 
@@ -229,7 +248,24 @@ strings.xml
 
 ### Can I use two captures mode at the same time ?
 
-No, you can't. The camera supports only 1 capture mode at the same time.
+Yes, you can. The camera allow you to mix features like capturing barcode and capturing image.
+
+To do that you need to make sure to use the bitwise
+operator [or(|)](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op3.html).
+
+```kotlin
+val cameraView = CameraViewBuilder(binding.cameraContainer) // Set your view group or camera container
+    .featureModes(FeatureMode.CAPTURE or FeatureMode.BARCODE) // Mixing features
+...
+```
+
+```
+    <io.nyris.sdk.camera.CameraView 
+        android:layout_height="match_parent" 
+        android:layout_width="match_parent"
+        app:feature_modes="capture|barcode" // Combine features
+    ...
+```
 
 ## 📜 License
 
