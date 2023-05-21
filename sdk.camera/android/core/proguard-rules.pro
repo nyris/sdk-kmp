@@ -15,5 +15,6 @@
 -keep class io.nyris.sdk.camera.core.CaptureMode
 -keep class io.nyris.sdk.camera.core.CompressionFormat
 -keep class io.nyris.sdk.camera.core.FocusMode
+-keep class io.nyris.sdk.camera.core.FeatureMode
 
 -dontwarn java.lang.invoke.StringConcatFactory

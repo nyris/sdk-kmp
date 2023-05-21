@@ -16,25 +16,14 @@
 package io.nyris.sdk.camera.core
 
 import androidx.annotation.IntDef
-import io.nyris.sdk.camera.core.CaptureMode.Companion.BARCODE
-import io.nyris.sdk.camera.core.CaptureMode.Companion.LENS
-import io.nyris.sdk.camera.core.CaptureMode.Companion.SCREENSHOT
+import io.nyris.sdk.camera.core.FeatureMode.Companion.BARCODE
+import io.nyris.sdk.camera.core.FeatureMode.Companion.CAPTURE
 
-enum class CaptureModeEnum {
-    Screenshot, Lens,
-
-    @Deprecated("It will be removed with the release 1.2")
-    Barcode
-}
-
-@IntDef(SCREENSHOT, LENS, BARCODE)
+@IntDef(CAPTURE, BARCODE)
 @Retention(AnnotationRetention.SOURCE)
-annotation class CaptureMode {
+annotation class FeatureMode {
     companion object {
-        const val SCREENSHOT: Int = 0
-        const val LENS: Int = 1
-
-        @Deprecated("It will be removed with the release 1.2")
-        const val BARCODE: Int = 2
+        const val CAPTURE = 0
+        const val BARCODE: Int = 1
     }
 }
