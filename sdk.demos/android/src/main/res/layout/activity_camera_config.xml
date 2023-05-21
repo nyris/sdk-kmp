@@ -20,6 +20,26 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:text="Feature Mode:" />
+
+    <CheckBox
+        android:checked="true"
+        android:enabled="false"
+        android:id="@+id/captureFeature"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Capture" />
+
+    <CheckBox
+        android:checked="false"
+        android:id="@+id/barcodeFeature"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Barcode" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:text="Capture Mode:" />
 
     <Spinner

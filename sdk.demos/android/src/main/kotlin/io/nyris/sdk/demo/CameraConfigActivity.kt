@@ -22,6 +22,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.demo.databinding.ActivityCameraConfigBinding
 
 class CameraConfigActivity : AppCompatActivity() {
@@ -45,8 +46,6 @@ class CameraConfigActivity : AppCompatActivity() {
             when (parent.id) {
                 R.id.captureModeSp -> {
                     captureMode = position
-                    binding.barcodeFormatSp.isEnabled = captureMode == 2
-                    binding.barcodeGuideSwitch.isEnabled = captureMode == 2
                 }
                 R.id.barcodeFormatSp -> barcodeFormat = position
                 R.id.focusModeSp -> focusMode = position
@@ -63,6 +62,10 @@ class CameraConfigActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         with(binding) {
             setContentView(root)
+            barcodeFeature.setOnCheckedChangeListener { _, isChecked ->
+                binding.barcodeFormatSp.isEnabled = isChecked
+                binding.barcodeGuideSwitch.isEnabled = isChecked
+            }
             captureModeSp.onItemSelectedListener = onItemSelectedListener
             focusModeSp.onItemSelectedListener = onItemSelectedListener
             barcodeFormatSp.onItemSelectedListener = onItemSelectedListener
@@ -74,10 +77,13 @@ class CameraConfigActivity : AppCompatActivity() {
             startCameraBtn.setOnClickListener {
                 compressionQuality = qualityEt.text.toString().toIntOrNull() ?: compressionQuality
 
+                val featureModes =
+                    if (barcodeFeature.isChecked) FeatureMode.CAPTURE or FeatureMode.BARCODE else FeatureMode.CAPTURE
                 startActivity(
                     Intent(this@CameraConfigActivity, CameraActivity::class.java).apply {
                         putExtras(
                             bundleOf(
+                                FEATURE_MODE_KEY to featureModes,
                                 CAPTURE_MODE_KEY to captureMode,
                                 FOCUS_MODE_KEY to focusMode,
                                 BARCODE_FORMAT_KEY to barcodeFormat,
@@ -94,6 +100,7 @@ class CameraConfigActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val FEATURE_MODE_KEY = "FEATURE_MODE_KEY"
         const val CAPTURE_MODE_KEY = "CAPTURE_MODE_KEY"
         const val FOCUS_MODE_KEY = "FOCUS_MODE_KEY"
         const val BARCODE_FORMAT_KEY = "BARCODE_FORMAT_KEY"

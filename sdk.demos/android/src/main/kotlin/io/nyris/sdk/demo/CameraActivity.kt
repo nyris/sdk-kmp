@@ -18,7 +18,6 @@ package io.nyris.sdk.demo
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -27,12 +26,13 @@ import io.nyris.sdk.camera.BarcodeResult
 import io.nyris.sdk.camera.CameraView
 import io.nyris.sdk.camera.CameraViewBuilder
 import io.nyris.sdk.camera.ImageResult
-import io.nyris.sdk.camera.core.CaptureMode
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.BARCODE_FORMAT_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.BARCODE_GUIDE_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.CAPTURE_MODE_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.COMPRESSION_FORMAT_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.COMPRESSION_QUALITY_KEY
+import io.nyris.sdk.demo.CameraConfigActivity.Companion.FEATURE_MODE_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.FOCUS_MODE_KEY
 import io.nyris.sdk.demo.CameraConfigActivity.Companion.IS_DEBUG_KEY
 import io.nyris.sdk.demo.databinding.ActivityCameraBinding
@@ -42,23 +42,12 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bundle = intent?.extras ?: return
         val binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val bundle = intent?.extras ?: return
+        val featureModes = bundle.getInt(FEATURE_MODE_KEY)
         val captureMode = bundle.getInt(CAPTURE_MODE_KEY)
-        with(bundle) {
-            cameraView = CameraViewBuilder(binding.cameraContainer)
-                .captureMode(captureMode)
-                .focusMode(getInt(FOCUS_MODE_KEY))
-                .barcodeFormat(getInt(BARCODE_FORMAT_KEY))
-                .barcodeGuide(getBoolean(BARCODE_GUIDE_KEY))
-                .compressionFormat(getInt(COMPRESSION_FORMAT_KEY))
-                .quality(getInt(COMPRESSION_QUALITY_KEY))
-                .build().apply {
-                    showDebug(getBoolean(IS_DEBUG_KEY))
-                }
-        }
+        createCameraView(binding, featureModes, captureMode)
 
         with(binding) {
             torch.apply torch@{
@@ -79,16 +68,17 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
 
-            if (captureMode == CaptureMode.BARCODE) {
-                capture.visibility = View.GONE
-                cameraView?.capture(BarcodeResult::class) {
-                    // Handle you result!
-                }
-            } else {
+            if (featureModes.containsFeature(FeatureMode.CAPTURE)) {
                 capture.setOnClickListener {
-                    cameraView?.capture(ImageResult::class) {
+                    cameraView?.capture(FeatureMode.CAPTURE, ImageResult::class) {
                         // Handle you result!
                     }
+                }
+            }
+
+            if (featureModes.containsFeature(FeatureMode.BARCODE)) {
+                cameraView?.capture(FeatureMode.BARCODE, BarcodeResult::class) {
+                    // Handle you result!
                 }
             }
 
@@ -103,6 +93,27 @@ class CameraActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
+    }
+
+    private fun createCameraView(
+        binding: ActivityCameraBinding,
+        featureModes: Int,
+        captureMode: Int
+    ) {
+        val bundle = intent?.extras ?: return
+        with(bundle) {
+            cameraView = CameraViewBuilder(binding.cameraContainer)
+                .featureModes(featureModes)
+                .captureMode(captureMode)
+                .focusMode(getInt(FOCUS_MODE_KEY))
+                .barcodeFormat(getInt(BARCODE_FORMAT_KEY))
+                .barcodeGuide(getBoolean(BARCODE_GUIDE_KEY))
+                .compressionFormat(getInt(COMPRESSION_FORMAT_KEY))
+                .quality(getInt(COMPRESSION_QUALITY_KEY))
+                .build().apply {
+                    showDebug(getBoolean(IS_DEBUG_KEY))
+                }
         }
     }
 
@@ -145,6 +156,12 @@ class CameraActivity : AppCompatActivity() {
             baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
+}
+
+internal fun Int.containsFeature(
+    feature: Int,
+): Boolean {
+    return this or feature == this
 }
 
 private val REQUIRED_PERMISSIONS = listOf(Manifest.permission.CAMERA).toTypedArray()
