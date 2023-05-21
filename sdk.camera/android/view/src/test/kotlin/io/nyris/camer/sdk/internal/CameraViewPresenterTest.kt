@@ -30,6 +30,7 @@ import io.nyris.sdk.camera.Result
 import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ResultInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeResultInternal
@@ -62,6 +63,7 @@ class CameraViewPresenterTest {
 
     private val classToTest: CameraViewPresenter by lazy {
         CameraViewPresenter(
+            featureModes = listOf(FeatureMode.CAPTURE),
             focusMode = focusMode,
             captureMode = captureMode,
             compressionFormat = compressionFormat,
@@ -92,12 +94,10 @@ class CameraViewPresenterTest {
             CameraManager.createInstance(
                 context = any(),
                 previewView = any(),
-                captureMode = captureMode,
                 focusMode = focusMode,
                 lifecycleOwner = any(),
-                compressionFormat = compressionFormat,
-                quality = quality,
-                barcodeFormat = barcodeFormat,
+                captureConfig = any(),
+                barcodeConfig = any()
             )
         } returns cameraManager
 
@@ -122,19 +122,29 @@ class CameraViewPresenterTest {
 
     @Test
     fun `capture should capture image result when result is ImageResultInternal`() {
-        assertCaptureTest<ImageResult, ImageResultInternal>(ImageResult::class, imageResult)
+        assertCaptureTest<ImageResult, ImageResultInternal>(FeatureMode.CAPTURE, ImageResult::class, imageResult)
     }
 
     @Test
     fun `capture should capture barcode result when result is BarcodeResultInternal`() {
-        assertCaptureTest<BarcodeResult, BarcodeResultInternal>(BarcodeResult::class, barcodeResult)
+        assertCaptureTest<BarcodeResult, BarcodeResultInternal>(
+            FeatureMode.BARCODE,
+            BarcodeResult::class,
+            barcodeResult
+        )
     }
 
     @Test
     fun `capture should throw exception when internal result is not recognized`() {
         assertThrows(
             IllegalArgumentException::class.java,
-            { assertCaptureTest<RandomResult, RandomResultInternal>(RandomResult::class, mockk()) },
+            {
+                assertCaptureTest<RandomResult, RandomResultInternal>(
+                    FeatureMode.CAPTURE,
+                    RandomResult::class,
+                    mockk()
+                )
+            },
             "Result type not handled here !"
         )
     }
@@ -199,17 +209,19 @@ class CameraViewPresenterTest {
     }
 
     private inline fun <R : Result, reified R2 : ResultInternal> assertCaptureTest(
+        @FeatureMode
+        featureMode: Int,
         kClass: KClass<R>,
         expected: R,
     ) {
         val captureBlockSlot = slot<CaptureCallback>()
-        justRun { cameraManager.capture(capture(captureBlockSlot)) }
+        justRun { cameraManager.capture(featureMode, capture(captureBlockSlot)) }
         val resultInternal = mockk<R2>()
 
-        classToTest.capture(kClass)
+        classToTest.capture(featureMode, kClass)
         captureBlockSlot.captured.invoke(resultInternal)
 
-        verify { view.onResult(expected) }
+        verify { view.onResult(featureMode, expected) }
     }
 }
 

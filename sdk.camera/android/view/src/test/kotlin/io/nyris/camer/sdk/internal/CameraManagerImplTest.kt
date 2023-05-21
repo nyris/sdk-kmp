@@ -38,6 +38,7 @@ import io.mockk.slot
 import io.mockk.unmockkAll
 import io.mockk.verify
 import io.nyris.sdk.camera.core.CAMERA_ERROR_BACK_CAMERA_NOT_AVAILABLE
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ImageFeature
 import io.nyris.sdk.camera.core.ResultInternal
@@ -56,6 +57,7 @@ class CameraManagerImplTest {
     private val lifecycleOwner = mockk<LifecycleOwner>()
     private val focusMode = FocusModeEnum.Manual
     private val imageFeature = mockk<ImageFeature<ResultInternal>>(relaxed = true)
+    private val featuresMap = mapOf(FeatureMode.CAPTURE to imageFeature)
     private val cameraProvider = mockk<ProcessCameraProvider>(relaxed = true)
     private val cameraProviderFuture = mockk<ListenableFuture<ProcessCameraProvider>>().apply {
         every { get() } returns cameraProvider
@@ -85,7 +87,7 @@ class CameraManagerImplTest {
             previewView = previewView,
             lifecycleOwner = lifecycleOwner,
             focusMode = focusMode,
-            imageFeature = imageFeature
+            featuresMap = featuresMap
         )
     }
 

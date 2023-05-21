@@ -27,11 +27,14 @@ import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.feature.barcode.BarcodeImageFeature
 import io.nyris.sdk.camera.feature.image.LensCaptureImageFeature
 import io.nyris.sdk.camera.feature.image.ScreenshotCaptureImageFeature
+import io.nyris.sdk.camera.internal.BarcodeConfig
 import io.nyris.sdk.camera.internal.CameraManager
+import io.nyris.sdk.camera.internal.CaptureConfig
 import kotlin.reflect.KClass
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -64,13 +67,18 @@ class CameraManagerTest {
     @MethodSource("getTestData")
     fun `createImageFeature should create the correct image feature`(
         captureMode: CaptureModeEnum,
-        expected: KClass<*>,
+        expected: KClass<*>?,
     ) {
-        val imageFeature = CameraManager.createImageFeature(
-            captureMode, previewView, compressionFormat, quality, rotation, barcodeFormat
+        val captureConfig = CaptureConfig(
+            isEnabled = true,
+            captureMode = captureMode,
+            compressionFormat = compressionFormat,
+            quality = quality,
+            rotation = rotation
         )
+        val imageFeature = CameraManager.createImageFeature(captureConfig, previewView)
 
-        assertEquals(expected, imageFeature::class)
+        assertEquals(expected, imageFeature!!::class)
     }
 
     companion object {
@@ -78,7 +86,18 @@ class CameraManagerTest {
         fun getTestData() = listOf(
             Arguments.of(CaptureModeEnum.Screenshot, ScreenshotCaptureImageFeature::class),
             Arguments.of(CaptureModeEnum.Lens, LensCaptureImageFeature::class),
-            Arguments.of(CaptureModeEnum.Barcode, BarcodeImageFeature::class)
         )
+    }
+
+    @Test
+    fun `createBarcodeFeature should create the correct barcode feature`() {
+        val barcodeConfig = BarcodeConfig(
+            isEnabled = true,
+            barcodeFormat = barcodeFormat,
+            rotation = rotation
+        )
+        val barcodeFeature = CameraManager.createBarcodeFeature(barcodeConfig)
+
+        assertEquals(BarcodeImageFeature::class, barcodeFeature!!::class)
     }
 }
