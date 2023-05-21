@@ -11,6 +11,7 @@
 -keep public class io.nyris.sdk.camera.** { public *; }
 -keep public class io.nyris.sdk.camera.**$Companion { public *; }
 -keep class !io.nyris.sdk.camera.internal.** { *; }
+-keep class io.nyris.sdk.camera.core.FeatureMode
 -keep class io.nyris.sdk.camera.core.BarcodeFormat
 -keep class io.nyris.sdk.camera.core.CaptureMode
 -keep class io.nyris.sdk.camera.core.CompressionFormat

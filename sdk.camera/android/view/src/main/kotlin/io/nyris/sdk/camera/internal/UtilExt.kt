@@ -20,6 +20,7 @@ import io.nyris.sdk.camera.core.CaptureMode
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormat
 import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import kotlin.math.roundToInt
@@ -34,22 +35,33 @@ internal fun Int.byteToMb() = (byteToKb() / KILO).round()
 
 internal fun Long.millisToSeconds() = (this / KILO).round()
 
+internal fun @receiver:FeatureMode Int.toFeatureModeList() = mutableListOf<Int>().apply {
+    if (this@toFeatureModeList.containsFeature(FeatureMode.CAPTURE)) this.add(FeatureMode.CAPTURE)
+    if (this@toFeatureModeList.containsFeature(FeatureMode.BARCODE)) this.add(FeatureMode.BARCODE)
+}
+
+internal fun Int.containsFeature(
+    feature: Int,
+): Boolean {
+    return this or feature == this
+}
+
 internal fun @receiver:CaptureMode Int.toCaptureMode(): CaptureModeEnum = when {
-    this == 0 -> CaptureModeEnum.Screenshot
-    this == 1 -> CaptureModeEnum.Lens
-    this == 2 -> CaptureModeEnum.Barcode
+    this == CaptureMode.SCREENSHOT -> CaptureModeEnum.Screenshot
+    this == CaptureMode.LENS -> CaptureModeEnum.Lens
+    this == CaptureMode.BARCODE -> CaptureModeEnum.Barcode
     else -> CaptureModeEnum.Screenshot
 }
 
 internal fun @receiver:FocusMode Int.toFocusMode(): FocusModeEnum = when {
-    this == 0 -> FocusModeEnum.Automatic
-    this == 1 -> FocusModeEnum.Manual
+    this == FocusMode.AUTOMATIC -> FocusModeEnum.Automatic
+    this == FocusMode.MANUAL -> FocusModeEnum.Manual
     else -> FocusModeEnum.Automatic
 }
 
 internal fun @receiver:CompressionFormat Int.toCompressionFormat(): CompressionFormatEnum = when {
-    this == 0 -> CompressionFormatEnum.WebP
-    this == 1 -> CompressionFormatEnum.Jpeg
+    this == CompressionFormat.WEBP -> CompressionFormatEnum.WebP
+    this == CompressionFormat.JPEG -> CompressionFormatEnum.Jpeg
     else -> CompressionFormatEnum.WebP
 }
 

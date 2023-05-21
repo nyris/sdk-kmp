@@ -32,6 +32,7 @@ import io.nyris.sdk.camera.Result
 import io.nyris.sdk.camera.core.CameraError
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.databinding.NyrisCameraViewBinding
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
@@ -45,6 +46,7 @@ import io.nyris.sdk.camera.internal.required
 import io.nyris.sdk.camera.internal.toBarcodeFormat
 import io.nyris.sdk.camera.internal.toCaptureMode
 import io.nyris.sdk.camera.internal.toCompressionFormat
+import io.nyris.sdk.camera.internal.toFeatureModeList
 import io.nyris.sdk.camera.internal.toFocusMode
 import kotlin.reflect.KClass
 
@@ -53,6 +55,7 @@ internal class CameraViewDelegate(
     private val cameraView: CameraView,
     attrs: AttributeSet? = null,
     focusMode: Int = 0,
+    featureModes: Int = 0,
     captureMode: Int = 0,
     compressionFormat: Int = 0,
     quality: Int = DEFAULT_QUALITY,
@@ -77,9 +80,14 @@ internal class CameraViewDelegate(
 
     private var torchStateBlock: TorchStateBlock? = null
     private var errorBlock: ErrorBlock? = null
+
+    @Deprecated("will be removed in the release 1.2")
     private var captureBlock: CaptureBlock<Result>? = null
+    private var captureBlockMap: MutableMap<Int, CaptureBlock<Result>?> = mutableMapOf()
 
     init {
+        val featureModeList =
+            styledAttributes.getInt(R.styleable.CameraView_feature_modes, featureModes).toFeatureModeList()
         val focusModeEnum =
             styledAttributes.getInt(R.styleable.CameraView_focus_mode, focusMode).toFocusMode()
         val captureModeEnum =
@@ -99,6 +107,7 @@ internal class CameraViewDelegate(
             if (cameraView.isInEditMode) return@post
 
             presenter = CameraViewPresenter(
+                featureModeList,
                 focusModeEnum,
                 captureModeEnum,
                 compressionModeEnum,
@@ -196,8 +205,12 @@ internal class CameraViewDelegate(
         }
     }
 
-    override fun <R : Result> onResult(result: R) {
+    override fun <R : Result> onResult(
+        @FeatureMode featureMode: Int,
+        result: R,
+    ) {
         captureBlock?.invoke(result)
+        captureBlockMap[featureMode]?.invoke(result)
     }
 
     override fun onError(error: CameraError) {
@@ -211,6 +224,7 @@ internal class CameraViewDelegate(
     }
 
     @Suppress("UNCHECKED_CAST")
+    @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
     internal fun <R : Result> capture(
         kClass: KClass<R>,
         block: CaptureBlock<R>?,
@@ -218,6 +232,19 @@ internal class CameraViewDelegate(
         captureBlock = block as? CaptureBlock<Result>
         cameraView.post {
             presenter?.capture(kClass)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    internal fun <R : Result> capture(
+        @FeatureMode
+        featureMode: Int,
+        kClass: KClass<R>,
+        block: CaptureBlock<R>?,
+    ) {
+        captureBlockMap[featureMode] = block as? CaptureBlock<Result>
+        cameraView.post {
+            presenter?.capture(featureMode, kClass)
         }
     }
 

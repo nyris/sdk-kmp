@@ -22,6 +22,7 @@ import androidx.annotation.IntRange
 import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureMode
 import io.nyris.sdk.camera.core.CompressionFormat
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusMode
 import io.nyris.sdk.camera.feature.image.DEFAULT_QUALITY
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
@@ -39,6 +40,8 @@ class CameraView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
     @FocusMode
     focusMode: Int = 0,
+    @FeatureMode
+    featureModes: Int,
     @CaptureMode
     captureMode: Int = 0,
     @CompressionFormat
@@ -54,6 +57,7 @@ class CameraView @JvmOverloads constructor(
         cameraView = this,
         attrs = attrs,
         focusMode = focusMode,
+        featureModes = featureModes,
         captureMode = captureMode,
         compressionFormat = compressionFormat,
         quality = quality,
@@ -61,11 +65,21 @@ class CameraView @JvmOverloads constructor(
         isBarcodeGuideEnabled = isBarcodeGuideEnabled
     )
 
+    @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
     fun <R : Result> capture(
         kClass: KClass<R>,
         block: CaptureBlock<R>?,
     ) {
         delegate.capture(kClass, block)
+    }
+
+    fun <R : Result> capture(
+        @FeatureMode
+        featureMode: Int,
+        kClass: KClass<R>,
+        block: CaptureBlock<R>?,
+    ) {
+        delegate.capture(featureMode, kClass, block)
     }
 
     fun enableTorch() {

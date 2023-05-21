@@ -13,10 +13,17 @@
 -->
 <resources>
     <declare-styleable name="CameraView">
+        <attr name="feature_modes">
+            <!-- default mode -->
+            <flag name="capture" value="0" />
+            <flag name="barcode" value="1" />
+            <!-- Please think in bits for your next value -->
+        </attr>
         <attr name="capture_mode" format="enum">
             <!-- default mode -->
             <enum name="screenshot" value="0" />
             <enum name="lens" value="1" />
+            <!-- {@deprecated Use feature_mode instead.} -->
             <enum name="barcode" value="2" />
         </attr>
         <attr name="focus_mode" format="enum">

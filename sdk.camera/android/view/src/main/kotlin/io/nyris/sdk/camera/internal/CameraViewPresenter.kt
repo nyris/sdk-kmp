@@ -23,6 +23,7 @@ import io.nyris.sdk.camera.Result
 import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ResultInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
@@ -33,6 +34,7 @@ import io.nyris.sdk.camera.feature.image.MIN_QUALITY
 import kotlin.reflect.KClass
 
 internal class CameraViewPresenter(
+    private val featureModes: List<Int>,
     private val focusMode: FocusModeEnum,
     private val captureMode: CaptureModeEnum,
     private val compressionFormat: CompressionFormatEnum,
@@ -50,15 +52,24 @@ internal class CameraViewPresenter(
     ) {
         this.view = view
         setDebugInfo(focusMode, captureMode, compressionFormat, quality)
+        val rotation = view.previewView().display.rotation
         cameraManager = CameraManager.createInstance(
             context = view.context(),
             previewView = view.previewView(),
-            captureMode = captureMode,
-            focusMode = focusMode,
             lifecycleOwner = view.lifecycleOwner(),
-            compressionFormat = compressionFormat,
-            quality = quality,
-            barcodeFormat = barcodeFormat
+            focusMode = focusMode,
+            captureConfig = CaptureConfig(
+                isEnabled = captureMode != CaptureModeEnum.Barcode && featureModes.contains(FeatureMode.CAPTURE),
+                captureMode = captureMode,
+                compressionFormat = compressionFormat,
+                quality = quality,
+                rotation = rotation
+            ),
+            barcodeConfig = BarcodeConfig(
+                isEnabled = captureMode == CaptureModeEnum.Barcode || featureModes.contains(FeatureMode.BARCODE),
+                barcodeFormat = barcodeFormat,
+                rotation = rotation
+            )
         )
         observeErrors()
         observeCameraState()
@@ -66,33 +77,52 @@ internal class CameraViewPresenter(
         observeTouch(focusMode)
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun <R : Result> capture(
         kClass: KClass<R>,
     ) {
         cameraManager?.capture<ResultInternal> captureInternal@{
-            val captureResult = it ?: return@captureInternal
-            val result = when (captureResult) {
-                is ImageResultInternal -> {
-                    if (isDebug) {
-                        with(captureResult) {
-                            view?.setImageDebugInfo(elapsed, originalImage, optimizedImage)
-                        }
-                    }
-                    captureResult.toImageResult()
-                }
-                is BarcodeResultInternal -> {
-                    if (isDebug) {
-                        view?.setBarcodesDebugInfo(captureResult.barcodes)
-                    }
-                    captureResult.toBarcodeResult()
-                }
-                else -> throw IllegalArgumentException("Result type not handled here !")
-            }
+            onCaptured(FeatureMode.CAPTURE, kClass, it)
+        }
+    }
 
-            if (result::class == kClass) {
-                view?.onResult(result as R)
+    override fun <R : Result> capture(
+        @FeatureMode
+        featureMode: Int,
+        kClass: KClass<R>,
+    ) {
+        cameraManager?.capture<ResultInternal>(featureMode) captureInternal@{
+            onCaptured(featureMode, kClass, it)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <R : Result> onCaptured(
+        @FeatureMode
+        featureMode: Int,
+        kClass: KClass<R>,
+        resultInternal: ResultInternal?,
+    ) {
+        val captureResult = resultInternal ?: return
+        val result = when (captureResult) {
+            is ImageResultInternal -> {
+                if (isDebug) {
+                    with(captureResult) {
+                        view?.setImageDebugInfo(elapsed, originalImage, optimizedImage)
+                    }
+                }
+                captureResult.toImageResult()
             }
+            is BarcodeResultInternal -> {
+                if (isDebug) {
+                    view?.setBarcodesDebugInfo(captureResult.barcodes)
+                }
+                captureResult.toBarcodeResult()
+            }
+            else -> throw IllegalArgumentException("Result type not handled here !")
+        }
+
+        if (result::class == kClass) {
+            view?.onResult(featureMode, result as R)
         }
     }
 

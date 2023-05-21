@@ -20,12 +20,16 @@ import androidx.annotation.IntRange
 import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureMode
 import io.nyris.sdk.camera.core.CompressionFormat
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusMode
 import io.nyris.sdk.camera.feature.image.DEFAULT_QUALITY
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
 import io.nyris.sdk.camera.feature.image.MIN_QUALITY
 
 class CameraViewBuilder(private val parent: ViewGroup) {
+    @FeatureMode
+    private var featureModes: Int = FeatureMode.CAPTURE
+
     @CaptureMode
     private var captureMode: Int = CaptureMode.SCREENSHOT
 
@@ -42,6 +46,10 @@ class CameraViewBuilder(private val parent: ViewGroup) {
     private var barcodeFormat: Int = BarcodeFormat.ALL
 
     private var isBarcodeGuideEnabled: Boolean = false
+
+    fun featureModes(
+        @FeatureMode featureModes: Int,
+    ) = apply { this.featureModes = featureModes }
 
     fun captureMode(
         @CaptureMode captureMode: Int,
@@ -70,6 +78,7 @@ class CameraViewBuilder(private val parent: ViewGroup) {
     fun build(): CameraView = CameraView(
         context = parent.context,
         focusMode = focusMode,
+        featureModes = featureModes,
         captureMode = captureMode,
         compressionFormat = compressionFormat,
         quality = quality,

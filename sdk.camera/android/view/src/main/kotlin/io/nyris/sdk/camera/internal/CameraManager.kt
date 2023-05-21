@@ -16,25 +16,19 @@
 package io.nyris.sdk.camera.internal
 
 import android.content.Context
-import androidx.annotation.IntRange
 import androidx.camera.core.CameraState
-import androidx.camera.core.impl.ImageOutputConfig.RotationValue
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
-import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CameraError
 import io.nyris.sdk.camera.core.CaptureModeEnum
-import io.nyris.sdk.camera.core.CaptureModeEnum.Barcode
 import io.nyris.sdk.camera.core.CaptureModeEnum.Lens
 import io.nyris.sdk.camera.core.CaptureModeEnum.Screenshot
-import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ImageFeature
 import io.nyris.sdk.camera.core.ResultInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeImageFeature
 import io.nyris.sdk.camera.feature.image.LensCaptureImageFeature
-import io.nyris.sdk.camera.feature.image.MAX_QUALITY
-import io.nyris.sdk.camera.feature.image.MIN_QUALITY
 import io.nyris.sdk.camera.feature.image.ScreenshotCaptureImageFeature
 
 internal interface CameraManager {
@@ -44,41 +38,46 @@ internal interface CameraManager {
             context: Context,
             lifecycleOwner: LifecycleOwner,
             previewView: PreviewView,
-            captureMode: CaptureModeEnum,
             focusMode: FocusModeEnum,
-            compressionFormat: CompressionFormatEnum,
-            @IntRange(from = MIN_QUALITY, to = MAX_QUALITY)
-            quality: Int,
-            @BarcodeFormat
-            barcodeFormat: Int,
+            captureConfig: CaptureConfig,
+            barcodeConfig: BarcodeConfig,
         ): CameraManager {
-            val rotation = previewView.display.rotation
-            val imageFeature =
-                createImageFeature(captureMode, previewView, compressionFormat, quality, rotation, barcodeFormat)
+            val features = mapOf(
+                FeatureMode.CAPTURE to createImageFeature(captureConfig, previewView),
+                FeatureMode.BARCODE to createBarcodeFeature(barcodeConfig)
+            )
             return CameraManagerImpl(
                 context = context,
                 focusMode = focusMode,
                 previewView = previewView,
                 lifecycleOwner = lifecycleOwner,
-                imageFeature = imageFeature,
+                featuresMap = features,
             )
         }
 
-        @Suppress("LongParameterList")
         internal fun createImageFeature(
-            captureMode: CaptureModeEnum,
+            captureConfig: CaptureConfig,
             previewView: PreviewView,
-            compressionFormat: CompressionFormatEnum,
-            @IntRange(from = MIN_QUALITY, to = MAX_QUALITY)
-            quality: Int,
-            @RotationValue
-            rotation: Int,
-            @BarcodeFormat
-            barcodeFormat: Int,
-        ): ImageFeature<ResultInternal> = when (captureMode) {
-            Screenshot -> ScreenshotCaptureImageFeature.createInstance(previewView, compressionFormat, quality)
-            Lens -> LensCaptureImageFeature.createInstance(rotation, compressionFormat, quality)
-            Barcode -> BarcodeImageFeature.createInstance(rotation, barcodeFormat)
+        ): ImageFeature<ResultInternal>? = with(captureConfig) {
+            when (captureConfig.captureMode) {
+                Screenshot -> ScreenshotCaptureImageFeature.createInstance(
+                    previewView,
+                    compressionFormat,
+                    quality
+                )
+                Lens -> LensCaptureImageFeature.createInstance(
+                    rotation,
+                    compressionFormat,
+                    quality
+                )
+                CaptureModeEnum.Barcode -> null
+            }.takeIf { isEnabled }
+        }
+
+        internal fun createBarcodeFeature(
+            barcodeConfig: BarcodeConfig,
+        ): ImageFeature<ResultInternal>? = with(barcodeConfig) {
+            BarcodeImageFeature.createInstance(rotation, barcodeFormat).takeIf { isEnabled }
         }
     }
 
@@ -88,7 +87,14 @@ internal interface CameraManager {
 
     fun state(block: (CameraState) -> Unit)
 
+    @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
     fun <R : ResultInternal> capture(block: (R?) -> Unit)
+
+    fun <R : ResultInternal> capture(
+        @FeatureMode
+        feature: Int,
+        block: (R?) -> Unit,
+    )
 
     fun torchState(block: (Boolean?) -> Unit)
 

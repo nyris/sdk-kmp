@@ -24,6 +24,7 @@ import io.nyris.sdk.camera.Result
 import io.nyris.sdk.camera.core.CameraError
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
@@ -36,7 +37,14 @@ internal interface CameraViewContract {
             view: View,
         )
 
+        @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
         fun <R : Result> capture(
+            kClass: KClass<R>,
+        )
+
+        fun <R : Result> capture(
+            @FeatureMode
+            featureMode: Int,
             kClass: KClass<R>,
         )
 
@@ -84,7 +92,11 @@ internal interface CameraViewContract {
         fun onTorchStateChanged(isEnabled: Boolean?)
         fun observeTouch()
 
-        fun <R : Result> onResult(result: R)
+        fun <R : Result> onResult(
+            @FeatureMode featureMode: Int,
+            result: R,
+        )
+
         fun onError(error: CameraError)
     }
 }

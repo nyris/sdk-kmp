@@ -33,6 +33,7 @@ import io.nyris.sdk.camera.core.CAMERA_ERROR_BIND
 import io.nyris.sdk.camera.core.CAMERA_ERROR_MANUAL_FOCUS
 import io.nyris.sdk.camera.core.CAMERA_ERROR_STATE
 import io.nyris.sdk.camera.core.CameraError
+import io.nyris.sdk.camera.core.FeatureMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ImageFeature
 import io.nyris.sdk.camera.core.ResultInternal
@@ -44,7 +45,7 @@ internal class CameraManagerImpl(
     private val previewView: PreviewView,
     private val lifecycleOwner: LifecycleOwner,
     private val focusMode: FocusModeEnum,
-    private val imageFeature: ImageFeature<ResultInternal>,
+    private val featuresMap: Map<Int, ImageFeature<ResultInternal>?>,
 ) : CameraManager {
     private val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
     private val cameraProvider: ProcessCameraProvider by lazy { cameraProviderFuture.get() }
@@ -83,8 +84,10 @@ internal class CameraManagerImpl(
             val useCaseGroup = UseCaseGroup.Builder().apply {
                 setViewPort(previewView.viewPort!!)
                 addUseCase(cameraPreview)
-                imageFeature.useCase()?.let { useCase ->
-                    addUseCase(useCase)
+                featuresMap.values.forEach { feature ->
+                    feature?.useCase()?.let { useCase ->
+                        addUseCase(useCase)
+                    }
                 }
             }.build()
 
@@ -116,8 +119,31 @@ internal class CameraManagerImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
+    @Deprecated(
+        message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)",
+        replaceWith = ReplaceWith("capture(feature: FeatureEnum)")
+    )
     override fun <R : ResultInternal> capture(block: (R?) -> Unit) {
-        imageFeature.process({ result ->
+        featuresMap[FeatureMode.CAPTURE]?.process({ result ->
+            block(result as? R)
+        }, { error ->
+            cameraError = error
+        })
+
+        featuresMap[FeatureMode.BARCODE]?.process({ result ->
+            block(result as? R)
+        }, { error ->
+            cameraError = error
+        })
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <R : ResultInternal> capture(
+        @FeatureMode
+        feature: Int,
+        block: (R?) -> Unit,
+    ) {
+        featuresMap[feature]?.process({ result ->
             block(result as? R)
         }, { error ->
             cameraError = error
@@ -125,7 +151,7 @@ internal class CameraManagerImpl(
     }
 
     override fun release() {
-        imageFeature.shutdown()
+        featuresMap.values.forEach { feature -> feature?.shutdown() }
         onCameraStateChanged = null
         onTorchStateChanged = null
         camera?.cameraInfo?.torchState?.removeObservers(lifecycleOwner)
