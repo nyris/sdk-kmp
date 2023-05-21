@@ -85,13 +85,16 @@ class SdkMavenPublisherPlugin : Plugin<Project> {
     }
 
     private fun Project.configureSigning(mavenPublication: MavenPublication) {
-        configure<SigningExtension> {
-            useInMemoryPgpKeys(
-                rootProject.extra["MAVEN_GPG_KEY_ID"].toString(),
-                file("$rootDir/configs/signing/release-maven.txt").readText(),
-                rootProject.extra["MAVEN_GPG_PASSWORD"].toString()
-            )
-            sign(mavenPublication)
+        val key = file("$rootDir/configs/signing/release-maven.txt")
+        if (key.exists()) {
+            configure<SigningExtension> {
+                useInMemoryPgpKeys(
+                    rootProject.extra["MAVEN_GPG_KEY_ID"].toString(),
+                    file("$rootDir/configs/signing/release-maven.txt").readText(),
+                    rootProject.extra["MAVEN_GPG_PASSWORD"].toString()
+                )
+                sign(mavenPublication)
+            }
         }
     }
 
