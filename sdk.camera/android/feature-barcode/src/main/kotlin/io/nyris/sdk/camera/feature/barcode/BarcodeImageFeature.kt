@@ -15,6 +15,7 @@
  */
 package io.nyris.sdk.camera.feature.barcode
 
+import android.util.Size
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.UseCase
@@ -47,9 +48,7 @@ class BarcodeImageFeature internal constructor(
 ) : ImageFeature<BarcodeResultInternal> {
     init {
         imageAnalysisWrapper.apply {
-            setAnalyzer(imageAnalysisExecutor) { imageProxy ->
-                processImageProxy(imageProxy)
-            }
+            setAnalyzer(imageAnalysisExecutor, BarcodeAnalyzer())
         }
     }
 
@@ -93,6 +92,15 @@ class BarcodeImageFeature internal constructor(
 
     private fun Barcode.toBarcodeInternal() =
         BarcodeInternal(code = this.rawValue, format = this.format.toBarcodeFormat())
+
+    inner class BarcodeAnalyzer: ImageAnalysis.Analyzer {
+        override fun getDefaultTargetResolution(): Size? {
+            return null
+        }
+        override fun analyze(imageProxy: ImageProxy) {
+            processImageProxy(imageProxy)
+        }
+    }
 
     companion object {
         @Suppress("SpreadOperator") // Small Array
