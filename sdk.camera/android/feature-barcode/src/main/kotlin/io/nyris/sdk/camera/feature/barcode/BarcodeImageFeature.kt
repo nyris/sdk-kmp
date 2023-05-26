@@ -47,9 +47,7 @@ class BarcodeImageFeature internal constructor(
 ) : ImageFeature<BarcodeResultInternal> {
     init {
         imageAnalysisWrapper.apply {
-            setAnalyzer(imageAnalysisExecutor) { imageProxy ->
-                processImageProxy(imageProxy)
-            }
+            setAnalyzer(imageAnalysisExecutor, BarcodeAnalyzer())
         }
     }
 
@@ -93,6 +91,12 @@ class BarcodeImageFeature internal constructor(
 
     private fun Barcode.toBarcodeInternal() =
         BarcodeInternal(code = this.rawValue, format = this.format.toBarcodeFormat())
+
+    inner class BarcodeAnalyzer : ImageAnalysis.Analyzer {
+        override fun analyze(imageProxy: ImageProxy) {
+            processImageProxy(imageProxy)
+        }
+    }
 
     companion object {
         @Suppress("SpreadOperator") // Small Array
