@@ -33,44 +33,71 @@ import io.nyris.sdk.camera.internal.view.ErrorBlock
 import io.nyris.sdk.camera.internal.view.TorchStateBlock
 import kotlin.reflect.KClass
 
-@Suppress("LongParameterList")
 class CameraView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-    @FocusMode
-    focusMode: Int = 0,
-    @FeatureMode
-    featureModes: Int,
-    @CaptureMode
-    captureMode: Int = 0,
-    @CompressionFormat
-    compressionFormat: Int = 0,
-    @IntRange(from = MIN_QUALITY, to = MAX_QUALITY)
-    quality: Int = DEFAULT_QUALITY,
-    @BarcodeFormat
-    barcodeFormat: Int = 0,
-    isBarcodeGuideEnabled: Boolean = false,
 ) : FrameLayout(context, attrs, defStyleAttr) {
+    private lateinit var mutableDelegate: CameraViewDelegate
+    private val delegate: CameraViewDelegate by lazy { mutableDelegate }
 
-    private val delegate = CameraViewDelegate(
-        cameraView = this,
-        attrs = attrs,
-        focusMode = focusMode,
-        featureModes = featureModes,
-        captureMode = captureMode,
-        compressionFormat = compressionFormat,
-        quality = quality,
-        barcodeFormat = barcodeFormat,
-        isBarcodeGuideEnabled = isBarcodeGuideEnabled
-    )
+    @FocusMode
+    private var focusMode: Int = 0
 
-    @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
-    fun <R : Result> capture(
-        kClass: KClass<R>,
-        block: CaptureBlock<R>?,
-    ) {
-        delegate.capture(kClass, block)
+    @FeatureMode
+    private var featureModes: Int = FeatureMode.CAPTURE
+
+    @CaptureMode
+    private var captureMode: Int = 0
+
+    @CompressionFormat
+    private var compressionFormat: Int = 0
+
+    @IntRange(from = MIN_QUALITY, to = MAX_QUALITY)
+    private var quality: Int = DEFAULT_QUALITY
+
+    @BarcodeFormat
+    private var barcodeFormat: Int = 0
+    private var isBarcodeGuideEnabled: Boolean = false
+
+    @Suppress("LongParameterList")
+    constructor(
+        context: Context,
+        @FocusMode
+        focusMode: Int = 0,
+        @FeatureMode
+        featureModes: Int,
+        @CaptureMode
+        captureMode: Int = 0,
+        @CompressionFormat
+        compressionFormat: Int = 0,
+        @IntRange(from = MIN_QUALITY, to = MAX_QUALITY)
+        quality: Int = DEFAULT_QUALITY,
+        @BarcodeFormat
+        barcodeFormat: Int = 0,
+        isBarcodeGuideEnabled: Boolean = false,
+    ) : this(context) {
+        this.focusMode = focusMode
+        this.featureModes = featureModes
+        this.captureMode = captureMode
+        this.compressionFormat = compressionFormat
+        this.quality = quality
+        this.barcodeFormat = barcodeFormat
+        this.isBarcodeGuideEnabled = isBarcodeGuideEnabled
+    }
+
+    init {
+        mutableDelegate = CameraViewDelegate(
+            cameraView = this,
+            attrs = null,
+            focusMode = focusMode,
+            featureModes = featureModes,
+            captureMode = captureMode,
+            compressionFormat = compressionFormat,
+            quality = quality,
+            barcodeFormat = barcodeFormat,
+            isBarcodeGuideEnabled = isBarcodeGuideEnabled
+        )
     }
 
     fun <R : Result> capture(
