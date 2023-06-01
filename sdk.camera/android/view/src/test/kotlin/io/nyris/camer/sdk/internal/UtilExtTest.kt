@@ -106,7 +106,6 @@ class UtilExtTest {
         fun getCaptureModeTestData() = listOf(
             Arguments.of(0, CaptureModeEnum.Screenshot),
             Arguments.of(1, CaptureModeEnum.Lens),
-            Arguments.of(2, CaptureModeEnum.Barcode),
             Arguments.of(-76381, CaptureModeEnum.Screenshot),
         )
 

@@ -49,7 +49,6 @@ internal fun Int.containsFeature(
 internal fun @receiver:CaptureMode Int.toCaptureMode(): CaptureModeEnum = when {
     this == CaptureMode.SCREENSHOT -> CaptureModeEnum.Screenshot
     this == CaptureMode.LENS -> CaptureModeEnum.Lens
-    this == CaptureMode.BARCODE -> CaptureModeEnum.Barcode
     else -> CaptureModeEnum.Screenshot
 }
 

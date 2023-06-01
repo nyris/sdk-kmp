@@ -38,9 +38,6 @@ class CameraView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    private lateinit var mutableDelegate: CameraViewDelegate
-    private val delegate: CameraViewDelegate by lazy { mutableDelegate }
-
     @FocusMode
     private var focusMode: Int = 0
 
@@ -59,6 +56,20 @@ class CameraView @JvmOverloads constructor(
     @BarcodeFormat
     private var barcodeFormat: Int = 0
     private var isBarcodeGuideEnabled: Boolean = false
+
+    private val delegate: CameraViewDelegate by lazy {
+        CameraViewDelegate(
+            cameraView = this,
+            attrs = null,
+            focusMode = focusMode,
+            featureModes = featureModes,
+            captureMode = captureMode,
+            compressionFormat = compressionFormat,
+            quality = quality,
+            barcodeFormat = barcodeFormat,
+            isBarcodeGuideEnabled = isBarcodeGuideEnabled
+        )
+    }
 
     @Suppress("LongParameterList")
     constructor(
@@ -84,20 +95,6 @@ class CameraView @JvmOverloads constructor(
         this.quality = quality
         this.barcodeFormat = barcodeFormat
         this.isBarcodeGuideEnabled = isBarcodeGuideEnabled
-    }
-
-    init {
-        mutableDelegate = CameraViewDelegate(
-            cameraView = this,
-            attrs = null,
-            focusMode = focusMode,
-            featureModes = featureModes,
-            captureMode = captureMode,
-            compressionFormat = compressionFormat,
-            quality = quality,
-            barcodeFormat = barcodeFormat,
-            isBarcodeGuideEnabled = isBarcodeGuideEnabled
-        )
     }
 
     fun <R : Result> capture(

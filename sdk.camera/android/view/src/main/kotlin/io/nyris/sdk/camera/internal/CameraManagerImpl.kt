@@ -119,25 +119,6 @@ internal class CameraManagerImpl(
     }
 
     @Suppress("UNCHECKED_CAST")
-    @Deprecated(
-        message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)",
-        replaceWith = ReplaceWith("capture(feature: FeatureEnum)")
-    )
-    override fun <R : ResultInternal> capture(block: (R?) -> Unit) {
-        featuresMap[FeatureMode.CAPTURE]?.process({ result ->
-            block(result as? R)
-        }, { error ->
-            cameraError = error
-        })
-
-        featuresMap[FeatureMode.BARCODE]?.process({ result ->
-            block(result as? R)
-        }, { error ->
-            cameraError = error
-        })
-    }
-
-    @Suppress("UNCHECKED_CAST")
     override fun <R : ResultInternal> capture(
         @FeatureMode
         feature: Int,

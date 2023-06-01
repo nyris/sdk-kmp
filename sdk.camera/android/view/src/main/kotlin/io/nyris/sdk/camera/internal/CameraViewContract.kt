@@ -37,11 +37,6 @@ internal interface CameraViewContract {
             view: View,
         )
 
-        @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
-        fun <R : Result> capture(
-            kClass: KClass<R>,
-        )
-
         fun <R : Result> capture(
             @FeatureMode
             featureMode: Int,

@@ -93,7 +93,7 @@ class BarcodeImageFeature internal constructor(
     private fun Barcode.toBarcodeInternal() =
         BarcodeInternal(code = this.rawValue, format = this.format.toBarcodeFormat())
 
-    inner class BarcodeAnalyzer: ImageAnalysis.Analyzer {
+    inner class BarcodeAnalyzer : ImageAnalysis.Analyzer {
         override fun getDefaultTargetResolution(): Size? {
             return null
         }

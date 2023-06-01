@@ -20,7 +20,6 @@ import androidx.camera.core.CameraState
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import io.nyris.sdk.camera.core.CameraError
-import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CaptureModeEnum.Lens
 import io.nyris.sdk.camera.core.CaptureModeEnum.Screenshot
 import io.nyris.sdk.camera.core.FeatureMode
@@ -70,7 +69,6 @@ internal interface CameraManager {
                     compressionFormat,
                     quality
                 )
-                CaptureModeEnum.Barcode -> null
             }.takeIf { isEnabled }
         }
 
@@ -86,9 +84,6 @@ internal interface CameraManager {
     fun unbind()
 
     fun state(block: (CameraState) -> Unit)
-
-    @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
-    fun <R : ResultInternal> capture(block: (R?) -> Unit)
 
     fun <R : ResultInternal> capture(
         @FeatureMode

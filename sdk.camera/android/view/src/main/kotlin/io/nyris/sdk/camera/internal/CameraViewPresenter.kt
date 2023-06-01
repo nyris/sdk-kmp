@@ -59,14 +59,14 @@ internal class CameraViewPresenter(
             lifecycleOwner = view.lifecycleOwner(),
             focusMode = focusMode,
             captureConfig = CaptureConfig(
-                isEnabled = captureMode != CaptureModeEnum.Barcode && featureModes.contains(FeatureMode.CAPTURE),
+                isEnabled = featureModes.contains(FeatureMode.CAPTURE),
                 captureMode = captureMode,
                 compressionFormat = compressionFormat,
                 quality = quality,
                 rotation = rotation
             ),
             barcodeConfig = BarcodeConfig(
-                isEnabled = captureMode == CaptureModeEnum.Barcode || featureModes.contains(FeatureMode.BARCODE),
+                isEnabled = featureModes.contains(FeatureMode.BARCODE),
                 barcodeFormat = barcodeFormat,
                 rotation = rotation
             )
@@ -75,14 +75,6 @@ internal class CameraViewPresenter(
         observeCameraState()
         observeTorchState()
         observeTouch(focusMode)
-    }
-
-    override fun <R : Result> capture(
-        kClass: KClass<R>,
-    ) {
-        cameraManager?.capture<ResultInternal> captureInternal@{
-            onCaptured(FeatureMode.CAPTURE, kClass, it)
-        }
     }
 
     override fun <R : Result> capture(

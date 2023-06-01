@@ -80,9 +80,6 @@ internal class CameraViewDelegate(
 
     private var torchStateBlock: TorchStateBlock? = null
     private var errorBlock: ErrorBlock? = null
-
-    @Deprecated("will be removed in the release 1.2")
-    private var captureBlock: CaptureBlock<Result>? = null
     private var captureBlockMap: MutableMap<Int, CaptureBlock<Result>?> = mutableMapOf()
 
     init {
@@ -119,7 +116,7 @@ internal class CameraViewDelegate(
 
             setPreviewSizeDebugInfo()
 
-            if (isBarcodeGuideEnabled && captureModeEnum == CaptureModeEnum.Barcode) {
+            if (isBarcodeGuideEnabled && featureModeList.contains(FeatureMode.BARCODE)) {
                 binding.previewView.overlay.add(
                     BarcodeOverlayDrawable(
                         barcodeFormat = barcodeFormat,
@@ -209,7 +206,6 @@ internal class CameraViewDelegate(
         @FeatureMode featureMode: Int,
         result: R,
     ) {
-        captureBlock?.invoke(result)
         captureBlockMap[featureMode]?.invoke(result)
     }
 
@@ -220,18 +216,6 @@ internal class CameraViewDelegate(
     private fun setPreviewSizeDebugInfo() {
         with(binding.previewView) {
             binding.debugView.setPreviewSizeDebugInfo(width, height)
-        }
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    @Deprecated(message = "Will be removed with the release of 1.2, Start using capture(feature: FeatureEnum)")
-    internal fun <R : Result> capture(
-        kClass: KClass<R>,
-        block: CaptureBlock<R>?,
-    ) {
-        captureBlock = block as? CaptureBlock<Result>
-        cameraView.post {
-            presenter?.capture(kClass)
         }
     }
 
@@ -281,7 +265,6 @@ internal class CameraViewDelegate(
     }
 
     internal fun release() {
-        captureBlock = null
         errorBlock = null
         torchStateBlock = null
         presenter?.release()
