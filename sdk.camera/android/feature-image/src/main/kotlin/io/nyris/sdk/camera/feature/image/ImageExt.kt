@@ -28,7 +28,6 @@ import androidx.camera.core.ImageProxy
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
-import kotlin.math.roundToInt
 
 fun ImageProxy.toCorrectBitmap(): Bitmap {
     val imageBytes = this.toByteArray()
@@ -51,14 +50,10 @@ fun ByteArray.optimize(
     quality: Int,
 ): ByteArray {
     val bitmap = toBitmap()
-    val megaByte = count().byteToMb()
-    return if (megaByte >= 1) {
-        val width = (bitmap.width / megaByte).toInt()
-        val height = (bitmap.height / megaByte).toInt()
-        Bitmap.createScaledBitmap(bitmap, width, height, true)
-    } else {
-        bitmap
-    }.toByteArray(compressionFormat = compressionFormat, quality = quality)
+    val proportionalSize = calculateProportionalSize(bitmap.width, bitmap.height)
+    return Bitmap.createScaledBitmap(
+        bitmap, proportionalSize.first.toInt(), proportionalSize.second.toInt(), true
+    ).toByteArray(compressionFormat = compressionFormat, quality = quality)
 }
 
 fun ImageProxy.toByteArray(): ByteArray = with(this.planes.first().buffer) {
@@ -126,15 +121,23 @@ internal fun CompressionFormatEnum.toBitmapCompressionFormat(): Bitmap.CompressF
     }
 }
 
-internal fun Float.round(): Float = (this * ROUND_TO_2_DIGITS).roundToInt() / ROUND_TO_2_DIGITS
-internal fun Int.byteToKb(): Float = (this / KILO).round()
-internal fun Int.byteToMb() = (byteToKb() / KILO).round()
+private fun calculateProportionalSize(
+    width: Int,
+    height: Int,
+): Pair<Float, Float> {
+    if (width < MAX_IMAGE_SIZE && height < MAX_IMAGE_SIZE) return Pair(width.toFloat(), height.toFloat())
 
-internal const val KILO = 1000.0F
-internal const val ROUND_TO_2_DIGITS = 1000.0F
+    val aspectRationWidth = MAX_IMAGE_SIZE / width.toFloat()
+    val aspectRationHeight = MAX_IMAGE_SIZE / height.toFloat()
+
+    val aspectRation = if (aspectRationWidth > aspectRationHeight) aspectRationHeight else aspectRationWidth
+    return Pair(width * aspectRation, height * aspectRation)
+}
+
 internal const val OFFSET_0 = 0
 internal const val LEFT_0 = 0
 internal const val TOP_0 = 0
 internal const val X_0 = 0
 internal const val Y_0 = 0
 internal const val YUV_QUALITY = 75
+internal const val MAX_IMAGE_SIZE = 1024
