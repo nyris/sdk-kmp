@@ -21,6 +21,7 @@ import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormat
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FeatureMode
+import io.nyris.sdk.camera.core.FeatureModeEnum
 import io.nyris.sdk.camera.core.FocusMode
 import io.nyris.sdk.camera.core.FocusModeEnum
 import kotlin.math.roundToInt
@@ -35,6 +36,8 @@ internal fun Int.byteToMb() = (byteToKb() / KILO).round()
 
 internal fun Long.millisToSeconds() = (this / KILO).round()
 
+internal fun @receiver:FeatureMode Int.toFeatureModeEnumList() = toFeatureModeList().map { it.toFeatureMode() }
+
 internal fun @receiver:FeatureMode Int.toFeatureModeList() = mutableListOf<Int>().apply {
     if (this@toFeatureModeList.containsFeature(FeatureMode.CAPTURE)) this.add(FeatureMode.CAPTURE)
     if (this@toFeatureModeList.containsFeature(FeatureMode.BARCODE)) this.add(FeatureMode.BARCODE)
@@ -44,6 +47,12 @@ internal fun Int.containsFeature(
     feature: Int,
 ): Boolean {
     return this or feature == this
+}
+
+internal fun @receiver:FeatureMode Int.toFeatureMode(): FeatureModeEnum = when {
+    this == FeatureMode.CAPTURE -> FeatureModeEnum.Capture
+    this == FeatureMode.BARCODE -> FeatureModeEnum.Barcode
+    else -> FeatureModeEnum.Capture
 }
 
 internal fun @receiver:CaptureMode Int.toCaptureMode(): CaptureModeEnum = when {

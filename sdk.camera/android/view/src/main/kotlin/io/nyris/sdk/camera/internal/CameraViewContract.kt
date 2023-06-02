@@ -25,6 +25,7 @@ import io.nyris.sdk.camera.core.CameraError
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FeatureMode
+import io.nyris.sdk.camera.core.FeatureModeEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
 import io.nyris.sdk.camera.feature.image.MAX_QUALITY
@@ -67,6 +68,7 @@ internal interface CameraViewContract {
         fun previewView(): PreviewView
         fun lifecycleOwner(): LifecycleOwner
 
+        fun setFeatureModeInfo(featureModes: List<FeatureModeEnum>)
         fun setFocusModeDebugInfo(focusMode: FocusModeEnum)
         fun setCaptureModeDebugInfo(captureMode: CaptureModeEnum)
         fun setCompressionFormatDebugInfo(compressionFormat: CompressionFormatEnum)

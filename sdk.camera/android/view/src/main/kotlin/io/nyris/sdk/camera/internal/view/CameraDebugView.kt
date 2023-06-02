@@ -24,6 +24,7 @@ import androidx.camera.core.CameraState
 import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
+import io.nyris.sdk.camera.core.FeatureModeEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.databinding.NyrisCameraDebugViewBinding
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
@@ -42,6 +43,10 @@ internal class CameraDebugView @JvmOverloads constructor(
 
     init {
         binding = NyrisCameraDebugViewBinding.inflate(LayoutInflater.from(context), this)
+    }
+
+    fun setFeatureMode(featureModes: List<FeatureModeEnum>) {
+        binding.dFeatureMode.text = "Feature Modes: ${featureModes.joinToString(separator = "|") { it.name }}"
     }
 
     fun setCaptureModeDebugInfo(captureMode: CaptureModeEnum) {

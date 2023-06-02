@@ -57,19 +57,17 @@ class CameraView @JvmOverloads constructor(
     private var barcodeFormat: Int = 0
     private var isBarcodeGuideEnabled: Boolean = false
 
-    private val delegate: CameraViewDelegate by lazy {
-        CameraViewDelegate(
-            cameraView = this,
-            attrs = null,
-            focusMode = focusMode,
-            featureModes = featureModes,
-            captureMode = captureMode,
-            compressionFormat = compressionFormat,
-            quality = quality,
-            barcodeFormat = barcodeFormat,
-            isBarcodeGuideEnabled = isBarcodeGuideEnabled
-        )
-    }
+    private val delegate: CameraViewDelegate = CameraViewDelegate(
+        cameraView = this,
+        attrs = context.obtainStyledAttributes(attrs, R.styleable.CameraView),
+        focusMode = focusMode,
+        featureModes = featureModes,
+        captureMode = captureMode,
+        compressionFormat = compressionFormat,
+        quality = quality,
+        barcodeFormat = barcodeFormat,
+        isBarcodeGuideEnabled = isBarcodeGuideEnabled
+    )
 
     @Suppress("LongParameterList")
     constructor(

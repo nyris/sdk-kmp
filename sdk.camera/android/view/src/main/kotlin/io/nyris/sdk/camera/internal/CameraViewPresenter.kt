@@ -24,6 +24,7 @@ import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FeatureMode
+import io.nyris.sdk.camera.core.FeatureModeEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ResultInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
@@ -34,7 +35,7 @@ import io.nyris.sdk.camera.feature.image.MIN_QUALITY
 import kotlin.reflect.KClass
 
 internal class CameraViewPresenter(
-    private val featureModes: List<Int>,
+    private val featureModes: List<FeatureModeEnum>,
     private val focusMode: FocusModeEnum,
     private val captureMode: CaptureModeEnum,
     private val compressionFormat: CompressionFormatEnum,
@@ -51,7 +52,7 @@ internal class CameraViewPresenter(
         view: CameraViewContract.View,
     ) {
         this.view = view
-        setDebugInfo(focusMode, captureMode, compressionFormat, quality)
+        setDebugInfo(featureModes, focusMode, captureMode, compressionFormat, quality)
         val rotation = view.previewView().display.rotation
         cameraManager = CameraManager.createInstance(
             context = view.context(),
@@ -59,14 +60,14 @@ internal class CameraViewPresenter(
             lifecycleOwner = view.lifecycleOwner(),
             focusMode = focusMode,
             captureConfig = CaptureConfig(
-                isEnabled = featureModes.contains(FeatureMode.CAPTURE),
+                isEnabled = featureModes.contains(FeatureModeEnum.Capture),
                 captureMode = captureMode,
                 compressionFormat = compressionFormat,
                 quality = quality,
                 rotation = rotation
             ),
             barcodeConfig = BarcodeConfig(
-                isEnabled = featureModes.contains(FeatureMode.BARCODE),
+                isEnabled = featureModes.contains(FeatureModeEnum.Barcode),
                 barcodeFormat = barcodeFormat,
                 rotation = rotation
             )
@@ -156,11 +157,13 @@ internal class CameraViewPresenter(
     }
 
     private fun setDebugInfo(
+        featureModes: List<FeatureModeEnum>,
         focusMode: FocusModeEnum,
         captureMode: CaptureModeEnum,
         compressionFormat: CompressionFormatEnum,
         @IntRange(from = MIN_QUALITY, to = MAX_QUALITY) quality: Int,
     ) {
+        view?.setFeatureModeInfo(featureModes)
         view?.setFocusModeDebugInfo(focusMode)
         view?.setCaptureModeDebugInfo(captureMode)
         view?.setCompressionFormatDebugInfo(compressionFormat)

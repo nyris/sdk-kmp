@@ -31,6 +31,7 @@ import io.nyris.sdk.camera.core.BarcodeFormat
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FeatureMode
+import io.nyris.sdk.camera.core.FeatureModeEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.core.ResultInternal
 import io.nyris.sdk.camera.feature.barcode.BarcodeResultInternal
@@ -48,6 +49,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class CameraViewPresenterTest {
+    private val featureModes = listOf(FeatureModeEnum.Capture)
     private val focusMode = FocusModeEnum.Manual
     private val captureMode = CaptureModeEnum.Lens
     private val compressionFormat = CompressionFormatEnum.WebP
@@ -63,7 +65,7 @@ class CameraViewPresenterTest {
 
     private val classToTest: CameraViewPresenter by lazy {
         CameraViewPresenter(
-            featureModes = listOf(FeatureMode.CAPTURE),
+            featureModes = featureModes,
             focusMode = focusMode,
             captureMode = captureMode,
             compressionFormat = compressionFormat,
@@ -104,6 +106,7 @@ class CameraViewPresenterTest {
         classToTest.attach(view)
 
         verifyAll {
+            view.setFeatureModeInfo(featureModes)
             view.setFocusModeDebugInfo(focusMode)
             view.setCaptureModeDebugInfo(captureMode)
             view.setCompressionFormatDebugInfo(compressionFormat)

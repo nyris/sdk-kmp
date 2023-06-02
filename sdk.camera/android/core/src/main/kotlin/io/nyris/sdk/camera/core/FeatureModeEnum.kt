@@ -19,6 +19,8 @@ import androidx.annotation.IntDef
 import io.nyris.sdk.camera.core.FeatureMode.Companion.BARCODE
 import io.nyris.sdk.camera.core.FeatureMode.Companion.CAPTURE
 
+enum class FeatureModeEnum { Capture, Barcode }
+
 @IntDef(CAPTURE, BARCODE)
 @Retention(AnnotationRetention.SOURCE)
 annotation class FeatureMode {

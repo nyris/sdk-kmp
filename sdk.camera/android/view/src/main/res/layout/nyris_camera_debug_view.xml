@@ -16,7 +16,7 @@
     tools:background="#88000000"
     tools:ignore="HardcodedText,SmallSp,UseCompoundDrawables,ContentDescription"
     tools:layout_height="wrap_content"
-    tools:layout_width="150dp"
+    tools:layout_width="170dp"
     tools:orientation="vertical"
     tools:padding="4dp"
     tools:parentTag="android.widget.LinearLayout">
@@ -36,6 +36,14 @@
         android:text="Torch disabled"
         android:textColor="@android:color/white"
         android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/dFeatureMode"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        tools:text="Feature Mode: Capture | Barcode" />
 
     <TextView
         android:id="@+id/dCameraState"
@@ -114,7 +122,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/dCaptureTime"
             android:layout_height="wrap_content"
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:orientation="vertical">
 
             <TextView
@@ -131,7 +139,7 @@
                 android:background="@android:color/black"
                 android:id="@+id/dCapturedOptimizedImage"
                 android:layout_height="150dp"
-                android:layout_width="70dp"
+                android:layout_width="match_parent"
                 android:padding="4dp"
                 tools:background="@android:color/holo_red_dark" />
         </LinearLayout>
@@ -140,7 +148,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/dCaptureTime"
             android:layout_height="wrap_content"
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:orientation="vertical">
 
             <TextView
@@ -157,7 +165,7 @@
                 android:background="@android:color/black"
                 android:id="@+id/dCapturedOriginalImage"
                 android:layout_height="150dp"
-                android:layout_width="70dp"
+                android:layout_width="match_parent"
                 android:padding="4dp"
                 tools:background="@android:color/holo_green_dark"
                 tools:visibility="visible" />

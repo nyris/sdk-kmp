@@ -18,7 +18,6 @@ package io.nyris.sdk.camera.internal.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.TypedArray
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.FrameLayout
@@ -33,6 +32,7 @@ import io.nyris.sdk.camera.core.CameraError
 import io.nyris.sdk.camera.core.CaptureModeEnum
 import io.nyris.sdk.camera.core.CompressionFormatEnum
 import io.nyris.sdk.camera.core.FeatureMode
+import io.nyris.sdk.camera.core.FeatureModeEnum
 import io.nyris.sdk.camera.core.FocusModeEnum
 import io.nyris.sdk.camera.databinding.NyrisCameraViewBinding
 import io.nyris.sdk.camera.feature.barcode.BarcodeInternal
@@ -46,28 +46,22 @@ import io.nyris.sdk.camera.internal.required
 import io.nyris.sdk.camera.internal.toBarcodeFormat
 import io.nyris.sdk.camera.internal.toCaptureMode
 import io.nyris.sdk.camera.internal.toCompressionFormat
-import io.nyris.sdk.camera.internal.toFeatureModeList
+import io.nyris.sdk.camera.internal.toFeatureModeEnumList
 import io.nyris.sdk.camera.internal.toFocusMode
 import kotlin.reflect.KClass
 
 @Suppress("LongParameterList")
 internal class CameraViewDelegate(
     private val cameraView: CameraView,
-    attrs: AttributeSet? = null,
-    focusMode: Int = 0,
+    attrs: TypedArray,
     featureModes: Int = 0,
+    focusMode: Int = 0,
     captureMode: Int = 0,
     compressionFormat: Int = 0,
     quality: Int = DEFAULT_QUALITY,
     barcodeFormat: Int = 0,
     isBarcodeGuideEnabled: Boolean = false,
 ) : CameraViewContract.View {
-    private val styledAttributes: TypedArray by lazy {
-        cameraView.context.obtainStyledAttributes(
-            attrs,
-            R.styleable.CameraView
-        )
-    }
     private val lifecycleOwner = (cameraView.context as? LifecycleOwner).required {
         "Lifecycle Owner is required to use this camera view! Please make sure that your activity/fragment " +
             "is a lifecycle owner."
@@ -83,28 +77,29 @@ internal class CameraViewDelegate(
     private var captureBlockMap: MutableMap<Int, CaptureBlock<Result>?> = mutableMapOf()
 
     init {
-        val featureModeList =
-            styledAttributes.getInt(R.styleable.CameraView_feature_modes, featureModes).toFeatureModeList()
+        val featureModeEnumList =
+            attrs.getInt(R.styleable.CameraView_feature_modes, featureModes).toFeatureModeEnumList()
         val focusModeEnum =
-            styledAttributes.getInt(R.styleable.CameraView_focus_mode, focusMode).toFocusMode()
+            attrs.getInt(R.styleable.CameraView_focus_mode, focusMode).toFocusMode()
         val captureModeEnum =
-            styledAttributes.getInt(R.styleable.CameraView_capture_mode, captureMode).toCaptureMode()
+            attrs.getInt(R.styleable.CameraView_capture_mode, captureMode).toCaptureMode()
         val compressionModeEnum =
-            styledAttributes.getInt(R.styleable.CameraView_compression_format, compressionFormat).toCompressionFormat()
+            attrs.getInt(R.styleable.CameraView_compression_format, compressionFormat).toCompressionFormat()
         val qualityValue =
-            styledAttributes.getInt(R.styleable.CameraView_quality, quality).takeIf {
+            attrs.getInt(R.styleable.CameraView_quality, quality).takeIf {
                 it in MIN_QUALITY..MAX_QUALITY
             }.required {
                 "Quality should be in range $MIN_QUALITY and $MAX_QUALITY"
             }
         val barcodeFormatEnum =
-            styledAttributes.getInt(R.styleable.CameraView_barcode_format, barcodeFormat).toBarcodeFormat()
+            attrs.getInt(R.styleable.CameraView_barcode_format, barcodeFormat).toBarcodeFormat()
+        attrs.recycle()
 
         cameraView.post {
             if (cameraView.isInEditMode) return@post
 
             presenter = CameraViewPresenter(
-                featureModeList,
+                featureModeEnumList,
                 focusModeEnum,
                 captureModeEnum,
                 compressionModeEnum,
@@ -116,7 +111,7 @@ internal class CameraViewDelegate(
 
             setPreviewSizeDebugInfo()
 
-            if (isBarcodeGuideEnabled && featureModeList.contains(FeatureMode.BARCODE)) {
+            if (isBarcodeGuideEnabled && featureModeEnumList.contains(FeatureModeEnum.Barcode)) {
                 binding.previewView.overlay.add(
                     BarcodeOverlayDrawable(
                         barcodeFormat = barcodeFormat,
@@ -134,6 +129,10 @@ internal class CameraViewDelegate(
     override fun previewView(): PreviewView = binding.previewView
 
     override fun lifecycleOwner(): LifecycleOwner = lifecycleOwner
+
+    override fun setFeatureModeInfo(featureModes: List<FeatureModeEnum>) {
+        binding.debugView.setFeatureMode(featureModes)
+    }
 
     override fun setFocusModeDebugInfo(focusMode: FocusModeEnum) {
         binding.debugView.setFocusModeDebugInfo(focusMode)
